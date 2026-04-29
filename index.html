@@ -1,625 +1,648 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MITSUYOSHI EA</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet" />
-  <style>
-    .font-serif { font-family: 'Bodoni Moda', serif !important; }
-    .font-sans { font-family: 'Inter', sans-serif !important; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITSUYOSHI BOT - Premium Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            light: '#F3E5AB',
+                            main: '#D4AF37',
+                            dark: '#AA7C11'
+                        },
+                        dark: {
+                            bg: '#050505',
+                            panel: '#0a0a0c'
+                        },
+                        light: {
+                            bg: '#faf9f6',
+                            panel: '#ffffff'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        /* --- Gradients Or --- */
+        .text-gold-gradient {
+            background: linear-gradient(to right, #D4AF37, #AA7C11);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .animate-fadeIn {
-      animation: fadeIn 1.5s ease-out;
-    }
+        .bg-gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+        }
 
-    @keyframes aurora {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+        /* --- Arrière-plans design --- */
+        .bg-grid-light {
+            background-image: 
+                linear-gradient(to right, rgba(212, 175, 55, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(212, 175, 55, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .dark .bg-grid-dark {
+            background-image: 
+                linear-gradient(to right, rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
 
-    .bg-aurora {
-      background: linear-gradient(-45deg, #07070a, #0d111c, #070a12, #07070a);
-      background-size: 400% 400%;
-      animation: aurora 20s ease infinite;
-    }
+        /* --- Range Slider --- */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #D4AF37;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            margin-top: -8px;
+            transition: transform 0.2s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            border-radius: 2px;
+            background: rgba(212, 175, 55, 0.2);
+        }
 
-    .orb-1 {
-      position: fixed;
-      top: 10%; left: 10%;
-      width: 50vw; height: 50vw;
-      background: radial-gradient(circle, rgba(37,99,235,0.03) 0%, transparent 60%);
-      border-radius: 50%;
-      animation: float 20s infinite ease-in-out;
-      pointer-events: none;
-      z-index: 0;
-    }
+        /* --- Animations de Scroll --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
 
-    .orb-2 {
-      position: fixed;
-      bottom: 10%; right: 10%;
-      width: 60vw; height: 60vw;
-      background: radial-gradient(circle, rgba(59,130,246,0.02) 0%, transparent 60%);
-      border-radius: 50%;
-      animation: float 25s infinite ease-in-out reverse;
-      pointer-events: none;
-      z-index: 0;
-    }
+        /* --- Accordéon Doc --- */
+        .doc-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+        .doc-content.active {
+            max-height: 800px;
+            opacity: 1;
+        }
+        .doc-icon { transition: transform 0.4s ease; }
+        .doc-icon.active { transform: rotate(180deg); }
 
-    @keyframes float {
-      0% { transform: translate(0px, 0px) scale(1); }
-      33% { transform: translate(30px, -50px) scale(1.1); }
-      66% { transform: translate(-20px, 20px) scale(0.9); }
-      100% { transform: translate(0px, 0px) scale(1); }
-    }
+        /* Theme Toggle Icon Transition */
+        .theme-icon-container svg {
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            position: absolute;
+        }
+        .dark .icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+        .dark .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
+        .icon-sun { opacity: 1; transform: rotate(0) scale(1); }
+        .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
 
-    .japanese-bg {
-      background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
+        /* Candlestick Animation */
+        .candle {
+            animation: growCandle 1.5s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes growCandle {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
-    input[type=range] {
-      -webkit-appearance: none;
-      appearance: none;
-      height: 4px;
-      border-radius: 2px;
-      background: #27272a;
-      cursor: pointer;
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #3b82f6;
-      cursor: pointer;
-    }
-    input[type=range]::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #3b82f6;
-      cursor: pointer;
-      border: none;
-    }
-
-    .doc-content {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
-    }
-    .doc-content.open {
-      max-height: 800px;
-      opacity: 1;
-    }
-
-    .chevron-icon {
-      transition: transform 0.5s;
-    }
-    .chevron-icon.rotated {
-      transform: rotate(180deg);
-    }
-  </style>
+    </style>
 </head>
-<body>
-  <div id="root"></div>
+<body class="bg-light-bg text-slate-800 dark:bg-dark-bg dark:text-zinc-200 bg-grid-light dark:bg-grid-dark transition-colors duration-500">
 
-  <script type="text/babel">
-    const { useState, useMemo } = React;
-
-    // Lucide icons as inline SVG components
-    const Shield = ({size=24, className=""}) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-      </svg>
-    );
-    const Wind = ({size=24, className=""}) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/>
-        <path d="M9.6 4.6A2 2 0 1 1 11 8H2"/>
-        <path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>
-      </svg>
-    );
-    const Layers = ({size=24, className=""}) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-        <polyline points="2 17 12 22 22 17"/>
-        <polyline points="2 12 12 17 22 12"/>
-      </svg>
-    );
-    const Info = ({size=24, className=""}) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="16" x2="12" y2="12"/>
-        <line x1="12" y1="8" x2="12.01" y2="8"/>
-      </svg>
-    );
-    const Zap = ({size=24, className=""}) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-      </svg>
-    );
-    const CheckCircle2 = ({size=24, className=""}) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-        <path d="m9 12 2 2 4-4"/>
-      </svg>
-    );
-    const ChevronDown = ({size=24, className=""}) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <polyline points="6 9 12 15 18 9"/>
-      </svg>
-    );
-    const BookOpen = ({size=24, className=""}) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-      </svg>
-    );
-
-    // --- Composants UI Soft ---
-    const FadeIn = ({ children }) => (
-      <div className="animate-fadeIn">
-        {children}
-      </div>
-    );
-
-    const SectionTitle = ({ subtitle, title }) => (
-      <div className="mb-16">
-        <span className="text-blue-400 font-medium tracking-widest uppercase text-xs block mb-4 italic" style={{opacity:0.6, letterSpacing:'0.3em'}}>
-          {subtitle}
-        </span>
-        <h2 className="text-4xl md:text-5xl font-serif text-zinc-100 tracking-tight">
-          {title}
-        </h2>
-        <div className="w-12 mt-6" style={{height:'1px', backgroundColor:'rgba(59,130,246,0.5)'}}></div>
-      </div>
-    );
-
-    // --- Graphique Artificiel (Trading Curve SVG) ---
-    const TradingCurveBackground = () => (
-      <div className="absolute inset-0 z-10 flex items-end" style={{opacity:0.3}}>
-        <svg viewBox="0 0 1000 500" preserveAspectRatio="none" className="w-full" style={{height:'80%',filter:'drop-shadow(0 0 15px rgba(59,130,246,0.3))'}}>
-          <defs>
-            <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M 0 500 L 0 450 L 50 440 L 100 460 L 150 380 L 200 400 L 250 320 L 300 340 L 350 260 L 400 280 L 450 200 L 500 220 L 550 150 L 600 170 L 650 100 L 700 120 L 750 60 L 800 80 L 850 30 L 900 40 L 950 10 L 1000 20 L 1000 500 Z"
-            fill="url(#blueGradient)"
-          />
-          <path
-            d="M 0 450 L 50 440 L 100 460 L 150 380 L 200 400 L 250 320 L 300 340 L 350 260 L 400 280 L 450 200 L 500 220 L 550 150 L 600 170 L 650 100 L 700 120 L 750 60 L 800 80 L 850 30 L 900 40 L 950 10 L 1000 20"
-            fill="none"
-            stroke="#3b82f6"
-            strokeWidth="2"
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
-      </div>
-    );
-
-    // --- Simulateur de Gains ---
-    const ProfitSimulator = () => {
-      const [balance, setBalance] = useState(10000);
-      const [mode, setMode] = useState('prop');
-
-      const monthlyRate = mode === 'perso' ? 0.50 : 0.05;
-
-      const projection = useMemo(() => {
-        let data = [];
-        let current = balance;
-        for (let i = 0; i <= 6; i++) {
-          data.push({ month: i, amount: Math.round(current) });
-          current += current * monthlyRate;
-        }
-        return data;
-      }, [balance, monthlyRate]);
-
-      return (
-        <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-sm backdrop-blur-sm" style={{backgroundColor:'rgba(24,24,27,0.3)', borderColor:'rgba(63,63,70,0.5)'}}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <h3 className="text-2xl font-serif mb-6 text-zinc-200">Simulateur de Croissance</h3>
-              <div className="space-y-8">
-                <div>
-                  <label className="block text-xs uppercase tracking-widest text-zinc-500 mb-4 font-bold" style={{letterSpacing:'0.3em'}}>Capital Initial ($)</label>
-                  <input
-                    type="range"
-                    min="1000"
-                    max="400000"
-                    step="500"
-                    value={balance}
-                    onChange={(e) => setBalance(parseInt(e.target.value))}
-                    className="w-full"
-                  />
-                  <div className="mt-4 text-3xl font-light text-white font-mono">${balance.toLocaleString()}</div>
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-widest text-zinc-500 mb-4 font-bold" style={{letterSpacing:'0.3em'}}>Stratégie d'Exécution</label>
-                  <div className="flex gap-4">
-                    <button
-                      onClick={() => setMode('prop')}
-                      className={`flex-1 py-3 px-4 text-xs font-bold uppercase transition-all border ${mode === 'prop' ? 'bg-zinc-100 text-black border-white' : 'text-zinc-500 border-zinc-800 hover:border-zinc-600'}`}
-                      style={{letterSpacing:'0.2em'}}
-                    >
-                      Prop Firm (Conservateur)
-                    </button>
-                    <button
-                      onClick={() => setMode('perso')}
-                      className={`flex-1 py-3 px-4 text-xs font-bold uppercase transition-all border ${mode === 'perso' ? 'bg-zinc-100 text-black border-white' : 'text-zinc-500 border-zinc-800 hover:border-zinc-600'}`}
-                      style={{letterSpacing:'0.2em'}}
-                    >
-                      Compte Perso (Boost)
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="text-zinc-600 uppercase mb-4 flex justify-between" style={{fontSize:'10px', letterSpacing:'0.2em'}}>
-                <span>Projection sur 6 mois</span>
-                <span className="text-blue-500">+{monthlyRate * 100}% mensuel</span>
-              </div>
-              <div className="flex items-end gap-2 border-b border-zinc-800 pb-2" style={{height:'12rem'}}>
-                {projection.map((d, i) => {
-                  const heightPercentage = Math.max(2, (d.amount / projection[6].amount) * 100);
-                  return (
-                    <div key={i} className="flex-1 flex flex-col items-center group justify-end" style={{height:'100%'}}>
-                      <div
-                        className="w-full rounded-t-sm transition-all duration-300 ease-in-out"
-                        style={{ height: `${heightPercentage}%`, backgroundColor: 'rgba(59,130,246,0.3)' }}
-                        onMouseEnter={e => e.currentTarget.style.backgroundColor='rgba(59,130,246,0.6)'}
-                        onMouseLeave={e => e.currentTarget.style.backgroundColor='rgba(59,130,246,0.3)'}
-                      ></div>
-                      <span className="font-mono text-zinc-600 mt-2" style={{fontSize:'8px'}}>M{i}</span>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="mt-6 flex justify-between items-center">
-                <div>
-                  <div className="uppercase text-zinc-500 font-bold" style={{fontSize:'10px', letterSpacing:'0.2em'}}>Total Projeté</div>
-                  <div className="text-2xl font-light text-white">${projection[6].amount.toLocaleString()}</div>
-                </div>
-                <div className="text-right">
-                  <div className="uppercase text-zinc-500 font-bold" style={{fontSize:'10px', letterSpacing:'0.2em'}}>Profit Net</div>
-                  <div className="text-2xl font-light text-green-400">+${(projection[6].amount - balance).toLocaleString()}</div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <!-- Barre de Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-4 md:px-8 lg:px-12 py-4 flex justify-between items-center bg-white/80 dark:bg-dark-bg/90 backdrop-blur-md border-b border-gold-main/20 shadow-sm dark:shadow-none transition-colors duration-500">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 border border-gold-main flex items-center justify-center font-serif text-xl italic text-gold-main shadow-[0_0_10px_rgba(212,175,55,0.2)] bg-white dark:bg-transparent">M</div>
+            <span class="text-sm font-bold tracking-[0.3em] uppercase text-slate-900 dark:text-white hidden sm:block">MITSUYOSHI <span class="text-gold-main">BOT</span></span>
         </div>
-      );
-    };
+        
+        <div class="hidden lg:flex gap-10 text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">
+            <a href="#stats" class="hover:text-gold-main dark:hover:text-gold-main transition-colors duration-300">Performance</a>
+            <a href="#technique" class="hover:text-gold-main dark:hover:text-gold-main transition-colors duration-300">Architecture</a>
+            <a href="#simulateur" class="hover:text-gold-main dark:hover:text-gold-main transition-colors duration-300">Simulateur</a>
+            <a href="#documentation" class="hover:text-gold-main dark:hover:text-gold-main transition-colors duration-300">Documentation</a>
+        </div>
 
-    // --- App Principal ---
-    function App() {
-      const [openDoc, setOpenDoc] = useState(null);
-      const telegramLink = "https://t.me/ysestp";
-
-      const documentationData = [
-        {
-          category: "Gestion du Risque (Max Drawdown)",
-          params: [
-            { name: "MaxDrawdown_Percentage", value: "2 à 4.5%", desc: "Sécurité absolue Prop Firm. Coupe toutes les positions si le seuil de perte défini est atteint." },
-            { name: "MaxDrawdown_Amount", value: "Monétaire", desc: "Coupe de sécurité basée sur une somme fixe (ex: perte max de 4500$)." },
-            { name: "DailyProfitTarget", value: "Optionnel", desc: "Stoppe l'EA pour la journée une fois l'objectif de gain atteint, évitant l'over-trading." }
-          ]
-        },
-        {
-          category: "Filtres Temporels & Calendrier",
-          params: [
-            { name: "TimeFilter_Days", value: "Lun-Jeu", desc: "Le bot évite nativement le vendredi pour se prémunir des clôtures hebdomadaires et des manipulations." },
-            { name: "TimeFilter_Hours", value: "00:00 - 13:59", desc: "Fenêtre de tir millimétrée sur les sessions à plus forte liquidité institutionnelle." }
-          ]
-        },
-        {
-          category: "Analyse de Volatilité & Tendance",
-          params: [
-            { name: "VF_ATR & VF_ADX", value: "Dynamique", desc: "Filtre de Volatilité : S'assure que le marché n'est ni trop plat (choppy), ni en panique incontrôlable avant d'entrer." },
-            { name: "HTF_MA_Period", value: "100", desc: "Hard Trend Filter : Vérifie la tendance lourde sur les unités de temps supérieures." },
-            { name: "HTF_MinTrendSlopePoints", value: "5.0", desc: "Vérifie l'inclinaison de la tendance. Si la pente est trop faible, l'EA rejette le trade." }
-          ]
-        },
-        {
-          category: "Gestion des Positions (Grid & Basket)",
-          params: [
-            { name: "Basket_LotsSequence", value: "0.10 à 1.80", desc: "Séquence de lots pondérée avec précision. Aucune martingale aveugle, juste un lissage du prix d'entrée." },
-            { name: "Grid_ATR_Mult", value: "Dynamique", desc: "L'écartement entre les positions s'adapte à la volatilité réelle (ATR) et non à un nombre de pips fixe." },
-            { name: "CTB_BBands", value: "Deviation 2.0", desc: "Rejet de contre-tendance : Bloque les entrées si le prix percute violemment les Bandes de Bollinger." }
-          ]
-        },
-        {
-          category: "Sécurisation & Sorties",
-          params: [
-            { name: "TrailingStop_ATR", value: "Mult 0.95", desc: "Le stop loss suit les gains intelligemment en se basant sur la volatilité en cours." },
-            { name: "PartialClose_Part1 & 2", value: "Multi-Paliers", desc: "Encaissement partiel des gains (ex: 35% de la position) à des niveaux clés pour sécuriser le capital." },
-            { name: "BreakEven_Points", value: "Activable", desc: "Place automatiquement le trade à l'équilibre dès qu'un certain nombre de points est sécurisé." }
-          ]
-        }
-      ];
-
-      return (
-        <div className="min-h-screen text-zinc-300 font-sans bg-aurora relative" style={{scrollBehavior:'smooth', userSelect:'none'}}>
-          <div className="orb-1"></div>
-          <div className="orb-2"></div>
-
-          {/* Navigation */}
-          <nav className="fixed top-0 w-full z-50 px-6 md:px-10 py-6 flex justify-between items-center border-b border-white backdrop-blur-xl shadow-2xl" style={{backgroundColor:'rgba(10,10,11,0.8)', borderColor:'rgba(255,255,255,0.05)'}}>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 border flex items-center justify-center font-serif text-lg italic text-white" style={{borderColor:'rgba(255,255,255,0.2)', boxShadow:'0 0 15px rgba(255,255,255,0.1)'}}>M</div>
-              <span className="text-sm font-bold text-white uppercase" style={{letterSpacing:'0.4em'}}>MITSUYOSHI EA</span>
-            </div>
-            <div className="hidden md:flex gap-12 font-bold uppercase text-zinc-400" style={{fontSize:'10px', letterSpacing:'0.3em'}}>
-              <a href="#stats" className="hover:text-white transition-colors">Performance</a>
-              <a href="#technique" className="hover:text-white transition-colors">Architecture</a>
-              <a href="#simulateur" className="hover:text-white transition-colors">Projection</a>
-              <a href="#documentation" className="hover:text-blue-400 transition-colors">Documentation</a>
-            </div>
-            <a
-              href={telegramLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-black border px-6 py-2 hover:bg-white hover:text-black transition-all uppercase text-white"
-              style={{fontSize:'10px', borderColor:'rgba(255,255,255,0.1)', letterSpacing:'0.2em'}}
-            >
-              Accès Membre
+        <div class="flex items-center gap-4">
+            <!-- Bouton Clair/Sombre -->
+            <button onclick="toggleTheme()" class="relative w-10 h-10 rounded-full border border-gold-main/30 flex items-center justify-center text-gold-main hover:bg-gold-main/10 transition-colors theme-icon-container">
+                <!-- Sun Icon (Light Mode) -->
+                <svg class="icon-sun w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <!-- Moon Icon (Dark Mode) -->
+                <svg class="icon-moon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            </button>
+            
+            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="text-xs font-bold border border-gold-main text-gold-main px-4 md:px-6 py-2.5 hover:bg-gold-main hover:text-white dark:hover:text-black transition-all uppercase tracking-widest rounded-sm">
+                Accès Privé
             </a>
-          </nav>
-
-          {/* Hero Section */}
-          <header className="relative min-h-screen flex items-center px-6 md:px-10 overflow-hidden japanese-bg">
-            <div className="absolute inset-0 w-full h-full pointer-events-none">
-              <TradingCurveBackground />
-              <div className="absolute inset-0 z-20" style={{background:'linear-gradient(to right, #0a0a0b, rgba(10,10,11,0.8), transparent)'}}></div>
-            </div>
-            <div className="max-w-4xl relative z-30 pt-20">
-              <FadeIn>
-                <span className="text-blue-500 font-bold uppercase italic mb-6 block" style={{letterSpacing:'0.5em', fontSize:'12px'}}>L'Art du Trading Algorithmique</span>
-                <h1 className="font-serif italic text-white leading-none tracking-tighter mb-10" style={{fontSize:'clamp(4rem,10vw,10rem)', lineHeight:'0.85', textShadow:'0 25px 50px rgba(0,0,0,0.5)'}}>
-                  Précision <br /> <span className="text-blue-500">Absolue.</span>
-                </h1>
-                <p className="text-lg md:text-xl text-zinc-400 font-light leading-relaxed max-w-xl mb-12 italic">
-                  L'héritage mathématique de MITSUYOSHI EA. Plus qu'un outil, une infrastructure de gestion de capital testée sur 15 mois de volatilité réelle.
-                </p>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-10">
-                  <a
-                    href={telegramLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-zinc-100 text-black px-12 py-5 font-bold text-xs uppercase hover:bg-blue-600 hover:text-white transition-all text-center"
-                    style={{letterSpacing:'0.2em'}}
-                  >
-                    Démarrer l'Héritage
-                  </a>
-                  <div className="flex items-center gap-4 text-zinc-500">
-                    <div className="w-12" style={{height:'1px', backgroundColor:'#27272a'}}></div>
-                    <span className="font-bold uppercase" style={{fontSize:'10px', letterSpacing:'0.2em'}}>PF 14.07 Validé</span>
-                  </div>
-                </div>
-              </FadeIn>
-            </div>
-          </header>
-
-          {/* Stats Section */}
-          <section id="stats" className="py-32 px-6 md:px-10 border-y border-zinc-900 backdrop-blur-md relative z-20" style={{backgroundColor:'rgba(10,10,11,0.8)'}}>
-            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16">
-              {[
-                { num: "14.07", label: "Profit Factor", desc: "Ratio exceptionnel entre gains et pertes brutes sur 1 an." },
-                { num: "81%", label: "Taux de Win", desc: "Précision chirurgicale sur plus de 2088 exécutions réelles." },
-                { num: "4.3%", label: "Max Drawdown", desc: "Protection du capital prioritaire. Risque millimétré." },
-                { num: "+1 AN", label: "Backtest Live", desc: "Échantillon de données massif incluant tous les cycles." },
-              ].map((item, i) => (
-                <div key={i} className="group">
-                  <div className="text-5xl font-serif text-white mb-2 group-hover:text-blue-500 transition-colors">{item.num}</div>
-                  <div className="font-bold uppercase text-zinc-500" style={{fontSize:'10px', letterSpacing:'0.3em'}}>{item.label}</div>
-                  <p className="mt-4 text-xs text-zinc-600 italic">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Technique Section */}
-          <section id="technique" className="py-40 px-6 md:px-10 relative z-20">
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-24">
-              <div className="lg:w-1/2">
-                <SectionTitle subtitle="L'Architecture" title="Détails du Système" />
-                <div className="space-y-12">
-                  <div className="flex gap-6">
-                    <div className="mt-1 text-blue-500"><Wind size={24} /></div>
-                    <div>
-                      <h4 className="text-xl font-serif text-zinc-100 mb-2 italic">Filtrage de Volatilité ATR & ADX</h4>
-                      <p className="text-sm leading-relaxed text-zinc-500">
-                        Mitsuyoshi analyse la force de la tendance avant chaque entrée. Si l'ADX est inférieur à 25 ou si l'ATR montre une volatilité "bruitée", le système reste en veille. Nous ne tradons que la liquidité réelle.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-6">
-                    <div className="mt-1 text-blue-500"><Layers size={24} /></div>
-                    <div>
-                      <h4 className="text-xl font-serif text-zinc-100 mb-2 italic">Basket Scaling Intégratif</h4>
-                      <p className="text-sm leading-relaxed text-zinc-500">
-                        Notre algorithme de gestion de lots (0.10 à 1.80) n'est pas une martingale. C'est une pondération mathématique qui ajuste le prix moyen d'entrée sur des zones institutionnelles clés.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-6">
-                    <div className="mt-1 text-blue-500"><Shield size={24} /></div>
-                    <div>
-                      <h4 className="text-xl font-serif text-zinc-100 mb-2 italic">Coupe-Circuit Économique</h4>
-                      <p className="text-sm leading-relaxed text-zinc-500">
-                        Connecté via API aux calendriers économiques, le bot suspend toute activité 30 minutes avant les annonces High-Impact (CPI, NFP, FED) pour éviter les slippages dévastateurs.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:w-1/2 rounded-sm backdrop-blur-md p-10" style={{backgroundColor:'rgba(39,39,42,0.4)', border:'1px solid rgba(63,63,70,0.5)'}}>
-                <h4 className="font-black uppercase text-zinc-500 mb-10 italic" style={{fontSize:'12px', letterSpacing:'0.4em'}}>Spécifications Intégrales</h4>
-                <div className="space-y-6">
-                  {[
-                    { label: "Plateforme", val: "MetaTrader 5 (MT5)" },
-                    { label: "Actifs", val: "XAUUSD, EURUSD, US30" },
-                    { label: "Timeframe", val: "M15 (Execution) / H1 (Trend)" },
-                    { label: "Type de Trading", val: "Day Trading / Scalping" },
-                    { label: "Levier Minimum", val: "1:30 Recommandé" },
-                    { label: "Gestion Stop Loss", val: "Trailing ATR Dynamique" },
-                    { label: "Prise de Profit", val: "Paliers Partiels (3 Niveaux)" },
-                  ].map((item, i) => (
-                    <div key={i} className="flex justify-between items-center py-4" style={{borderBottom:'1px solid rgba(63,63,70,0.5)'}}>
-                      <span className="font-bold uppercase text-zinc-500" style={{fontSize:'10px', letterSpacing:'0.2em'}}>{item.label}</span>
-                      <span className="text-sm text-zinc-200 italic font-medium text-right">{item.val}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-10 p-6 rounded-sm" style={{backgroundColor:'rgba(59,130,246,0.1)', border:'1px solid rgba(59,130,246,0.3)'}}>
-                  <div className="flex items-center gap-3 mb-2 text-blue-400">
-                    <Info size={16} />
-                    <span className="font-bold uppercase" style={{fontSize:'10px', letterSpacing:'0.2em'}}>Note de l'Ingénieur</span>
-                  </div>
-                  <p className="text-xs italic leading-relaxed text-zinc-400">
-                    Le système est optimisé pour les spreads normaux. L'utilisation d'un compte à max 5 pips de spread est impérative pour maintenir le Profit Factor de 14.07.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Simulator Section */}
-          <section id="simulateur" className="py-40 px-6 md:px-10 relative z-20" style={{backgroundColor:'rgba(9,9,11,0.5)'}}>
-            <div className="max-w-5xl mx-auto">
-              <SectionTitle subtitle="Projection" title="Simulateur de Potentiel" />
-              <ProfitSimulator />
-              <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="flex items-start gap-4 p-6" style={{border:'1px solid rgba(63,63,70,0.5)', backgroundColor:'rgba(0,0,0,0.2)'}}>
-                  <CheckCircle2 className="text-green-500 shrink-0" size={20} />
-                  <div>
-                    <span className="font-bold uppercase text-zinc-100 block mb-1" style={{fontSize:'10px', letterSpacing:'0.2em'}}>Prop Firm Mode</span>
-                    <p className="text-xs text-zinc-500 italic">Objectif de 5% mensuel avec un drawdown maximum de 4%. Idéal pour valider et conserver vos comptes financés sur le long terme.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4 p-6" style={{border:'1px solid rgba(63,63,70,0.5)', backgroundColor:'rgba(0,0,0,0.2)'}}>
-                  <Zap className="text-blue-500 shrink-0" size={20} />
-                  <div>
-                    <span className="font-bold uppercase text-zinc-100 block mb-1" style={{fontSize:'10px', letterSpacing:'0.2em'}}>Personal Boost Mode</span>
-                    <p className="text-xs text-zinc-500 italic">Exploitation maximale de la volatilité pour des comptes personnels. Rendements projetés plus élevés avec une exposition contrôlée.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Documentation Section */}
-          <section id="documentation" className="py-40 px-6 md:px-10 border-t border-zinc-900 backdrop-blur-sm relative z-20" style={{backgroundColor:'rgba(10,10,11,0.8)'}}>
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-20">
-                <BookOpen className="mx-auto text-blue-500 mb-6" size={40} />
-                <SectionTitle subtitle="Transparence Totale" title="Documentation MITSUYOSHI EA" />
-                <p className="text-zinc-400 italic font-light text-lg">
-                  Explorez l'intégralité des paramètres accessibles. Chaque réglage a été pensé pour vous offrir un contrôle institutionnel sur votre algorithme.
-                </p>
-              </div>
-              <div className="space-y-4">
-                {documentationData.map((section, index) => (
-                  <div key={index} className="rounded-sm overflow-hidden backdrop-blur-md transition-all duration-300" style={{border:'1px solid rgba(63,63,70,0.6)', backgroundColor:'rgba(24,24,27,0.6)'}}>
-                    <button
-                      onClick={() => setOpenDoc(openDoc === index ? null : index)}
-                      className="w-full px-8 py-6 flex justify-between items-center text-left transition-colors hover:bg-zinc-800"
-                      style={{backgroundColor: openDoc === index ? 'rgba(39,39,42,0.4)' : 'transparent'}}
-                    >
-                      <h3 className="text-xl font-serif italic text-zinc-100">{section.category}</h3>
-                      <ChevronDown
-                        className={`text-zinc-500 chevron-icon ${openDoc === index ? 'rotated' : ''}`}
-                      />
-                    </button>
-                    <div className={`doc-content ${openDoc === index ? 'open' : ''}`}>
-                      <div className="px-8 pb-8 space-y-6 pt-4 mx-8" style={{borderTop:'1px solid rgba(63,63,70,0.5)'}}>
-                        {section.params.map((param, pIndex) => (
-                          <div key={pIndex} className="flex flex-col md:flex-row gap-4 md:gap-10">
-                            <div className="md:w-1/3">
-                              <div className="text-xs font-bold font-mono text-blue-400 mb-1">{param.name}</div>
-                              <div className="uppercase text-zinc-500" style={{fontSize:'10px', letterSpacing:'0.2em'}}>{param.value}</div>
-                            </div>
-                            <div className="md:w-2/3">
-                              <p className="text-sm text-zinc-400 leading-relaxed italic">{param.desc}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* CTA Final */}
-          <section className="py-60 px-6 md:px-10 text-center relative overflow-hidden z-20" style={{backgroundColor:'rgba(10,10,11,0.95)'}}>
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{opacity:0.02}}>
-              <div className="font-serif italic uppercase" style={{fontSize:'40vw'}}>Mitsu</div>
-            </div>
-            <div className="relative z-10 max-w-3xl mx-auto">
-              <h2 className="font-serif italic text-white mb-12 tracking-tight leading-none" style={{fontSize:'clamp(3rem,8vw,8rem)'}}>
-                Rejoignez <br /> l'Héritage.
-              </h2>
-              <p className="text-zinc-500 text-lg mb-16 italic font-light">
-                Les places sont limitées mensuellement pour garantir un support technique d'exception. Ne laissez plus le hasard guider votre capital.
-              </p>
-              <div className="flex justify-center">
-                <a
-                  href={telegramLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-16 py-6 bg-zinc-100 text-black font-black text-xs uppercase hover:bg-blue-600 hover:text-white transition-all inline-block"
-                  style={{letterSpacing:'0.4em', transform:'scale(1)', transition:'all 0.2s'}}
-                  onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
-                  onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
-                >
-                  Obtenir MITSUYOSHI EA
-                </a>
-              </div>
-            </div>
-          </section>
-
-          {/* Footer */}
-          <footer className="border-t border-zinc-900 relative z-20" style={{height:'8rem', borderColor:'rgba(39,39,42,0.5)', backgroundColor:'transparent'}}>
-            <div className="max-w-7xl mx-auto h-full px-10 flex flex-col md:flex-row justify-between items-center gap-10">
-              <div className="flex items-center gap-4 transition-opacity" style={{opacity:0.3}}
-                onMouseEnter={e => e.currentTarget.style.opacity='1'}
-                onMouseLeave={e => e.currentTarget.style.opacity='0.3'}
-              >
-                <div className="w-8 h-8 border flex items-center justify-center font-serif italic text-white" style={{borderColor:'rgba(255,255,255,0.2)'}}>M</div>
-                <span className="font-bold uppercase text-white" style={{fontSize:'10px', letterSpacing:'0.4em'}}>MITSUYOSHI EA</span>
-              </div>
-              <div className="flex gap-10 font-bold uppercase text-zinc-600" style={{fontSize:'10px', letterSpacing:'0.2em'}}>
-              </div>
-              <div className="text-zinc-700 italic text-right" style={{fontSize:'10px'}}>
-              </div>
-            </div>
-          </footer>
         </div>
-      );
-    }
+    </nav>
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-  </script>
+    <!-- Section Hero -->
+    <header class="relative min-h-screen flex items-center px-6 lg:px-12 pt-24 pb-12 overflow-hidden z-10">
+        
+        <!-- Candlestick Chart SVG Dynamique -->
+        <div class="absolute inset-0 z-0 opacity-20 dark:opacity-30 flex items-end pointer-events-none">
+            <svg id="candlestickSvg" viewBox="0 0 1000 500" preserveAspectRatio="none" class="w-full h-[60%] lg:h-[80%] drop-shadow-2xl">
+                <!-- Généré par JS -->
+            </svg>
+        </div>
+        
+        <!-- Gradient de fond pour adoucir le bas -->
+        <div class="absolute inset-0 bg-gradient-to-t from-light-bg via-transparent to-transparent dark:from-dark-bg z-0 transition-colors duration-500"></div>
+
+        <div class="max-w-5xl relative z-10 w-full reveal">
+            <div class="inline-flex items-center gap-3 px-4 py-2 border border-gold-main/30 bg-white/80 dark:bg-dark-panel/80 backdrop-blur-sm rounded-full mb-8 shadow-sm">
+                <div class="w-2 h-2 bg-gold-main rounded-full animate-pulse"></div>
+                <span class="text-[10px] font-bold tracking-[0.3em] uppercase text-gold-main">V1.2 Gold Edition</span>
+            </div>
+            
+            <h1 class="text-5xl sm:text-7xl lg:text-[7.5rem] font-serif leading-tight lg:leading-[0.9] tracking-tight mb-8 text-slate-900 dark:text-white transition-colors duration-500">
+                L'Excellence <br />
+                <span class="text-gold-gradient italic">Algorithmique.</span>
+            </h1>
+            
+            <p class="text-base md:text-xl text-slate-600 dark:text-gray-400 font-light leading-relaxed max-w-2xl mb-12 transition-colors duration-500">
+                Un chef-d'œuvre d'ingénierie financière. Optimisé pour le scalping et la préservation de capital, <span class="font-bold text-gold-main">Mitsuyoshi BOT</span> délivre des performances constantes sur les marchés réels.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center gap-6">
+                <a href="https://t.me/MitsuyoshiEA" target="_blank" class="w-full sm:w-auto bg-gold-gradient text-white dark:text-black px-10 py-4 font-bold text-xs uppercase tracking-[0.2em] text-center rounded-sm hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all transform hover:-translate-y-1">
+                    Rejoindre l'Élite
+                </a>
+                <div class="flex items-center gap-4 text-slate-400 dark:text-gray-500 w-full sm:w-auto justify-center">
+                    <div class="w-12 h-[1px] bg-gold-main/50"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-gold-main">PF 14.07 Audité</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Statistiques -->
+    <section id="stats" class="py-20 px-6 lg:px-12 border-y border-gold-main/20 bg-white/60 dark:bg-dark-panel/60 backdrop-blur-md relative z-20 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16">
+            <div class="reveal">
+                <div class="text-4xl md:text-5xl font-serif text-gold-main mb-2">14.07</div>
+                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">Profit Factor</div>
+                <p class="mt-3 text-xs text-slate-400 dark:text-gray-500 hidden md:block">Ratio gains/pertes exceptionnel sur 1 an.</p>
+            </div>
+            <div class="reveal delay-100">
+                <div class="text-4xl md:text-5xl font-serif text-gold-main mb-2">81%</div>
+                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">Taux de Réussite</div>
+                <p class="mt-3 text-xs text-slate-400 dark:text-gray-500 hidden md:block">Précision chirurgicale des entrées.</p>
+            </div>
+            <div class="reveal delay-200">
+                <div class="text-4xl md:text-5xl font-serif text-gold-main mb-2">4.3%</div>
+                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">Drawdown Max</div>
+                <p class="mt-3 text-xs text-slate-400 dark:text-gray-500 hidden md:block">Risque maîtrisé, idéal Prop Firm.</p>
+            </div>
+            <div class="reveal delay-300">
+                <div class="text-4xl md:text-5xl font-serif text-gold-main mb-2">2088</div>
+                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">Trades Exécutés</div>
+                <p class="mt-3 text-xs text-slate-400 dark:text-gray-500 hidden md:block">Échantillon massif et vérifié.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture & Technique -->
+    <section id="technique" class="py-24 md:py-32 px-6 lg:px-12 relative z-20">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24">
+            <div class="lg:w-1/2 reveal">
+                <div class="mb-12">
+                    <span class="text-gold-main font-medium tracking-[0.2em] uppercase text-[10px] block mb-4">L'Architecture du Succès</span>
+                    <h2 class="text-4xl md:text-5xl font-serif text-slate-900 dark:text-white transition-colors">Technologie Avancée</h2>
+                </div>
+                
+                <div class="space-y-10">
+                    <div class="flex gap-5 items-start">
+                        <div class="p-3 bg-gold-main/10 rounded-lg border border-gold-main/30 text-gold-main shadow-sm">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-serif text-slate-800 dark:text-white mb-2 transition-colors">Filtre de Volatilité (ATR & ADX)</h4>
+                            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">Si la tendance est faible ou le marché incertain, le robot se met en pause. Mitsuyoshi BOT ne trade que les conditions optimales.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-5 items-start">
+                        <div class="p-3 bg-gold-main/10 rounded-lg border border-gold-main/30 text-gold-main shadow-sm">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-serif text-slate-800 dark:text-white mb-2 transition-colors">Basket Scaling Sécurisé</h4>
+                            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">Une séquence de lots intelligente (0.10 à 1.80) lisse le prix d'entrée sans jamais recourir à une martingale destructrice.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-5 items-start">
+                        <div class="p-3 bg-gold-main/10 rounded-lg border border-gold-main/30 text-gold-main shadow-sm">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-serif text-slate-800 dark:text-white mb-2 transition-colors">Gestion Prop Firm Intégrée</h4>
+                            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">Coupe-circuit automatique basé sur le drawdown quotidien. Conçu spécialement pour passer les challenges FTMO et assimilés.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2 reveal delay-200">
+                <div class="bg-white/80 dark:bg-[#0a0a0c]/90 border border-gold-main/20 p-8 md:p-10 rounded-xl shadow-xl dark:shadow-[0_0_30px_rgba(212,175,55,0.05)] backdrop-blur-md transition-colors duration-500">
+                    <h4 class="text-xs font-bold uppercase tracking-[0.3em] text-gold-main mb-8 text-center border-b border-gold-main/20 pb-4">Spécifications Techniques</h4>
+                    
+                    <div class="space-y-1">
+                        <div class="flex justify-between items-center py-4 border-b border-slate-200 dark:border-gray-800 transition-colors">
+                            <span class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-500">Plateforme</span>
+                            <span class="text-sm text-slate-800 dark:text-white font-medium">MetaTrader 5</span>
+                        </div>
+                        <div class="flex justify-between items-center py-4 border-b border-slate-200 dark:border-gray-800 transition-colors">
+                            <span class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-500">Style de Trading</span>
+                            <span class="text-sm text-slate-800 dark:text-white font-medium">Day Trading / Scalping</span>
+                        </div>
+                        <div class="flex justify-between items-center py-4 border-b border-slate-200 dark:border-gray-800 transition-colors">
+                            <span class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-500">Paires Optimes</span>
+                            <span class="text-sm text-slate-800 dark:text-white font-medium">XAUUSD, EURUSD, US30</span>
+                        </div>
+                        <div class="flex justify-between items-center py-4 border-b border-slate-200 dark:border-gray-800 transition-colors">
+                            <span class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-500">Spread Requis</span>
+                            <span class="text-sm text-gold-main font-bold">Max 5 Pips</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-4 bg-gold-main/5 border border-gold-main/20 rounded-lg flex items-start gap-3">
+                        <svg class="w-5 h-5 text-gold-main mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <p class="text-[11px] text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">
+                            Avertissement technique : L'utilisation d'un compte ECN à très faible latence et spread réduit est impérative pour garantir la réplication exacte du Profit Factor de 14.07.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulateur Dynamique -->
+    <section id="simulateur" class="py-24 md:py-32 px-6 lg:px-12 bg-white dark:bg-dark-bg relative z-20 border-y border-gold-main/20 transition-colors duration-500">
+        <div class="max-w-5xl mx-auto reveal">
+            <div class="text-center mb-16">
+                <span class="text-gold-main font-medium tracking-[0.2em] uppercase text-[10px] block mb-4">Projection Interactive</span>
+                <h2 class="text-4xl md:text-5xl font-serif text-slate-900 dark:text-white transition-colors">Simulez vos Gains</h2>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-[#050505] border border-gold-main/20 p-6 md:p-12 rounded-2xl shadow-xl dark:shadow-[0_10px_40px_rgba(212,175,55,0.05)] transition-colors duration-500">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+                    <!-- Contrôles -->
+                    <div class="flex flex-col justify-center">
+                        <div class="mb-10">
+                            <label class="flex justify-between text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-400 mb-6 font-bold transition-colors">
+                                <span>Capital Alloué</span>
+                                <span class="text-gold-main text-sm" id="capitalLabel">$10,000</span>
+                            </label>
+                            <input type="range" id="capitalRange" min="1000" max="400000" step="1000" value="10000" class="w-full">
+                            <div class="flex justify-between text-[9px] text-slate-400 dark:text-gray-600 mt-2 font-mono transition-colors">
+                                <span>$1K</span>
+                                <span>$400K</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-400 mb-4 font-bold transition-colors">Profil de Risque</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="setSimMode('prop')" id="btnProp" class="py-3 px-2 border border-gold-main bg-gold-main/10 text-gold-main text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all">Prop Firm (5%)</button>
+                                <button onclick="setSimMode('perso')" id="btnPerso" class="py-3 px-2 border border-slate-300 dark:border-gray-800 text-slate-500 dark:text-gray-500 bg-transparent text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all hover:border-slate-400 dark:hover:border-gray-600">Perso (50%)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Graphique & Résultats -->
+                    <div>
+                        <div class="flex justify-between items-end mb-6">
+                            <span class="text-[10px] uppercase text-slate-500 dark:text-gray-500 tracking-widest transition-colors">Évolution (6 Mois)</span>
+                            <span id="rateDisplay" class="text-xs font-bold text-gold-main bg-gold-main/10 px-3 py-1 rounded-full">+5% / Mois</span>
+                        </div>
+                        
+                        <!-- Conteneur Graphique JS -->
+                        <div id="graphContainer" class="flex items-end gap-2 md:gap-3 h-40 border-b border-slate-200 dark:border-gray-800 pb-2 transition-colors"></div>
+                        
+                        <div class="mt-8 grid grid-cols-2 gap-6 bg-white dark:bg-[#0a0a0c] p-4 rounded-xl border border-slate-200 dark:border-gray-800/50 shadow-sm dark:shadow-none transition-colors">
+                            <div>
+                                <div class="text-[9px] uppercase text-slate-400 dark:text-gray-500 tracking-widest mb-1 transition-colors">Balance Finale</div>
+                                <div id="totalProjected" class="text-2xl text-slate-900 dark:text-white font-serif transition-colors">$13,401</div>
+                            </div>
+                            <div class="text-right border-l border-slate-200 dark:border-gray-800 pl-4 transition-colors">
+                                <div class="text-[9px] uppercase text-slate-400 dark:text-gray-500 tracking-widest mb-1 transition-colors">Profit Net</div>
+                                <div id="totalProfit" class="text-2xl text-green-600 dark:text-[#D4AF37] font-serif transition-colors">+$3,401</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Interactive -->
+    <section id="documentation" class="py-24 md:py-32 px-6 lg:px-12 relative z-20">
+        <div class="max-w-4xl mx-auto reveal">
+            <div class="text-center mb-16">
+                <svg class="w-10 h-10 mx-auto text-gold-main mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                <h2 class="text-4xl font-serif text-slate-900 dark:text-white mb-4 transition-colors">Documentation Transparente</h2>
+                <p class="text-slate-500 dark:text-gray-400 text-sm max-w-2xl mx-auto transition-colors">Explorez la configuration détaillée du BOT. Un contrôle total sur chaque aspect de l'algorithme.</p>
+            </div>
+
+            <div id="docAccordion" class="space-y-4">
+                <!-- Accordéon généré par JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Final -->
+    <section class="py-32 px-6 text-center relative z-20 bg-gold-gradient mt-10">
+        <!-- Overlay Sombre/Clair pour lisibilité -->
+        <div class="absolute inset-0 bg-white/90 dark:bg-[#050505]/90 transition-colors duration-500"></div>
+        
+        <div class="max-w-3xl mx-auto relative z-10 reveal">
+            <div class="w-16 h-16 border-2 border-gold-main rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(212,175,55,0.3)] bg-white dark:bg-transparent transition-colors">
+                <span class="font-serif text-2xl italic text-gold-main">M</span>
+            </div>
+            <h2 class="text-5xl md:text-7xl font-serif text-slate-900 dark:text-white mb-8 tracking-tight transition-colors">Passez au Niveau Supérieur.</h2>
+            <p class="text-slate-600 dark:text-gray-400 mb-12 text-lg max-w-xl mx-auto transition-colors">Rejoignez le cercle restreint des traders utilisant la technologie Mitsuyoshi. Les accès sont limités pour préserver l'avantage statistique.</p>
+            
+            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="bg-gold-gradient text-white dark:text-black px-12 py-5 text-sm uppercase tracking-[0.2em] font-bold rounded-sm inline-block shadow-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all transform hover:-translate-y-1">
+                Contacter l'Équipe
+            </a>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-slate-200 dark:border-gray-900 bg-light-bg dark:bg-dark-bg text-center relative z-20 transition-colors duration-500">
+        <p class="text-[10px] tracking-[0.4em] uppercase text-slate-400 dark:text-gray-600">&copy; 2026 MITSUYOSHI BOT - All Rights Reserved.</p>
+    </footer>
+
+    <!-- LOGIQUE JAVASCRIPT -->
+    <script>
+        // --- THÈME CLAIR / SOMBRE ---
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            drawCandlesticks(); // Redessine les bougies avec les couleurs du thème actuel
+        }
+
+        // --- GÉNÉRATEUR DE CHANDELIERS SVG ---
+        function drawCandlesticks() {
+            const svg = document.getElementById('candlestickSvg');
+            svg.innerHTML = ''; // Clear existing
+            
+            const numCandles = window.innerWidth < 768 ? 30 : 60; // Moins de bougies sur mobile
+            const svgWidth = 1000;
+            const svgHeight = 500;
+            const candleWidth = (svgWidth / numCandles) * 0.6;
+            const spacing = svgWidth / numCandles;
+            
+            let currentPrice = 400; // Start at bottom
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            // Couleurs basées sur le thème et le statut Gold
+            const colorBull = '#D4AF37'; // Gold
+            const colorBear = isDark ? '#334155' : '#cbd5e1'; // Slate gray
+
+            for (let i = 0; i < numCandles; i++) {
+                // Tendance générale haussière avec de la volatilité
+                const trend = (i / numCandles) * 300; 
+                const volatility = Math.random() * 60 - 20; // Plus de chance de monter
+                
+                const open = currentPrice;
+                const close = currentPrice - volatility; // Y inverse dans SVG
+                
+                const high = Math.min(open, close) - (Math.random() * 30);
+                const low = Math.max(open, close) + (Math.random() * 30);
+                
+                currentPrice = close; // Next candle starts near previous close
+
+                const isBull = close < open;
+                const color = isBull ? colorBull : colorBear;
+                const xCenter = (i * spacing) + (spacing / 2);
+                
+                // Mèche (Wick)
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", xCenter);
+                line.setAttribute("y1", high);
+                line.setAttribute("x2", xCenter);
+                line.setAttribute("y2", low);
+                line.setAttribute("stroke", color);
+                line.setAttribute("stroke-width", "2");
+                line.classList.add('candle');
+                line.style.animationDelay = `${i * 0.05}s`;
+
+                // Corps (Body)
+                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                const rectY = Math.min(open, close);
+                const rectHeight = Math.max(Math.abs(open - close), 2); // Minimum 2px height
+                
+                rect.setAttribute("x", xCenter - (candleWidth / 2));
+                rect.setAttribute("y", rectY);
+                rect.setAttribute("width", candleWidth);
+                rect.setAttribute("height", rectHeight);
+                rect.setAttribute("fill", color);
+                rect.setAttribute("rx", "1"); // Bords légèrement arrondis
+                rect.classList.add('candle');
+                rect.style.animationDelay = `${i * 0.05}s`;
+
+                svg.appendChild(line);
+                svg.appendChild(rect);
+            }
+        }
+
+        // Init Chart & resize listener
+        window.addEventListener('DOMContentLoaded', drawCandlesticks);
+        window.addEventListener('resize', () => {
+            clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(drawCandlesticks, 200);
+        });
+
+        // --- ANIMATIONS ON SCROLL ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // --- SIMULATEUR DE GAINS ---
+        const capitalRange = document.getElementById('capitalRange');
+        const capitalLabel = document.getElementById('capitalLabel');
+        const graphContainer = document.getElementById('graphContainer');
+        const rateDisplay = document.getElementById('rateDisplay');
+        const totalProjected = document.getElementById('totalProjected');
+        const totalProfit = document.getElementById('totalProfit');
+        
+        let simMode = 'prop'; // 'prop' ou 'perso'
+
+        function setSimMode(mode) {
+            simMode = mode;
+            const btnProp = document.getElementById('btnProp');
+            const btnPerso = document.getElementById('btnPerso');
+            
+            const activeClass = 'py-3 px-2 border border-gold-main bg-gold-main/10 text-gold-main text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all shadow-[0_0_15px_rgba(212,175,55,0.2)]';
+            const inactiveClass = 'py-3 px-2 border border-slate-300 dark:border-gray-800 text-slate-500 dark:text-gray-500 bg-transparent text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all hover:border-slate-400 dark:hover:border-gray-600';
+            
+            if(mode === 'prop') {
+                btnProp.className = activeClass;
+                btnPerso.className = inactiveClass;
+            } else {
+                btnPerso.className = activeClass;
+                btnProp.className = inactiveClass;
+            }
+            updateSimulator();
+        }
+
+        function updateSimulator() {
+            const capital = parseInt(capitalRange.value);
+            const rate = simMode === 'perso' ? 0.50 : 0.05;
+            
+            capitalLabel.innerText = '$' + capital.toLocaleString();
+            rateDisplay.innerText = '+' + (rate * 100) + '% / Mois';
+
+            let current = capital;
+            let projection = [];
+            for(let i=0; i<=6; i++) {
+                projection.push(current);
+                current += current * rate;
+            }
+
+            const maxVal = projection[6];
+            graphContainer.innerHTML = '';
+            
+            projection.forEach((val, i) => {
+                const height = Math.max(10, (val / maxVal) * 100);
+                const isLast = i === 6;
+                const barHtml = `
+                    <div class="flex-1 flex flex-col items-center justify-end h-full group">
+                        <div class="w-full rounded-t-sm transition-all duration-500 ease-out ${isLast ? 'bg-gradient-to-t from-gold-main/40 to-gold-main shadow-[0_0_10px_rgba(212,175,55,0.5)]' : 'bg-gold-main/20 group-hover:bg-gold-main/40'}" style="height: ${height}%;"></div>
+                        <span class="text-[8px] font-mono mt-2 ${isLast ? 'text-gold-main font-bold' : 'text-slate-400 dark:text-gray-600 transition-colors'}">M${i}</span>
+                    </div>
+                `;
+                graphContainer.innerHTML += barHtml;
+            });
+
+            totalProjected.innerText = '$' + Math.round(projection[6]).toLocaleString();
+            totalProfit.innerText = '+$' + Math.round(projection[6] - capital).toLocaleString();
+        }
+
+        capitalRange.addEventListener('input', updateSimulator);
+        updateSimulator();
+
+        // --- ACCORDÉON DE DOCUMENTATION ---
+        const docData = [
+            {
+                title: "Gestion du Risque (Drawdown)",
+                items: [
+                    { name: "MaxDrawdown_Percentage", val: "2 à 4.5%", desc: "Définit le seuil de perte maximale toléré (Equity). Le robot ferme toutes les positions pour protéger le compte (idéal Prop Firms)." },
+                    { name: "DailyProfitTarget", val: "Montant / %", desc: "Objectif journalier. Dès que le profit est atteint, le BOT s'arrête de trader jusqu'au lendemain." }
+                ]
+            },
+            {
+                title: "Analyse de Tendance & Volatilité",
+                items: [
+                    { name: "VF_ATR & ADX", val: "Filtres Dynamiques", desc: "L'Average True Range et l'ADX calculent la force du marché. Rejette les marchés plats pour éviter les faux signaux." },
+                    { name: "HTF_MA_Period", val: "Timeframe Supérieur", desc: "Hard Trend Filter : Vérifie obligatoirement que la tendance en H1 correspond à l'entrée en M15." }
+                ]
+            },
+            {
+                title: "Exécution & Sorties (Trailing)",
+                items: [
+                    { name: "Basket_LotsSequence", val: "0.10 à 1.80", desc: "Logique de lissage d'entrée (Grid sans martingale agressive). Pondère le prix moyen pour une sortie rapide." },
+                    { name: "TrailingStop_ATR", val: "Auto-Ajustable", desc: "Le stop de protection suit le profit non pas avec un nombre de pips fixe, mais en s'adaptant à l'ATR du moment." },
+                    { name: "PartialClose", val: "Prises de profits", desc: "Possibilité de clôturer x% du trade à des paliers de points spécifiques pour sécuriser la balance." }
+                ]
+            }
+        ];
+
+        const docAccordion = document.getElementById('docAccordion');
+        docData.forEach((section, idx) => {
+            const div = document.createElement('div');
+            div.className = 'border border-slate-200 dark:border-gold-main/30 bg-white/80 dark:bg-[#0a0a0c]/80 backdrop-blur-sm rounded-xl overflow-hidden transition-colors hover:border-gold-main/60 dark:hover:border-gold-main/60 shadow-sm dark:shadow-none';
+            div.innerHTML = `
+                <button onclick="toggleDoc(${idx})" class="w-full px-6 md:px-8 py-6 flex justify-between items-center text-left focus:outline-none">
+                    <span class="font-serif text-lg md:text-xl text-slate-900 dark:text-white transition-colors">${section.title}</span>
+                    <svg id="chev-${idx}" class="doc-icon w-6 h-6 text-gold-main" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="content-${idx}" class="doc-content">
+                    <div class="px-6 md:px-8 pb-8 space-y-6 pt-2 border-t border-slate-100 dark:border-gray-800 mx-4 md:mx-6 transition-colors">
+                        ${section.items.map(p => `
+                            <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-8 pt-4">
+                                <div class="md:w-1/3">
+                                    <div class="text-[11px] font-mono text-gold-main font-bold uppercase">${p.name}</div>
+                                    <div class="text-[9px] text-slate-400 dark:text-gray-500 uppercase tracking-widest mt-1 transition-colors">${p.val}</div>
+                                </div>
+                                <div class="md:w-2/3">
+                                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">${p.desc}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            docAccordion.appendChild(div);
+        });
+
+        function toggleDoc(idx) {
+            const content = document.getElementById(`content-${idx}`);
+            const chevron = document.getElementById(`chev-${idx}`);
+            const isActive = content.classList.contains('active');
+            
+            document.querySelectorAll('.doc-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.doc-icon').forEach(ch => ch.classList.remove('active'));
+
+            if (!isActive) {
+                content.classList.add('active');
+                chevron.classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>
