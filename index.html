@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MITSUYOSHI BOT - Premium Edition</title>
+    <title>MITSUYOSHI | Algorithmic Enterprise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,19 +11,9 @@
             theme: {
                 extend: {
                     colors: {
-                        gold: {
-                            light: '#F3E5AB',
-                            main: '#D4AF37',
-                            dark: '#AA7C11'
-                        },
-                        dark: {
-                            bg: '#050505',
-                            panel: '#0a0a0c'
-                        },
-                        light: {
-                            bg: '#faf9f6',
-                            panel: '#ffffff'
-                        }
+                        gold: { light: '#F3E5AB', main: '#D4AF37', dark: '#AA7C11' },
+                        dark: { bg: '#050505', panel: '#0a0a0c' },
+                        light: { bg: '#faf9f6', panel: '#ffffff' }
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -33,616 +23,309 @@
             }
         }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
-        body {
-            transition: background-color 0.5s ease, color 0.5s ease;
-        }
-
-        /* --- Gradients Or --- */
         .text-gold-gradient {
             background: linear-gradient(to right, #D4AF37, #AA7C11);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
-
         .bg-gold-gradient {
             background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
         }
-
-        /* --- Arrière-plans design --- */
-        .bg-grid-light {
-            background-image: 
-                linear-gradient(to right, rgba(212, 175, 55, 0.08) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(212, 175, 55, 0.08) 1px, transparent 1px);
-            background-size: 40px 40px;
+        .nav-link-active {
+            color: #D4AF37 !important;
+            border-bottom: 2px solid #D4AF37;
         }
-        .dark .bg-grid-dark {
-            background-image: 
-                linear-gradient(to right, rgba(212, 175, 55, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+        .page-transition {
+            animation: fadeIn 0.5s ease-out forwards;
         }
-
-        /* --- Range Slider --- */
-        input[type=range] {
-            -webkit-appearance: none;
-            background: transparent;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            background: #D4AF37;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
-            margin-top: -8px;
-            transition: transform 0.2s;
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
         }
-        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 4px;
-            cursor: pointer;
-            border-radius: 2px;
-            background: rgba(212, 175, 55, 0.2);
-        }
-
-        /* --- Animations de Scroll --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-
-        /* --- Accordéon Doc --- */
-        .doc-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease, opacity 0.5s ease;
-            opacity: 0;
-        }
-        .doc-content.active {
-            max-height: 800px;
-            opacity: 1;
-        }
-        .doc-icon { transition: transform 0.4s ease; }
-        .doc-icon.active { transform: rotate(180deg); }
-
-        /* Theme Toggle Icon Transition */
-        .theme-icon-container svg {
-            transition: transform 0.5s ease, opacity 0.5s ease;
-            position: absolute;
-        }
-        .dark .icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.5); }
-        .dark .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
-        .icon-sun { opacity: 1; transform: rotate(0) scale(1); }
-        .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
-
-        /* Candlestick Animation */
-        .candle {
-            animation: growCandle 1.5s ease-out forwards;
-            opacity: 0;
-        }
-        @keyframes growCandle {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
     </style>
 </head>
-<body class="bg-light-bg text-slate-800 dark:bg-dark-bg dark:text-zinc-200 bg-grid-light dark:bg-grid-dark transition-colors duration-500">
+<body class="bg-light-bg text-slate-800 dark:bg-dark-bg dark:text-zinc-200 transition-colors duration-500 overflow-x-hidden">
 
-    <!-- Barre de Navigation -->
-    <nav class="fixed top-0 w-full z-50 px-4 md:px-8 lg:px-12 py-4 flex justify-between items-center bg-white/80 dark:bg-dark-bg/90 backdrop-blur-md border-b border-gold-main/20 shadow-sm dark:shadow-none transition-colors duration-500">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 border border-gold-main flex items-center justify-center font-serif text-xl italic text-gold-main shadow-[0_0_10px_rgba(212,175,55,0.2)] bg-white dark:bg-transparent">M</div>
-            <span class="text-sm font-bold tracking-[0.3em] uppercase text-slate-900 dark:text-white hidden sm:block">MITSUYOSHI <span class="text-gold-main">BOT</span></span>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-5 bg-white/90 dark:bg-dark-bg/95 backdrop-blur-xl border-b border-gold-main/10 flex justify-between items-center transition-all">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+            <div class="w-10 h-10 border border-gold-main flex items-center justify-center font-serif text-xl italic text-gold-main">M</div>
+            <span class="text-xs font-bold tracking-[0.3em] uppercase hidden sm:block">MITSUYOSHI <span class="text-gold-main">EA</span></span>
         </div>
         
-        <div class="hidden lg:flex gap-10 text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">
-            <a href="#stats" class="hover:text-gold-main dark:hover:text-gold-main transition-colors duration-300">Performance</a>
-            <a href="#technique" class="hover:text-gold-main dark:hover:text-gold-main transition-colors duration-300">Architecture</a>
-            <a href="#simulateur" class="hover:text-gold-main dark:hover:text-gold-main transition-colors duration-300">Simulateur</a>
-            <a href="#documentation" class="hover:text-gold-main dark:hover:text-gold-main transition-colors duration-300">Documentation</a>
+        <div class="flex gap-8 text-[10px] font-bold uppercase tracking-[0.2em]">
+            <button onclick="navigateTo('home')" id="link-home" class="hover:text-gold-main transition-colors py-2">Accueil</button>
+            <button onclick="navigateTo('catalog')" id="link-catalog" class="hover:text-gold-main transition-colors py-2">Nos Robots</button>
+            <button onclick="navigateTo('tech')" id="link-tech" class="hover:text-gold-main transition-colors py-2">Paramétrage</button>
+            <button onclick="navigateTo('infra')" id="link-infra" class="hover:text-gold-main transition-colors py-2">Infrastructure</button>
         </div>
 
         <div class="flex items-center gap-4">
-            <!-- Bouton Clair/Sombre -->
-            <button onclick="toggleTheme()" class="relative w-10 h-10 rounded-full border border-gold-main/30 flex items-center justify-center text-gold-main hover:bg-gold-main/10 transition-colors theme-icon-container">
-                <!-- Sun Icon (Light Mode) -->
-                <svg class="icon-sun w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                <!-- Moon Icon (Dark Mode) -->
-                <svg class="icon-moon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            <button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-gold-main/20 flex items-center justify-center text-gold-main hover:bg-gold-main/10">
+                <svg id="themeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
             </button>
-            
-            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="text-xs font-bold border border-gold-main text-gold-main px-4 md:px-6 py-2.5 hover:bg-gold-main hover:text-white dark:hover:text-black transition-all uppercase tracking-widest rounded-sm">
-                Accès Privé
-            </a>
         </div>
     </nav>
 
-    <!-- Section Hero -->
-    <header class="relative min-h-screen flex items-center px-6 lg:px-12 pt-24 pb-12 overflow-hidden z-10">
-        
-        <!-- Candlestick Chart SVG Dynamique -->
-        <div class="absolute inset-0 z-0 opacity-20 dark:opacity-30 flex items-end pointer-events-none">
-            <svg id="candlestickSvg" viewBox="0 0 1000 500" preserveAspectRatio="none" class="w-full h-[60%] lg:h-[80%] drop-shadow-2xl">
-                <!-- Généré par JS -->
-            </svg>
-        </div>
-        
-        <!-- Gradient de fond pour adoucir le bas -->
-        <div class="absolute inset-0 bg-gradient-to-t from-light-bg via-transparent to-transparent dark:from-dark-bg z-0 transition-colors duration-500"></div>
+    <!-- MAIN CONTENT CONTAINER -->
+    <main id="page-content" class="pt-24 min-h-screen">
+        <!-- Content will be injected here -->
+    </main>
 
-        <div class="max-w-5xl relative z-10 w-full reveal">
-            <div class="inline-flex items-center gap-3 px-4 py-2 border border-gold-main/30 bg-white/80 dark:bg-dark-panel/80 backdrop-blur-sm rounded-full mb-8 shadow-sm">
-                <div class="w-2 h-2 bg-gold-main rounded-full animate-pulse"></div>
-                <span class="text-[10px] font-bold tracking-[0.3em] uppercase text-gold-main">V1.2 Gold Edition</span>
+    <!-- FOOTER -->
+    <footer class="py-16 px-6 border-t border-gold-main/10 bg-white dark:bg-dark-panel transition-colors">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+                <div class="text-gold-main font-serif text-2xl mb-4 italic">Mitsuyoshi</div>
+                <p class="text-xs text-slate-500 dark:text-gray-500 leading-relaxed max-w-xs uppercase tracking-widest">L'excellence de l'automatisation financière. Conçu pour les traders exigeants.</p>
             </div>
-            
-            <h1 class="text-5xl sm:text-7xl lg:text-[7.5rem] font-serif leading-tight lg:leading-[0.9] tracking-tight mb-8 text-slate-900 dark:text-white transition-colors duration-500">
-                L'Excellence <br />
-                <span class="text-gold-gradient italic">Algorithmique.</span>
-            </h1>
-            
-            <p class="text-base md:text-xl text-slate-600 dark:text-gray-400 font-light leading-relaxed max-w-2xl mb-12 transition-colors duration-500">
-                Un chef-d'œuvre d'ingénierie financière. Optimisé pour le scalping et la préservation de capital, <span class="font-bold text-gold-main">Mitsuyoshi BOT</span> délivre des performances constantes sur les marchés réels.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row items-center gap-6">
-                <a href="https://t.me/MitsuyoshiEA" target="_blank" class="w-full sm:w-auto bg-gold-gradient text-white dark:text-black px-10 py-4 font-bold text-xs uppercase tracking-[0.2em] text-center rounded-sm hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all transform hover:-translate-y-1">
-                    Rejoindre l'Élite
-                </a>
-                <div class="flex items-center gap-4 text-slate-400 dark:text-gray-500 w-full sm:w-auto justify-center">
-                    <div class="w-12 h-[1px] bg-gold-main/50"></div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-gold-main">PF 14.07 Audité</span>
+            <div class="flex flex-col gap-3">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-gold-main">Navigation</span>
+                <button onclick="navigateTo('catalog')" class="text-left text-sm hover:text-gold-main transition-colors">Catalogue EA</button>
+                <button onclick="navigateTo('tech')" class="text-left text-sm hover:text-gold-main transition-colors">Fiches Techniques</button>
+                <button onclick="navigateTo('infra')" class="text-left text-sm hover:text-gold-main transition-colors">VPS & Broker</button>
+            </div>
+            <div>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-gold-main">Réseaux</span>
+                <div class="mt-4 flex gap-4">
+                    <a href="https://t.me/MitsuyoshiEA" class="w-10 h-10 border border-gold-main/30 rounded-full flex items-center justify-center hover:bg-gold-main hover:text-white transition-all">TG</a>
                 </div>
             </div>
         </div>
-    </header>
-
-    <!-- Statistiques -->
-    <section id="stats" class="py-20 px-6 lg:px-12 border-y border-gold-main/20 bg-white/60 dark:bg-dark-panel/60 backdrop-blur-md relative z-20 transition-colors duration-500">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16">
-            <div class="reveal">
-                <div class="text-4xl md:text-5xl font-serif text-gold-main mb-2">14.07</div>
-                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">Profit Factor</div>
-                <p class="mt-3 text-xs text-slate-400 dark:text-gray-500 hidden md:block">Ratio gains/pertes exceptionnel sur 1 an.</p>
-            </div>
-            <div class="reveal delay-100">
-                <div class="text-4xl md:text-5xl font-serif text-gold-main mb-2">81%</div>
-                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">Taux de Réussite</div>
-                <p class="mt-3 text-xs text-slate-400 dark:text-gray-500 hidden md:block">Précision chirurgicale des entrées.</p>
-            </div>
-            <div class="reveal delay-200">
-                <div class="text-4xl md:text-5xl font-serif text-gold-main mb-2">4.3%</div>
-                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">Drawdown Max</div>
-                <p class="mt-3 text-xs text-slate-400 dark:text-gray-500 hidden md:block">Risque maîtrisé, idéal Prop Firm.</p>
-            </div>
-            <div class="reveal delay-300">
-                <div class="text-4xl md:text-5xl font-serif text-gold-main mb-2">2088</div>
-                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-gray-400">Trades Exécutés</div>
-                <p class="mt-3 text-xs text-slate-400 dark:text-gray-500 hidden md:block">Échantillon massif et vérifié.</p>
-            </div>
+        <div class="mt-16 text-center text-[9px] uppercase tracking-[0.5em] text-slate-400 dark:text-gray-600">
+            &copy; 2026 Mitsuyoshi Digital Assets. All Rights Reserved.
         </div>
-    </section>
-
-    <!-- Architecture & Technique -->
-    <section id="technique" class="py-24 md:py-32 px-6 lg:px-12 relative z-20">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24">
-            <div class="lg:w-1/2 reveal">
-                <div class="mb-12">
-                    <span class="text-gold-main font-medium tracking-[0.2em] uppercase text-[10px] block mb-4">L'Architecture du Succès</span>
-                    <h2 class="text-4xl md:text-5xl font-serif text-slate-900 dark:text-white transition-colors">Technologie Avancée</h2>
-                </div>
-                
-                <div class="space-y-10">
-                    <div class="flex gap-5 items-start">
-                        <div class="p-3 bg-gold-main/10 rounded-lg border border-gold-main/30 text-gold-main shadow-sm">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-serif text-slate-800 dark:text-white mb-2 transition-colors">Filtre de Volatilité (ATR & ADX)</h4>
-                            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">Si la tendance est faible ou le marché incertain, le robot se met en pause. Mitsuyoshi BOT ne trade que les conditions optimales.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-5 items-start">
-                        <div class="p-3 bg-gold-main/10 rounded-lg border border-gold-main/30 text-gold-main shadow-sm">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-serif text-slate-800 dark:text-white mb-2 transition-colors">Basket Scaling Sécurisé</h4>
-                            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">Une séquence de lots intelligente (0.10 à 1.80) lisse le prix d'entrée sans jamais recourir à une martingale destructrice.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-5 items-start">
-                        <div class="p-3 bg-gold-main/10 rounded-lg border border-gold-main/30 text-gold-main shadow-sm">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-serif text-slate-800 dark:text-white mb-2 transition-colors">Gestion Prop Firm Intégrée</h4>
-                            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">Coupe-circuit automatique basé sur le drawdown quotidien. Conçu spécialement pour passer les challenges FTMO et assimilés.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lg:w-1/2 reveal delay-200">
-                <div class="bg-white/80 dark:bg-[#0a0a0c]/90 border border-gold-main/20 p-8 md:p-10 rounded-xl shadow-xl dark:shadow-[0_0_30px_rgba(212,175,55,0.05)] backdrop-blur-md transition-colors duration-500">
-                    <h4 class="text-xs font-bold uppercase tracking-[0.3em] text-gold-main mb-8 text-center border-b border-gold-main/20 pb-4">Spécifications Techniques</h4>
-                    
-                    <div class="space-y-1">
-                        <div class="flex justify-between items-center py-4 border-b border-slate-200 dark:border-gray-800 transition-colors">
-                            <span class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-500">Plateforme</span>
-                            <span class="text-sm text-slate-800 dark:text-white font-medium">MetaTrader 5</span>
-                        </div>
-                        <div class="flex justify-between items-center py-4 border-b border-slate-200 dark:border-gray-800 transition-colors">
-                            <span class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-500">Style de Trading</span>
-                            <span class="text-sm text-slate-800 dark:text-white font-medium">Day Trading / Scalping</span>
-                        </div>
-                        <div class="flex justify-between items-center py-4 border-b border-slate-200 dark:border-gray-800 transition-colors">
-                            <span class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-500">Paires Optimes</span>
-                            <span class="text-sm text-slate-800 dark:text-white font-medium">XAUUSD, EURUSD, US30</span>
-                        </div>
-                        <div class="flex justify-between items-center py-4 border-b border-slate-200 dark:border-gray-800 transition-colors">
-                            <span class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-500">Spread Requis</span>
-                            <span class="text-sm text-gold-main font-bold">Max 5 Pips</span>
-                        </div>
-                    </div>
-
-                    <div class="mt-8 p-4 bg-gold-main/5 border border-gold-main/20 rounded-lg flex items-start gap-3">
-                        <svg class="w-5 h-5 text-gold-main mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <p class="text-[11px] text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">
-                            Avertissement technique : L'utilisation d'un compte ECN à très faible latence et spread réduit est impérative pour garantir la réplication exacte du Profit Factor de 14.07.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Simulateur Dynamique -->
-    <section id="simulateur" class="py-24 md:py-32 px-6 lg:px-12 bg-white dark:bg-dark-bg relative z-20 border-y border-gold-main/20 transition-colors duration-500">
-        <div class="max-w-5xl mx-auto reveal">
-            <div class="text-center mb-16">
-                <span class="text-gold-main font-medium tracking-[0.2em] uppercase text-[10px] block mb-4">Projection Interactive</span>
-                <h2 class="text-4xl md:text-5xl font-serif text-slate-900 dark:text-white transition-colors">Simulez vos Gains</h2>
-            </div>
-
-            <div class="bg-slate-50 dark:bg-[#050505] border border-gold-main/20 p-6 md:p-12 rounded-2xl shadow-xl dark:shadow-[0_10px_40px_rgba(212,175,55,0.05)] transition-colors duration-500">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-                    <!-- Contrôles -->
-                    <div class="flex flex-col justify-center">
-                        <div class="mb-10">
-                            <label class="flex justify-between text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-400 mb-6 font-bold transition-colors">
-                                <span>Capital Alloué</span>
-                                <span class="text-gold-main text-sm" id="capitalLabel">$10,000</span>
-                            </label>
-                            <input type="range" id="capitalRange" min="1000" max="400000" step="1000" value="10000" class="w-full">
-                            <div class="flex justify-between text-[9px] text-slate-400 dark:text-gray-600 mt-2 font-mono transition-colors">
-                                <span>$1K</span>
-                                <span>$400K</span>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-400 mb-4 font-bold transition-colors">Profil de Risque</label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <button onclick="setSimMode('prop')" id="btnProp" class="py-3 px-2 border border-gold-main bg-gold-main/10 text-gold-main text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all">Prop Firm (5%)</button>
-                                <button onclick="setSimMode('perso')" id="btnPerso" class="py-3 px-2 border border-slate-300 dark:border-gray-800 text-slate-500 dark:text-gray-500 bg-transparent text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all hover:border-slate-400 dark:hover:border-gray-600">Perso (50%)</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Graphique & Résultats -->
-                    <div>
-                        <div class="flex justify-between items-end mb-6">
-                            <span class="text-[10px] uppercase text-slate-500 dark:text-gray-500 tracking-widest transition-colors">Évolution (6 Mois)</span>
-                            <span id="rateDisplay" class="text-xs font-bold text-gold-main bg-gold-main/10 px-3 py-1 rounded-full">+5% / Mois</span>
-                        </div>
-                        
-                        <!-- Conteneur Graphique JS -->
-                        <div id="graphContainer" class="flex items-end gap-2 md:gap-3 h-40 border-b border-slate-200 dark:border-gray-800 pb-2 transition-colors"></div>
-                        
-                        <div class="mt-8 grid grid-cols-2 gap-6 bg-white dark:bg-[#0a0a0c] p-4 rounded-xl border border-slate-200 dark:border-gray-800/50 shadow-sm dark:shadow-none transition-colors">
-                            <div>
-                                <div class="text-[9px] uppercase text-slate-400 dark:text-gray-500 tracking-widest mb-1 transition-colors">Balance Finale</div>
-                                <div id="totalProjected" class="text-2xl text-slate-900 dark:text-white font-serif transition-colors">$13,401</div>
-                            </div>
-                            <div class="text-right border-l border-slate-200 dark:border-gray-800 pl-4 transition-colors">
-                                <div class="text-[9px] uppercase text-slate-400 dark:text-gray-500 tracking-widest mb-1 transition-colors">Profit Net</div>
-                                <div id="totalProfit" class="text-2xl text-green-600 dark:text-[#D4AF37] font-serif transition-colors">+$3,401</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Documentation Interactive -->
-    <section id="documentation" class="py-24 md:py-32 px-6 lg:px-12 relative z-20">
-        <div class="max-w-4xl mx-auto reveal">
-            <div class="text-center mb-16">
-                <svg class="w-10 h-10 mx-auto text-gold-main mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                <h2 class="text-4xl font-serif text-slate-900 dark:text-white mb-4 transition-colors">Documentation Transparente</h2>
-                <p class="text-slate-500 dark:text-gray-400 text-sm max-w-2xl mx-auto transition-colors">Explorez la configuration détaillée du BOT. Un contrôle total sur chaque aspect de l'algorithme.</p>
-            </div>
-
-            <div id="docAccordion" class="space-y-4">
-                <!-- Accordéon généré par JS -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action Final -->
-    <section class="py-32 px-6 text-center relative z-20 bg-gold-gradient mt-10">
-        <!-- Overlay Sombre/Clair pour lisibilité -->
-        <div class="absolute inset-0 bg-white/90 dark:bg-[#050505]/90 transition-colors duration-500"></div>
-        
-        <div class="max-w-3xl mx-auto relative z-10 reveal">
-            <div class="w-16 h-16 border-2 border-gold-main rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(212,175,55,0.3)] bg-white dark:bg-transparent transition-colors">
-                <span class="font-serif text-2xl italic text-gold-main">M</span>
-            </div>
-            <h2 class="text-5xl md:text-7xl font-serif text-slate-900 dark:text-white mb-8 tracking-tight transition-colors">Passez au Niveau Supérieur.</h2>
-            <p class="text-slate-600 dark:text-gray-400 mb-12 text-lg max-w-xl mx-auto transition-colors">Rejoignez le cercle restreint des traders utilisant la technologie Mitsuyoshi. Les accès sont limités pour préserver l'avantage statistique.</p>
-            
-            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="bg-gold-gradient text-white dark:text-black px-12 py-5 text-sm uppercase tracking-[0.2em] font-bold rounded-sm inline-block shadow-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all transform hover:-translate-y-1">
-                Contacter l'Équipe
-            </a>
-        </div>
-    </section>
-
-    <footer class="py-12 border-t border-slate-200 dark:border-gray-900 bg-light-bg dark:bg-dark-bg text-center relative z-20 transition-colors duration-500">
-        <p class="text-[10px] tracking-[0.4em] uppercase text-slate-400 dark:text-gray-600">&copy; 2026 MITSUYOSHI BOT - All Rights Reserved.</p>
     </footer>
 
-    <!-- LOGIQUE JAVASCRIPT -->
     <script>
-        // --- THÈME CLAIR / SOMBRE ---
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-            drawCandlesticks(); // Redessine les bougies avec les couleurs du thème actuel
-        }
-
-        // --- GÉNÉRATEUR DE CHANDELIERS SVG ---
-        function drawCandlesticks() {
-            const svg = document.getElementById('candlestickSvg');
-            svg.innerHTML = ''; // Clear existing
-            
-            const numCandles = window.innerWidth < 768 ? 30 : 60; // Moins de bougies sur mobile
-            const svgWidth = 1000;
-            const svgHeight = 500;
-            const candleWidth = (svgWidth / numCandles) * 0.6;
-            const spacing = svgWidth / numCandles;
-            
-            let currentPrice = 400; // Start at bottom
-            const isDark = document.documentElement.classList.contains('dark');
-            
-            // Couleurs basées sur le thème et le statut Gold
-            const colorBull = '#D4AF37'; // Gold
-            const colorBear = isDark ? '#334155' : '#cbd5e1'; // Slate gray
-
-            for (let i = 0; i < numCandles; i++) {
-                // Tendance générale haussière avec de la volatilité
-                const trend = (i / numCandles) * 300; 
-                const volatility = Math.random() * 60 - 20; // Plus de chance de monter
-                
-                const open = currentPrice;
-                const close = currentPrice - volatility; // Y inverse dans SVG
-                
-                const high = Math.min(open, close) - (Math.random() * 30);
-                const low = Math.max(open, close) + (Math.random() * 30);
-                
-                currentPrice = close; // Next candle starts near previous close
-
-                const isBull = close < open;
-                const color = isBull ? colorBull : colorBear;
-                const xCenter = (i * spacing) + (spacing / 2);
-                
-                // Mèche (Wick)
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                line.setAttribute("x1", xCenter);
-                line.setAttribute("y1", high);
-                line.setAttribute("x2", xCenter);
-                line.setAttribute("y2", low);
-                line.setAttribute("stroke", color);
-                line.setAttribute("stroke-width", "2");
-                line.classList.add('candle');
-                line.style.animationDelay = `${i * 0.05}s`;
-
-                // Corps (Body)
-                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                const rectY = Math.min(open, close);
-                const rectHeight = Math.max(Math.abs(open - close), 2); // Minimum 2px height
-                
-                rect.setAttribute("x", xCenter - (candleWidth / 2));
-                rect.setAttribute("y", rectY);
-                rect.setAttribute("width", candleWidth);
-                rect.setAttribute("height", rectHeight);
-                rect.setAttribute("fill", color);
-                rect.setAttribute("rx", "1"); // Bords légèrement arrondis
-                rect.classList.add('candle');
-                rect.style.animationDelay = `${i * 0.05}s`;
-
-                svg.appendChild(line);
-                svg.appendChild(rect);
+        // --- GLOBAL STATE ---
+        function updateProfit() {
+            const capital = document.getElementById('capital-range')?.value || 50000;
+            const profitEl = document.getElementById('profit-display');
+            if (profitEl) {
+                const profit = (capital * 0.082).toLocaleString('fr-FR', { minimumFractionDigits: 0 });
+                profitEl.innerText = profit + " €";
+                document.getElementById('capital-value').innerText = parseInt(capital).toLocaleString('fr-FR') + " €";
             }
         }
 
-        // Init Chart & resize listener
-        window.addEventListener('DOMContentLoaded', drawCandlesticks);
-        window.addEventListener('resize', () => {
-            clearTimeout(window.resizeTimer);
-            window.resizeTimer = setTimeout(drawCandlesticks, 200);
-        });
+        // --- ROUTING SYSTEM ---
+        const pages = {
+            home: `
+                <div class="page-transition">
+                    <!-- Hero Section -->
+                    <section class="px-6 py-20 lg:py-32 flex flex-col items-center text-center">
+                        <div class="inline-block px-4 py-1 border border-gold-main/30 rounded-full text-[9px] font-bold tracking-[0.3em] uppercase text-gold-main mb-8">Intelligence Artificielle & Quantitative</div>
+                        <h1 class="text-5xl md:text-8xl font-serif text-slate-900 dark:text-white mb-8 tracking-tighter">Votre Capital,<br><span class="text-gold-gradient italic">Augmenté.</span></h1>
+                        <p class="max-w-2xl text-slate-500 dark:text-gray-400 text-lg leading-relaxed mb-12">Le robot de trading institutionnel qui transforme la volatilité en opportunité constante.</p>
+                        <div class="flex flex-wrap justify-center gap-6">
+                            <button onclick="navigateTo('catalog')" class="px-10 py-4 bg-gold-gradient text-white dark:text-black font-bold text-[10px] uppercase tracking-widest rounded-sm hover:shadow-xl transition-all">Découvrir les Robots</button>
+                            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="px-10 py-4 border border-gold-main text-gold-main font-bold text-[10px] uppercase tracking-widest rounded-sm hover:bg-gold-main/5 transition-all">Accès Telegram</a>
+                        </div>
+                    </section>
 
-        // --- ANIMATIONS ON SCROLL ---
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.15
-        };
+                    <!-- Stats Section (MyFXBook Style) -->
+                    <section class="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div class="p-8 border border-gold-main/10 bg-white/50 dark:bg-dark-panel/50 rounded-xl text-center">
+                            <div class="text-3xl font-serif text-gold-main mb-2">+1,407%</div>
+                            <div class="text-[10px] uppercase tracking-widest text-slate-400">Gain Total</div>
+                        </div>
+                        <div class="p-8 border border-gold-main/10 bg-white/50 dark:bg-dark-panel/50 rounded-xl text-center">
+                            <div class="text-3xl font-serif text-gold-main mb-2">4.3%</div>
+                            <div class="text-[10px] uppercase tracking-widest text-slate-400">Drawdown Max</div>
+                        </div>
+                        <div class="p-8 border border-gold-main/10 bg-white/50 dark:bg-dark-panel/50 rounded-xl text-center">
+                            <div class="text-3xl font-serif text-gold-main mb-2">14.07</div>
+                            <div class="text-[10px] uppercase tracking-widest text-slate-400">Profit Factor</div>
+                        </div>
+                        <div class="p-8 border border-gold-main/10 bg-white/50 dark:bg-dark-panel/50 rounded-xl text-center">
+                            <div class="text-3xl font-serif text-gold-main mb-2">91%</div>
+                            <div class="text-[10px] uppercase tracking-widest text-slate-400">Taux de Succès</div>
+                        </div>
+                    </section>
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal').forEach((el) => {
-            observer.observe(el);
-        });
-
-        // --- SIMULATEUR DE GAINS ---
-        const capitalRange = document.getElementById('capitalRange');
-        const capitalLabel = document.getElementById('capitalLabel');
-        const graphContainer = document.getElementById('graphContainer');
-        const rateDisplay = document.getElementById('rateDisplay');
-        const totalProjected = document.getElementById('totalProjected');
-        const totalProfit = document.getElementById('totalProfit');
-        
-        let simMode = 'prop'; // 'prop' ou 'perso'
-
-        function setSimMode(mode) {
-            simMode = mode;
-            const btnProp = document.getElementById('btnProp');
-            const btnPerso = document.getElementById('btnPerso');
-            
-            const activeClass = 'py-3 px-2 border border-gold-main bg-gold-main/10 text-gold-main text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all shadow-[0_0_15px_rgba(212,175,55,0.2)]';
-            const inactiveClass = 'py-3 px-2 border border-slate-300 dark:border-gray-800 text-slate-500 dark:text-gray-500 bg-transparent text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all hover:border-slate-400 dark:hover:border-gray-600';
-            
-            if(mode === 'prop') {
-                btnProp.className = activeClass;
-                btnPerso.className = inactiveClass;
-            } else {
-                btnPerso.className = activeClass;
-                btnProp.className = inactiveClass;
-            }
-            updateSimulator();
-        }
-
-        function updateSimulator() {
-            const capital = parseInt(capitalRange.value);
-            const rate = simMode === 'perso' ? 0.50 : 0.05;
-            
-            capitalLabel.innerText = '$' + capital.toLocaleString();
-            rateDisplay.innerText = '+' + (rate * 100) + '% / Mois';
-
-            let current = capital;
-            let projection = [];
-            for(let i=0; i<=6; i++) {
-                projection.push(current);
-                current += current * rate;
-            }
-
-            const maxVal = projection[6];
-            graphContainer.innerHTML = '';
-            
-            projection.forEach((val, i) => {
-                const height = Math.max(10, (val / maxVal) * 100);
-                const isLast = i === 6;
-                const barHtml = `
-                    <div class="flex-1 flex flex-col items-center justify-end h-full group">
-                        <div class="w-full rounded-t-sm transition-all duration-500 ease-out ${isLast ? 'bg-gradient-to-t from-gold-main/40 to-gold-main shadow-[0_0_10px_rgba(212,175,55,0.5)]' : 'bg-gold-main/20 group-hover:bg-gold-main/40'}" style="height: ${height}%;"></div>
-                        <span class="text-[8px] font-mono mt-2 ${isLast ? 'text-gold-main font-bold' : 'text-slate-400 dark:text-gray-600 transition-colors'}">M${i}</span>
-                    </div>
-                `;
-                graphContainer.innerHTML += barHtml;
-            });
-
-            totalProjected.innerText = '$' + Math.round(projection[6]).toLocaleString();
-            totalProfit.innerText = '+$' + Math.round(projection[6] - capital).toLocaleString();
-        }
-
-        capitalRange.addEventListener('input', updateSimulator);
-        updateSimulator();
-
-        // --- ACCORDÉON DE DOCUMENTATION ---
-        const docData = [
-            {
-                title: "Gestion du Risque (Drawdown)",
-                items: [
-                    { name: "MaxDrawdown_Percentage", val: "2 à 4.5%", desc: "Définit le seuil de perte maximale toléré (Equity). Le robot ferme toutes les positions pour protéger le compte (idéal Prop Firms)." },
-                    { name: "DailyProfitTarget", val: "Montant / %", desc: "Objectif journalier. Dès que le profit est atteint, le BOT s'arrête de trader jusqu'au lendemain." }
-                ]
-            },
-            {
-                title: "Analyse de Tendance & Volatilité",
-                items: [
-                    { name: "VF_ATR & ADX", val: "Filtres Dynamiques", desc: "L'Average True Range et l'ADX calculent la force du marché. Rejette les marchés plats pour éviter les faux signaux." },
-                    { name: "HTF_MA_Period", val: "Timeframe Supérieur", desc: "Hard Trend Filter : Vérifie obligatoirement que la tendance en H1 correspond à l'entrée en M15." }
-                ]
-            },
-            {
-                title: "Exécution & Sorties (Trailing)",
-                items: [
-                    { name: "Basket_LotsSequence", val: "0.10 à 1.80", desc: "Logique de lissage d'entrée (Grid sans martingale agressive). Pondère le prix moyen pour une sortie rapide." },
-                    { name: "TrailingStop_ATR", val: "Auto-Ajustable", desc: "Le stop de protection suit le profit non pas avec un nombre de pips fixe, mais en s'adaptant à l'ATR du moment." },
-                    { name: "PartialClose", val: "Prises de profits", desc: "Possibilité de clôturer x% du trade à des paliers de points spécifiques pour sécuriser la balance." }
-                ]
-            }
-        ];
-
-        const docAccordion = document.getElementById('docAccordion');
-        docData.forEach((section, idx) => {
-            const div = document.createElement('div');
-            div.className = 'border border-slate-200 dark:border-gold-main/30 bg-white/80 dark:bg-[#0a0a0c]/80 backdrop-blur-sm rounded-xl overflow-hidden transition-colors hover:border-gold-main/60 dark:hover:border-gold-main/60 shadow-sm dark:shadow-none';
-            div.innerHTML = `
-                <button onclick="toggleDoc(${idx})" class="w-full px-6 md:px-8 py-6 flex justify-between items-center text-left focus:outline-none">
-                    <span class="font-serif text-lg md:text-xl text-slate-900 dark:text-white transition-colors">${section.title}</span>
-                    <svg id="chev-${idx}" class="doc-icon w-6 h-6 text-gold-main" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div id="content-${idx}" class="doc-content">
-                    <div class="px-6 md:px-8 pb-8 space-y-6 pt-2 border-t border-slate-100 dark:border-gray-800 mx-4 md:mx-6 transition-colors">
-                        ${section.items.map(p => `
-                            <div class="flex flex-col md:flex-row md:items-start gap-2 md:gap-8 pt-4">
-                                <div class="md:w-1/3">
-                                    <div class="text-[11px] font-mono text-gold-main font-bold uppercase">${p.name}</div>
-                                    <div class="text-[9px] text-slate-400 dark:text-gray-500 uppercase tracking-widest mt-1 transition-colors">${p.val}</div>
+                    <!-- Simulator Section -->
+                    <section class="max-w-4xl mx-auto px-6 py-24">
+                        <div class="bg-white dark:bg-dark-panel border border-gold-main/20 p-10 rounded-2xl relative overflow-hidden">
+                            <div class="relative z-10">
+                                <h3 class="text-2xl font-serif mb-8 text-center uppercase tracking-widest italic">Simulateur de Performance</h3>
+                                <div class="mb-12">
+                                    <div class="flex justify-between mb-4 text-xs font-bold uppercase tracking-widest">
+                                        <span>Capital Initial</span>
+                                        <span id="capital-value" class="text-gold-main">50 000 €</span>
+                                    </div>
+                                    <input type="range" id="capital-range" min="1000" max="200000" step="1000" value="50000" 
+                                        class="w-full h-1 bg-slate-200 dark:bg-gray-800 rounded-lg appearance-none cursor-pointer accent-gold-main"
+                                        oninput="updateProfit()">
                                 </div>
-                                <div class="md:w-2/3">
-                                    <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed transition-colors">${p.desc}</p>
+                                <div class="text-center">
+                                    <p class="text-[10px] uppercase tracking-[0.3em] text-slate-400 mb-2">Profit Mensuel Estimé (Moyen)</p>
+                                    <div id="profit-display" class="text-6xl font-serif text-gold-main tracking-tighter">4 100 €</div>
+                                    <p class="mt-6 text-[9px] text-slate-500 italic uppercase">* Basé sur les performances historiques de Mitsuyoshi Standard. Le trading comporte des risques.</p>
                                 </div>
                             </div>
-                        `).join('')}
+                        </div>
+                    </section>
+
+                    <!-- Testimony -->
+                    <section class="py-24 bg-gold-main/5 px-6">
+                        <div class="max-w-4xl mx-auto text-center">
+                            <div class="text-gold-main text-4xl mb-6">"</div>
+                            <p class="text-2xl font-serif italic mb-8 text-slate-700 dark:text-zinc-300 leading-relaxed">
+                                J'ai testé des dizaines d'EAs, mais Mitsuyoshi est le seul qui survit aux News sans exploser le drawdown. La gestion du risque est chirurgicale.
+                            </p>
+                            <div class="font-bold text-[10px] uppercase tracking-[0.4em]">Marc-Antoine D. — Prop Firm Trader</div>
+                        </div>
+                    </section>
+                </div>
+            `,
+            catalog: `
+                <div class="page-transition px-6 py-20 max-w-7xl mx-auto">
+                    <div class="mb-16">
+                        <h2 class="text-4xl font-serif text-slate-900 dark:text-white mb-4 italic text-gold-main">Catalogue de Trading</h2>
+                        <p class="text-slate-500 dark:text-gray-500 text-sm tracking-widest uppercase">Choisissez votre vecteur de rentabilité.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- MITSUYOSHI STANDARD -->
+                        <div class="border border-gold-main/20 bg-white/50 dark:bg-dark-panel/50 p-8 rounded-xl flex flex-col justify-between hover:border-gold-main transition-all">
+                            <div>
+                                <div class="text-gold-main font-bold text-[10px] uppercase tracking-widest mb-4">L'Algorithme Maître</div>
+                                <h3 class="text-2xl font-serif mb-4">Mitsuyoshi Standard</h3>
+                                <p class="text-sm text-slate-500 dark:text-gray-400 mb-8 leading-relaxed">Le robot historique conçu pour les comptes de plus de 10k. Stabilité légendaire et conformité Prop Firm.</p>
+                                <ul class="space-y-3 mb-8 text-xs font-medium">
+                                    <li class="flex justify-between border-b border-gold-main/10 pb-2"><span>Risk/Reward</span><span class="text-gold-main italic">Optimisé</span></li>
+                                    <li class="flex justify-between border-b border-gold-main/10 pb-2"><span>Marchés</span><span class="text-gold-main">Gold / Forex</span></li>
+                                </ul>
+                            </div>
+                            <button onclick="navigateTo('tech')" class="w-full py-4 bg-gold-gradient text-white dark:text-black text-[10px] font-bold uppercase tracking-widest rounded transition-all">Fiche Technique</button>
+                        </div>
+
+                        <!-- ALGO BOT -->
+                        <div class="border border-slate-200 dark:border-gray-800 bg-white/50 dark:bg-dark-panel/50 p-8 rounded-xl flex flex-col justify-between hover:border-gold-main transition-all">
+                            <div>
+                                <div class="text-blue-500 font-bold text-[10px] uppercase tracking-widest mb-4">Partenaire Stratégique</div>
+                                <h3 class="text-2xl font-serif mb-4">Algo BOT</h3>
+                                <p class="text-sm text-slate-500 dark:text-gray-400 mb-8 leading-relaxed">Configuré avec des filtres de session intelligents. Idéal pour générer un revenu régulier avec un capital modeste.</p>
+                                <ul class="space-y-3 mb-8 text-xs font-medium">
+                                    <li class="flex justify-between border-b border-slate-100 dark:border-gray-800 pb-2"><span>Gains Moyens</span><span class="text-green-500">~50€ / Jour</span></li>
+                                    <li class="flex justify-between border-b border-slate-100 dark:border-gray-800 pb-2"><span>Timefilter</span><span class="text-white">Sessions Smart</span></li>
+                                </ul>
+                            </div>
+                            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="w-full py-4 border border-blue-500 text-blue-500 text-[10px] font-bold uppercase tracking-widest text-center hover:bg-blue-500 hover:text-white transition-all">Accéder</a>
+                        </div>
+
+                        <!-- BOT XTREM -->
+                        <div class="border border-red-500/20 bg-red-500/5 dark:bg-red-500/5 p-8 rounded-xl flex flex-col justify-between hover:border-red-500 transition-all shadow-[0_0_30px_rgba(239,68,68,0.1)]">
+                            <div>
+                                <div class="text-red-500 font-bold text-[10px] uppercase tracking-widest mb-4">Vitesse Maximale</div>
+                                <h3 class="text-2xl font-serif mb-4">Bot XTREM</h3>
+                                <p class="text-sm text-slate-500 dark:text-gray-400 mb-8 leading-relaxed">Résultats explosifs. Conçu pour le capital personnel. Capable de doubler un compte en une semaine.</p>
+                                <ul class="space-y-3 mb-8 text-xs font-medium">
+                                    <li class="flex justify-between border-b border-red-500/10 pb-2"><span>Performance</span><span class="text-red-500 font-bold">X2 / Semaine</span></li>
+                                    <li class="flex justify-between border-b border-red-500/10 pb-2"><span>Risque</span><span class="text-red-500 font-bold">CRITIQUE</span></li>
+                                </ul>
+                            </div>
+                            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="w-full py-4 bg-red-500 text-white text-[10px] font-bold uppercase tracking-widest text-center hover:bg-red-600 transition-all">Risquer & Gagner</a>
+                        </div>
                     </div>
                 </div>
-            `;
-            docAccordion.appendChild(div);
-        });
+            `,
+            tech: `
+                <div class="page-transition px-6 py-20 max-w-5xl mx-auto">
+                    <div class="mb-16">
+                        <h2 class="text-4xl font-serif text-slate-900 dark:text-white mb-4 italic">Détails de Configuration</h2>
+                        <p class="text-gold-main text-xs uppercase tracking-widest font-bold">Décryptage des paramètres système (.setfile)</p>
+                    </div>
 
-        function toggleDoc(idx) {
-            const content = document.getElementById(`content-${idx}`);
-            const chevron = document.getElementById(`chev-${idx}`);
-            const isActive = content.classList.contains('active');
+                    <div class="grid gap-6">
+                        <div class="bg-white dark:bg-dark-panel border border-gold-main/20 p-8 rounded-xl">
+                            <h4 class="text-gold-main font-bold text-[10px] uppercase tracking-widest mb-6 border-b border-gold-main/10 pb-2">Gestion Quantitative</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                                <div><span class="text-sm font-bold block mb-1">Magic_Number</span><p class="text-xs text-slate-500">ID unique du robot pour isoler les trades.</p></div>
+                                <div><span class="text-sm font-bold block mb-1">Lot_Method</span><p class="text-xs text-slate-500">Auto-Lots basés sur l'équité ou Lots fixes.</p></div>
+                                <div><span class="text-sm font-bold block mb-1">Grid_Distance</span><p class="text-xs text-slate-500">Espace minimal entre les ordres en pips.</p></div>
+                                <div><span class="text-sm font-bold block mb-1">Breakeven_Activation</span><p class="text-xs text-slate-500">Sécurisation du trade dès que le profit atteint X points.</p></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-dark-panel border border-gold-main/20 p-8 rounded-xl">
+                            <h4 class="text-gold-main font-bold text-[10px] uppercase tracking-widest mb-6 border-b border-gold-main/10 pb-2">Protection & Temps</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                                <div><span class="text-sm font-bold block mb-1">News_Filter</span><p class="text-xs text-slate-500">Interdiction de trade lors des annonces majeures.</p></div>
+                                <div><span class="text-sm font-bold block mb-1">Time_Session_Filter</span><p class="text-xs text-slate-500">Restriction aux sessions NY/London pour la liquidité.</p></div>
+                                <div><span class="text-sm font-bold block mb-1">Max_Spread_Allowed</span><p class="text-xs text-slate-500">Blocage si le courtier augmente trop ses frais.</p></div>
+                                <div><span class="text-sm font-bold block mb-1">Hard_Equity_Stop</span><p class="text-xs text-slate-500">Coupure d'urgence si le capital baisse de X%.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            infra: `
+                <div class="page-transition px-6 py-20 max-w-5xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-serif text-slate-900 dark:text-white mb-4 italic">Infrastructure de Performance</h2>
+                        <p class="text-slate-500 dark:text-gray-500 text-sm tracking-widest uppercase italic">Le hardware au service de la finance.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="p-10 border border-gold-main/20 rounded-2xl bg-white dark:bg-dark-panel">
+                            <div class="w-12 h-12 bg-gold-main/10 rounded-full flex items-center justify-center mb-6 text-gold-main">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-serif mb-4 italic text-gold-main">VPS Obligatoire</h3>
+                            <p class="text-sm text-slate-500 leading-relaxed">Un robot ne peut pas être efficace sur un ordinateur domestique. L'utilisation d'un **Virtual Private Server (VPS)** est cruciale pour garantir une exécution 24/7 et une latence inférieure à 2ms.</p>
+                        </div>
+                        <div class="p-10 border border-slate-200 dark:border-gray-800 rounded-2xl bg-white dark:bg-dark-panel">
+                            <div class="w-12 h-12 bg-slate-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6 text-slate-400">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-serif mb-4 italic">Courtier ECN / Raw</h3>
+                            <p class="text-sm text-slate-500 leading-relaxed">Les spreads élevés tuent les algorithmes de scalping. Nous exigeons des comptes de type **ECN ou Raw Spread** avec un levier minimal de 1:30 (1:500 recommandé sur compte perso).</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        function navigateTo(pageId) {
+            const container = document.getElementById('page-content');
+            container.innerHTML = pages[pageId];
             
-            document.querySelectorAll('.doc-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.doc-icon').forEach(ch => ch.classList.remove('active'));
-
-            if (!isActive) {
-                content.classList.add('active');
-                chevron.classList.add('active');
+            // Re-initialize specific scripts for the home page
+            if (pageId === 'home') {
+                updateProfit();
             }
+
+            // Update nav styles
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('nav-link-active'));
+            const activeBtn = document.getElementById(`link-${pageId}`);
+            if (activeBtn) activeBtn.classList.add('nav-link-active');
+
+            window.scrollTo(0, 0);
         }
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('themeIcon');
+            const isDark = document.documentElement.classList.contains('dark');
+            icon.innerHTML = isDark 
+                ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>'
+                : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>';
+        }
+
+        // --- INIT ---
+        window.onload = () => {
+            navigateTo('home');
+        };
     </script>
 </body>
 </html>
