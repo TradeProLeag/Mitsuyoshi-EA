@@ -2,8 +2,8 @@
 <html lang="fr" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MITSUYOSHI | L'Excellence Algorithmique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MITSUYOSHI | Écosystème Algorithmique</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -13,8 +13,9 @@
             theme: {
                 extend: {
                     colors: {
-                        gold: { light: '#F3E5AB', main: '#D4AF37', dark: '#AA7C11' },
-                        dark: { bg: '#020203', panel: '#08080a' }
+                        theme: 'var(--theme-color)',
+                        themeGlow: 'var(--theme-glow)',
+                        dark: { bg: '#030305', panel: '#0a0a0d' }
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -27,165 +28,280 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
-        .text-gold-gradient {
-            background: linear-gradient(to right, #D4AF37, #F3E5AB, #AA7C11);
+        :root {
+            --theme-color: #D4AF37;
+            --theme-glow: rgba(212, 175, 55, 0.3);
+        }
+
+        body { background-color: #030305; color: #e4e4e7; overflow-x: hidden; transition: background-color 0.8s ease; }
+        
+        .text-theme-gradient {
+            background: linear-gradient(to right, #ffffff, var(--theme-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .bg-gold-gradient {
-            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
-        }
-        .nav-link-active {
-            color: #D4AF37 !important;
-        }
-        .nav-link-active::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 1px;
-            background: #D4AF37;
-            margin-top: 4px;
-        }
+
+        .bg-theme-gradient { background: linear-gradient(135deg, var(--theme-color) 0%, rgba(0,0,0,0.8) 100%); }
+        .nav-link-active { color: var(--theme-color) !important; text-shadow: 0 0 10px var(--theme-glow); }
+        .nav-link-active::after { content: ''; display: block; width: 100%; height: 2px; background: var(--theme-color); margin-top: 4px; box-shadow: 0 0 10px var(--theme-color); }
+
         .glass-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(212, 175, 55, 0.15);
+            background: rgba(20, 20, 25, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        #trading-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.15;
-            pointer-events: none;
+        .glass-card:hover {
+            border-color: var(--theme-color);
+            box-shadow: 0 10px 40px var(--theme-glow);
+            transform: translateY(-5px);
         }
-        .candle { position: absolute; width: 2px; background: #D4AF37; opacity: 0.3; }
-        .candle-body { position: absolute; width: 8px; left: -3px; border-radius: 1px; }
+
+        /* BACKGROUNDS ANIMATIONS */
+        #trading-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; }
+        
+        /* Bougies (Default) */
+        .candle { position: absolute; width: 2px; background: var(--theme-color); opacity: 0.15; }
+        .candle-body { position: absolute; width: 6px; left: -2px; border-radius: 1px; }
+
+        /* Sakura (Japan) */
+        .sakura { position: absolute; width: 10px; height: 10px; background: #fdfbf7; border-radius: 50% 0 50% 50%; opacity: 0.6; box-shadow: 0 0 10px #D4AF37; }
+        
+        /* Gold Dust (GoldExpert) */
+        .gold-dust { position: absolute; border-radius: 50%; background: #fbbf24; box-shadow: 0 0 15px #f59e0b; opacity: 0.8; }
+        
+        /* Orange Streaks (Xtrem) */
+        .streak { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, #f97316, transparent); opacity: 0.6; transform: rotate(-45deg); }
+        
+        /* Blue Fire (Phoenix) */
+        .blue-ember { position: absolute; border-radius: 50%; background: #06b6d4; box-shadow: 0 0 20px #3b82f6; opacity: 0.9; }
+
+        /* Mobile Menu */
+        #mobile-menu { transition: opacity 0.4s ease, visibility 0.4s ease, backdrop-filter 0.4s ease; }
+        .mobile-menu-active { opacity: 1 !important; visibility: visible !important; backdrop-filter: blur(20px) !important; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030305; }
+        ::-webkit-scrollbar-thumb { background: var(--theme-color); border-radius: 10px; }
+        
+        /* Range Slider */
+        input[type=range] { -webkit-appearance: none; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--theme-color); cursor: pointer; box-shadow: 0 0 15px var(--theme-color); margin-top: -6px; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.1); border-radius: 2px; }
+
     </style>
 </head>
-<body class="bg-dark-bg text-zinc-300 overflow-x-hidden font-sans">
+<body class="antialiased">
 
+    <!-- Canvas Arrière-plan Dynamique -->
     <div id="trading-bg"></div>
+    <div id="bg-overlay" class="fixed inset-0 z-[-1] pointer-events-none transition-colors duration-1000 bg-gradient-to-b from-transparent to-[#030305]"></div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 px-8 py-6 bg-dark-bg/80 backdrop-blur-md border-b border-gold-main/10 flex justify-between items-center">
-        <div class="flex items-center gap-4 cursor-pointer group" onclick="navigateTo('home')">
-            <div class="w-12 h-12 border border-gold-main flex items-center justify-center font-serif text-2xl italic text-gold-main group-hover:bg-gold-main group-hover:text-black transition-all duration-500">M</div>
-            <div class="flex flex-col">
-                <span class="text-xs font-bold tracking-[0.4em] uppercase text-white">MITSUYOSHI</span>
-                <span class="text-[8px] tracking-[0.6em] uppercase text-gold-main">Custom Trading Presets</span>
+    <!-- Navigation Bureau & Mobile -->
+    <nav class="fixed top-0 w-full z-50 px-6 md:px-10 py-4 md:py-6 bg-dark-bg/60 backdrop-blur-xl border-b border-theme/20 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            
+            <div class="flex items-center gap-4 cursor-pointer group" onclick="navigateTo('home')">
+                <div class="w-10 h-10 md:w-12 md:h-12 border border-theme flex items-center justify-center font-serif text-xl md:text-2xl italic text-theme transition-all duration-500 shadow-[0_0_15px_var(--theme-glow)] group-hover:bg-theme group-hover:text-black">M</div>
+                <div class="flex flex-col hidden sm:flex">
+                    <span class="text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase text-white">MITSUYOSHI</span>
+                    <span class="text-[7px] md:text-[8px] tracking-[0.6em] uppercase text-theme">Ecosystem</span>
+                </div>
             </div>
-        </div>
-        
-        <div class="hidden md:flex gap-10 text-[10px] font-bold uppercase tracking-[0.2em]">
-            <button onclick="navigateTo('home')" id="link-home" class="hover:text-gold-main transition-colors py-2">Accueil</button>
-            <button onclick="navigateTo('catalog')" id="link-catalog" class="hover:text-gold-main transition-colors py-2">Le Catalogue</button>
-            <button onclick="navigateTo('tech')" id="link-tech" class="hover:text-gold-main transition-colors py-2">Paramétrage</button>
-        </div>
+            
+            <!-- Menu Bureau -->
+            <div class="hidden lg:flex gap-8 text-[10px] font-bold uppercase tracking-[0.2em]">
+                <button onclick="navigateTo('home')" id="link-home" class="hover:text-theme transition-colors py-2 nav-item">Accueil</button>
+                <button onclick="navigateTo('catalog')" id="link-catalog" class="hover:text-theme transition-colors py-2 nav-item">Catalogue</button>
+                <button onclick="navigateTo('about')" id="link-about" class="hover:text-theme transition-colors py-2 nav-item">À Propos</button>
+            </div>
 
-        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="px-6 py-3 border border-gold-main text-gold-main text-[9px] uppercase font-bold tracking-widest hover:bg-gold-main hover:text-black transition-all">Canal Public</a>
+            <div class="hidden lg:flex items-center gap-6">
+                <a href="https://t.me/MitsuyoshiEA" target="_blank" class="px-6 py-2.5 border border-theme text-theme text-[9px] uppercase font-bold tracking-widest hover:bg-theme hover:text-black transition-all shadow-[0_0_15px_var(--theme-glow)] rounded">
+                    Rejoindre Telegram
+                </a>
+            </div>
+
+            <!-- Bouton Menu Mobile -->
+            <button id="mobile-menu-btn" class="lg:hidden text-theme focus:outline-none p-2" onclick="toggleMobileMenu()">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
     </nav>
 
-    <!-- Modal System -->
-    <div id="modal-container" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
-        <div id="modal-content" class="glass-card w-full max-w-2xl p-10 rounded-3xl relative overflow-y-auto max-h-[90vh]">
-            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <div id="modal-body"></div>
-        </div>
+    <!-- Menu Mobile Plein Écran -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-dark-bg/95 invisible opacity-0 flex flex-col items-center justify-center gap-8 pt-20">
+        <button onclick="navigateTo('home'); toggleMobileMenu()" class="text-xl font-serif italic text-white hover:text-theme uppercase tracking-widest">Accueil</button>
+        <button onclick="navigateTo('catalog'); toggleMobileMenu()" class="text-xl font-serif italic text-white hover:text-theme uppercase tracking-widest">Le Catalogue</button>
+        <button onclick="navigateTo('about'); toggleMobileMenu()" class="text-xl font-serif italic text-white hover:text-theme uppercase tracking-widest">À Propos</button>
+        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="mt-8 px-10 py-4 bg-theme text-black font-bold text-xs uppercase tracking-widest rounded-full">Rejoindre Telegram</a>
     </div>
 
-    <!-- CONTENT -->
-    <main id="page-content" class="pt-20">
+    <!-- Conteneur Principal -->
+    <main id="page-content" class="pt-24 min-h-screen">
         <!-- Injected via JS -->
     </main>
 
     <!-- Footer -->
-    <footer class="py-20 px-8 border-t border-gold-main/10 bg-dark-panel">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-16">
-            <div class="col-span-1 md:col-span-2">
-                <div class="text-gold-main font-serif text-3xl mb-6 italic">Mitsuyoshi EA</div>
-                <p class="text-sm text-gray-500 leading-relaxed max-w-md uppercase tracking-[0.1em]">
-                    Nouveau standard du trading algorithmique. Nous fournissons des presets personnalisés adaptés à vos envies, vos besoins et votre tolérance au risque.
+    <footer class="py-16 md:py-20 px-6 md:px-10 border-t border-theme/20 bg-dark-panel/80 relative z-10 transition-colors duration-700">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+            <div>
+                <div class="text-theme font-serif text-2xl md:text-3xl mb-6 italic transition-colors">Mitsuyoshi Ecosystem</div>
+                <p class="text-xs text-gray-400 leading-relaxed uppercase tracking-[0.1em]">
+                    Outils cohérents, maîtrisés et durables, loin des promesses irréalistes. Transparence totale.
                 </p>
             </div>
             <div>
-                <h4 class="text-gold-main text-[10px] font-bold uppercase tracking-widest mb-6">Liens</h4>
-                <div class="flex flex-col gap-4 text-xs uppercase tracking-wider text-gray-400">
-                    <button onclick="navigateTo('catalog')" class="text-left hover:text-gold-main">Catalogue</button>
-                    <a href="https://t.me/MitsuyoshiEA" class="hover:text-gold-main">Canal Telegram</a>
+                <h4 class="text-white text-[10px] font-bold uppercase tracking-widest mb-6">Navigation</h4>
+                <div class="flex flex-col gap-4 text-xs uppercase tracking-wider text-gray-500">
+                    <button onclick="navigateTo('home')" class="text-left hover:text-theme transition-colors">Accueil</button>
+                    <button onclick="navigateTo('catalog')" class="text-left hover:text-theme transition-colors">Catalogue EAs</button>
+                    <button onclick="navigateTo('about')" class="text-left hover:text-theme transition-colors">La Philosophie</button>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white text-[10px] font-bold uppercase tracking-widest mb-6">Contact</h4>
+                <div class="flex flex-col gap-4 text-xs text-gray-500">
+                    <a href="https://t.me/MitsuyoshiEA" target="_blank" class="hover:text-theme transition-colors border border-gray-700 px-4 py-2 inline-block w-max rounded">Telegram : @MITSUYOSHIHAMATO</a>
+                    <p class="italic text-[10px] mt-2 text-gray-600">Résultats détaillés et backtests affichés publiquement.</p>
                 </div>
             </div>
         </div>
-        <div class="mt-20 text-center text-[8px] uppercase tracking-[0.6em] text-gray-600">
-            &copy; 2026 Mitsuyoshi Group. Performance non garantie. Risque de capital.
+        <div class="mt-16 pt-8 border-t border-white/5 text-center text-[8px] uppercase tracking-[0.6em] text-gray-600">
+            &copy; 2026 Mitsuyoshi Group by Yassine. Trading comporte des risques.
         </div>
     </footer>
 
     <script>
-        // --- DATA ---
-        const botDetails = {
-            mitsuyoshi: {
-                title: "Mitsuyoshi EA",
-                desc: "Notre bot phare, l'équilibre parfait entre sécurité et performance.",
-                logic: "Analyse avancée de la structure de marché sur H1. Entre sur les retracements de tendance avec des confirmations multi-temporelles.",
-                risk: "Faible. Drawdown historique optimisé pour la stabilité du capital.",
-                profit: "~10-25% / mois selon le preset choisi.",
-                color: "gold"
-            },
-            algo: {
-                title: "Algo BOT",
-                desc: "Une machine de guerre pour le scalping quotidien.",
-                logic: "Scalping agressif durant les sessions de Londres et New York. Vise des profits rapides sur micro-mouvements.",
-                risk: "Modéré. Conçu pour faire exploser de petits capitaux.",
-                profit: "Cible 50€/jour (sur une base de seulement 300€).",
-                color: "blue"
-            },
-            xtrem: {
-                title: "Bot XTREM",
-                desc: "Le destructeur de graphiques pour les profils à haut risque.",
-                logic: "Stratégie de compound automatique. Augmente la taille des positions après chaque gain pour un effet boule de neige radical.",
-                risk: "Extrême. Risque de perte totale, mais potentiel de gain démesuré.",
-                profit: "+500% possible en cycles courts.",
-                color: "red"
-            },
-            gold: {
-                title: "IA GOLDSTUFF",
-                desc: "Algorithme spécialisé exclusivement sur l'Or (XAUUSD).",
-                logic: "Modèle d'IA entraîné sur les données historiques du Gold pour détecter les manipulations de liquidité institutionnelle.",
-                risk: "Élevé. Profite de la volatilité extrême du métal précieux.",
-                profit: "Gains massifs lors des fortes poussées de prix.",
-                color: "yellow"
-            }
+        // --- GLOBAL SETTINGS ---
+        const THEMES = {
+            default: { color: '#D4AF37', bgParams: 'candles' },
+            japan:   { color: '#F3E5AB', bgParams: 'sakura' },
+            gold:    { color: '#fbbf24', bgParams: 'dust' },
+            orange:  { color: '#f97316', bgParams: 'streaks' },
+            bluefire:{ color: '#06b6d4', bgParams: 'embers' }
         };
 
-        // --- BACKGROUND ---
-        function initBackground() {
+        function setCSSTheme(themeKey) {
+            const theme = THEMES[themeKey] || THEMES.default;
+            document.documentElement.style.setProperty('--theme-color', theme.color);
+            document.documentElement.style.setProperty('--theme-glow', theme.color + '44'); // Add transparency
+            initBackground(theme.bgParams, theme.color);
+        }
+
+        // --- BACKGROUND GENERATOR (GSAP) ---
+        let bgAnimations = [];
+
+        function initBackground(type, color) {
             const bg = document.getElementById('trading-bg');
-            if(!bg) return;
             bg.innerHTML = '';
-            for (let i = 0; i < 30; i++) {
-                const candle = document.createElement('div');
-                candle.className = 'candle';
-                const h = Math.random() * 150 + 50;
-                candle.style.height = h + 'px';
-                candle.style.top = Math.random() * 100 + '%';
-                candle.style.left = Math.random() * 100 + '%';
-                const body = document.createElement('div');
-                body.className = 'candle-body';
-                body.style.height = (h * 0.5) + 'px';
-                body.style.top = (h * 0.25) + 'px';
-                body.style.backgroundColor = Math.random() > 0.5 ? '#10b981' : '#ef4444';
-                candle.appendChild(body);
-                bg.appendChild(candle);
-                gsap.to(candle, { y: -30, opacity: 0.1, duration: 4+Math.random()*4, repeat: -1, yoyo: true });
+            
+            // Kill previous animations
+            bgAnimations.forEach(anim => anim.kill());
+            bgAnimations = [];
+
+            const isMobile = window.innerWidth < 768;
+            const count = isMobile ? 15 : 40;
+
+            if (type === 'candles') {
+                for (let i = 0; i < count; i++) {
+                    const candle = document.createElement('div');
+                    candle.className = 'candle';
+                    const h = Math.random() * 150 + 50;
+                    candle.style.height = h + 'px';
+                    candle.style.top = Math.random() * 100 + '%';
+                    candle.style.left = Math.random() * 100 + '%';
+                    candle.style.backgroundColor = color;
+                    
+                    const body = document.createElement('div');
+                    body.className = 'candle-body';
+                    body.style.height = (h * 0.4) + 'px';
+                    body.style.top = (h * 0.3) + 'px';
+                    body.style.backgroundColor = Math.random() > 0.5 ? '#10b981' : '#ef4444';
+                    
+                    candle.appendChild(body);
+                    bg.appendChild(candle);
+                    
+                    const anim = gsap.to(candle, { 
+                        y: -50, opacity: 0.1, duration: 4+Math.random()*6, repeat: -1, yoyo: true, ease: "sine.inOut" 
+                    });
+                    bgAnimations.push(anim);
+                }
+            } else if (type === 'sakura') {
+                for (let i = 0; i < count; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'sakura';
+                    el.style.top = Math.random() * -50 + '%';
+                    el.style.left = Math.random() * 100 + '%';
+                    const scale = 0.5 + Math.random();
+                    el.style.transform = `scale(${scale})`;
+                    bg.appendChild(el);
+                    
+                    const anim = gsap.to(el, { 
+                        y: window.innerHeight + 200, x: "+=" + (100 + Math.random() * 100), rotation: 360, 
+                        duration: 8 + Math.random() * 10, repeat: -1, ease: "linear", delay: Math.random() * -10
+                    });
+                    bgAnimations.push(anim);
+                }
+            } else if (type === 'dust') {
+                for (let i = 0; i < count*2; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'gold-dust';
+                    const size = Math.random() * 4 + 1;
+                    el.style.width = size + 'px'; el.style.height = size + 'px';
+                    el.style.top = Math.random() * 100 + '%';
+                    el.style.left = Math.random() * 100 + '%';
+                    bg.appendChild(el);
+                    
+                    const anim = gsap.to(el, { 
+                        y: "-=100", x: "+=" + (Math.random() * 40 - 20), opacity: 0, 
+                        duration: 3 + Math.random() * 5, repeat: -1, yoyo: true, ease: "sine.inOut", delay: Math.random() * -5
+                    });
+                    bgAnimations.push(anim);
+                }
+            } else if (type === 'streaks') {
+                for (let i = 0; i < count; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'streak';
+                    el.style.width = (Math.random() * 200 + 50) + 'px';
+                    el.style.top = Math.random() * 100 + '%';
+                    el.style.left = '-200px';
+                    bg.appendChild(el);
+                    
+                    const anim = gsap.to(el, { 
+                        x: window.innerWidth + 400, y: "+=200", 
+                        duration: 1 + Math.random() * 2, repeat: -1, ease: "power1.in", delay: Math.random() * -5
+                    });
+                    bgAnimations.push(anim);
+                }
+            } else if (type === 'embers') {
+                for (let i = 0; i < count*1.5; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'blue-ember';
+                    const size = Math.random() * 5 + 2;
+                    el.style.width = size + 'px'; el.style.height = size + 'px';
+                    el.style.bottom = '-20px';
+                    el.style.left = Math.random() * 100 + '%';
+                    bg.appendChild(el);
+                    
+                    const anim = gsap.to(el, { 
+                        y: -window.innerHeight - 100, x: "+=" + ((Math.random() - 0.5) * 200), opacity: 0,
+                        duration: 3 + Math.random() * 5, repeat: -1, ease: "power1.inOut", delay: Math.random() * -5
+                    });
+                    bgAnimations.push(anim);
+                }
             }
         }
 
-        // --- SIMULATOR ---
+        // --- MOBILE MENU ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('mobile-menu-active');
+        }
+
+        // --- SIMULATOR LOGIC ---
         let simMode = 'neutre'; 
         
         function setSimMode(mode) {
@@ -193,14 +309,14 @@
             const btnNeutre = document.getElementById('btn-neutre');
             const btnScalable = document.getElementById('btn-scalable');
             
-            if(btnNeutre) btnNeutre.className = mode === 'neutre' ? 'px-4 py-2 bg-gold-main text-black text-[10px] font-bold uppercase' : 'px-4 py-2 bg-white/5 text-white text-[10px] font-bold uppercase hover:bg-white/10';
-            if(btnScalable) btnScalable.className = mode === 'scalable' ? 'px-4 py-2 bg-gold-main text-black text-[10px] font-bold uppercase' : 'px-4 py-2 bg-white/5 text-white text-[10px] font-bold uppercase hover:bg-white/10';
+            if(btnNeutre) btnNeutre.className = mode === 'neutre' ? 'px-4 py-2 bg-theme text-black text-[10px] font-bold uppercase rounded' : 'px-4 py-2 bg-white/5 text-white text-[10px] font-bold uppercase hover:bg-white/10 rounded';
+            if(btnScalable) btnScalable.className = mode === 'scalable' ? 'px-4 py-2 bg-theme text-black text-[10px] font-bold uppercase rounded' : 'px-4 py-2 bg-white/5 text-white text-[10px] font-bold uppercase hover:bg-white/10 rounded';
             
             const projectionBlock = document.getElementById('projection-12m-block');
             if(projectionBlock) {
                 if(mode === 'scalable') {
                     projectionBlock.classList.remove('hidden');
-                    gsap.fromTo(projectionBlock, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+                    gsap.fromTo(projectionBlock, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.4 });
                 } else {
                     projectionBlock.classList.add('hidden');
                 }
@@ -211,146 +327,111 @@
         function updatePersonalSim() {
             const input = document.getElementById('cap-perso');
             if(!input) return;
-            
             const cap = parseFloat(input.value);
-            const res = document.getElementById('res-perso');
-            const label = document.getElementById('label-perso');
+            
+            document.getElementById('label-perso').innerText = cap.toLocaleString() + " €";
+            document.getElementById('res-perso').innerText = Math.round(cap * 0.50).toLocaleString() + " €";
+            
             const res12m = document.getElementById('res-12m');
-            
-            if(label) label.innerText = cap.toLocaleString() + " €";
-            
-            let monthly = cap * 0.50;
-            if(res) res.innerText = Math.round(monthly).toLocaleString() + " €";
-            
             if(res12m) {
                 const finalCap = cap * Math.pow(1.5, 12);
                 res12m.innerText = Math.round(finalCap).toLocaleString() + " €";
             }
             
-            const infoText = document.getElementById('sim-info-text');
-            if(infoText) infoText.innerText = simMode === 'neutre' ? "(+50% fixe par mois du capital initial)" : "(+50% avec réinvestissement composé)";
+            document.getElementById('sim-info-text').innerText = simMode === 'neutre' ? "(+50% de gains / mois, retirés)" : "(Croissance exponentielle avec réinvestissement)";
         }
 
         function updatePropSim() {
             const input = document.getElementById('cap-prop');
             if(!input) return;
             const cap = input.value;
-            const res = document.getElementById('res-prop');
-            const label = document.getElementById('label-prop');
-            
-            const monthly = cap * 0.045;
-            if(res) res.innerText = Math.round(monthly).toLocaleString() + " €";
-            if(label) label.innerText = parseInt(cap).toLocaleString() + " €";
+            document.getElementById('label-prop').innerText = parseInt(cap).toLocaleString() + " €";
+            document.getElementById('res-prop').innerText = Math.round(cap * 0.05).toLocaleString() + " €"; // 5% Prop
         }
 
-        // --- MODAL ---
-        function openBotModal(botKey) {
-            const bot = botDetails[botKey];
-            const modal = document.getElementById('modal-container');
-            const body = document.getElementById('modal-body');
-            
-            body.innerHTML = `
-                <div class="text-white/50 font-bold text-[10px] uppercase tracking-[0.4em] mb-4">Analyse Technique</div>
-                <h2 class="text-4xl font-serif text-white mb-6 italic">${bot.title}</h2>
-                <p class="text-gray-300 text-sm leading-relaxed mb-8">${bot.desc}</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
-                        <div class="text-[10px] text-gray-500 uppercase mb-2">Méthode de Trading</div>
-                        <div class="text-xs text-white leading-relaxed">${bot.logic}</div>
-                    </div>
-                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
-                        <div class="text-[10px] text-gray-500 uppercase mb-2">Risque Réel</div>
-                        <div class="text-xs text-white leading-relaxed font-bold uppercase tracking-widest">${bot.risk}</div>
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between p-6 glass-card rounded-2xl border-gold-main/20">
-                    <div>
-                        <div class="text-[10px] text-gold-main uppercase mb-1">Profit Moyen</div>
-                        <div class="text-2xl font-serif text-white italic">${bot.profit}</div>
-                    </div>
-                    <a href="https://t.me/MitsuyoshiEA" target="_blank" class="px-8 py-4 bg-gold-gradient text-black font-bold text-[10px] uppercase tracking-widest">Voir sur Telegram</a>
-                </div>
-            `;
-            
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            gsap.fromTo('#modal-content', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" });
-        }
-
-        function closeModal() {
-            gsap.to('#modal-content', { scale: 0.9, opacity: 0, duration: 0.2, onComplete: () => {
-                document.getElementById('modal-container').classList.add('hidden');
-            }});
-        }
-
-        // --- ROUTING ---
+        // --- PAGE ROUTING & CONTENT ---
         const pages = {
             home: `
-                <div class="page-transition">
-                    <section class="min-h-[90vh] flex flex-col items-center justify-center text-center px-6 relative">
-                        <div class="reveal inline-block px-6 py-2 border border-gold-main/30 rounded-full text-[10px] font-bold tracking-[0.4em] uppercase text-gold-main mb-12">Mitsuyoshi Edition 2026</div>
-                        <h1 class="reveal text-6xl md:text-8xl font-serif text-white mb-8 tracking-tighter leading-tight">
-                            L'Algorithme<br><span class="text-gold-gradient italic">Sur-Mesure.</span>
+                <div id="page-wrapper">
+                    <section class="min-h-screen flex flex-col items-center justify-center text-center px-6 relative">
+                        <div class="gsap-reveal inline-block px-6 py-2 border border-theme/30 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.4em] uppercase text-theme mb-8 md:mb-12 shadow-[0_0_20px_var(--theme-glow)] bg-theme/5">L'Intelligence Artificielle au Service du Capital</div>
+                        
+                        <h1 class="gsap-reveal text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-6 md:mb-8 tracking-tighter leading-tight drop-shadow-2xl">
+                            La Révolution est<br><span class="text-theme-gradient italic">Personnalisée.</span>
                         </h1>
-                        <p class="reveal max-w-2xl text-gray-400 text-xs md:text-sm font-light leading-relaxed mb-16 uppercase tracking-[0.3em]">
-                            Découvrez une nouvelle ère du trading automatisé.<br>
-                            <span class="text-white font-medium text-gold-main">Presets personnalisés selon vos envies et vos besoins.</span>
+                        
+                        <p class="gsap-reveal max-w-2xl text-gray-400 text-xs md:text-sm font-light leading-relaxed mb-12 md:mb-16 uppercase tracking-[0.2em] px-4">
+                            "La majorité des EA sont vendus comme des solutions miracles. Résultat : des comptes brûlés du jour au lendemain."<br><br>
+                            <span class="text-white font-bold text-theme">Nous sommes à l'opposé de cette logique. Presets sur-mesure. Backtests transparents. Transparence totale.</span>
                         </p>
-                        <div class="reveal flex flex-wrap justify-center gap-8">
-                            <button onclick="navigateTo('catalog')" class="px-12 py-5 bg-gold-gradient text-black font-bold text-[11px] uppercase tracking-[0.3em]">Le Catalogue</button>
-                            <a href="#simulators" class="px-12 py-5 border border-white/20 text-white text-[11px] uppercase font-bold tracking-[0.3em]">Simulateur</a>
+                        
+                        <div class="gsap-reveal flex flex-col sm:flex-row justify-center gap-6 w-full px-4">
+                            <button onclick="navigateTo('catalog')" class="w-full sm:w-auto px-10 py-5 bg-theme text-black font-bold text-[11px] uppercase tracking-[0.3em] rounded hover:scale-105 transition-transform shadow-[0_0_30px_var(--theme-glow)]">Voir le Catalogue</button>
+                            <a href="#simulators" class="w-full sm:w-auto px-10 py-5 border border-white/20 text-white text-[11px] uppercase font-bold tracking-[0.3em] rounded hover:border-theme transition-colors">Simuler mes Gains</a>
                         </div>
                     </section>
 
-                    <section id="simulators" class="py-32 px-8 bg-black/40">
+                    <section id="simulators" class="py-24 md:py-32 px-6 md:px-10 bg-[#030305]/80 backdrop-blur-md">
                         <div class="max-w-6xl mx-auto">
-                            <h2 class="text-4xl font-serif text-center mb-24 italic text-white tracking-widest uppercase">Calculateur de <span class="text-gold-main">Profits</span></h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-                                <div class="glass-card p-10 rounded-3xl border-gold-main/30 relative flex flex-col justify-between">
-                                    <div>
-                                        <h3 class="text-xl font-bold uppercase tracking-widest mb-6">Compte Personnel (50%/mois)</h3>
-                                        <div class="flex gap-2 mb-8">
-                                            <button id="btn-neutre" onclick="setSimMode('neutre')" class="px-4 py-2 bg-gold-main text-black text-[10px] font-bold uppercase">Mode Neutre</button>
-                                            <button id="btn-scalable" onclick="setSimMode('scalable')" class="px-4 py-2 bg-white/5 text-white text-[10px] font-bold uppercase hover:bg-white/10">Mode Scalable</button>
+                            <h2 class="gsap-reveal text-3xl md:text-5xl font-serif text-center mb-16 md:mb-24 italic text-white">Calculateur de <span class="text-theme">Profits</span></h2>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
+                                <!-- SIMULATEUR PERSO -->
+                                <div class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl border-theme/30 relative flex flex-col justify-between overflow-hidden">
+                                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-theme/10 rounded-full blur-3xl"></div>
+                                    <div class="relative z-10">
+                                        <h3 class="text-lg md:text-xl font-bold uppercase tracking-widest mb-6">Compte Personnel (50%/mois)</h3>
+                                        
+                                        <div class="flex flex-wrap gap-2 mb-8">
+                                            <button id="btn-neutre" onclick="setSimMode('neutre')" class="px-4 py-2 bg-theme text-black text-[10px] font-bold uppercase rounded">Mode Neutre</button>
+                                            <button id="btn-scalable" onclick="setSimMode('scalable')" class="px-4 py-2 bg-white/5 text-white text-[10px] font-bold uppercase hover:bg-white/10 rounded">Mode Scalable</button>
                                         </div>
+                                        
                                         <div class="space-y-10">
                                             <div>
-                                                <div class="flex justify-between text-xs font-bold mb-4 uppercase tracking-tighter">
+                                                <div class="flex justify-between text-[10px] md:text-xs font-bold mb-4 uppercase tracking-tighter">
                                                     <span>Capital de départ</span>
-                                                    <span id="label-perso" class="text-gold-main">5 000 €</span>
+                                                    <span id="label-perso" class="text-theme text-sm md:text-base">5 000 €</span>
                                                 </div>
-                                                <input type="range" id="cap-perso" min="300" max="50000" step="100" value="5000" class="w-full h-1 bg-zinc-800 accent-gold-main appearance-none cursor-pointer" oninput="updatePersonalSim()">
+                                                <input type="range" id="cap-perso" min="300" max="50000" step="100" value="5000" class="w-full" oninput="updatePersonalSim()">
                                             </div>
-                                            <div class="pt-10 border-t border-white/5">
+                                            
+                                            <div class="pt-8 border-t border-white/5">
                                                 <div class="flex flex-col items-center">
-                                                    <p id="sim-info-text" class="text-[9px] uppercase tracking-[0.4em] text-gray-500 mb-3">(+50% fixe par mois)</p>
-                                                    <div class="text-[10px] text-gray-400 uppercase mb-1 tracking-widest">Mensualité estimée</div>
-                                                    <div id="res-perso" class="text-6xl font-serif text-gold-main italic mb-8">2 500 €</div>
+                                                    <p id="sim-info-text" class="text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">(+50% de gains / mois, retirés)</p>
+                                                    <div class="text-[10px] text-gray-400 uppercase mb-1 tracking-widest">Gain estimé (1 Mois)</div>
+                                                    <div id="res-perso" class="text-5xl md:text-6xl font-serif text-theme italic mb-4">2 500 €</div>
                                                 </div>
-                                                <div id="projection-12m-block" class="hidden mt-6 p-6 bg-gold-main/5 border border-gold-main/20 rounded-2xl text-center">
-                                                    <div class="text-[10px] text-gold-main uppercase mb-2 tracking-[0.4em] font-bold">Résultat en 12 mois scalable</div>
-                                                    <div id="res-12m" class="text-4xl font-serif text-white italic">648 340 €</div>
+                                                
+                                                <div id="projection-12m-block" class="hidden mt-6 p-6 bg-theme/5 border border-theme/20 rounded-2xl text-center">
+                                                    <div class="text-[9px] md:text-[10px] text-theme uppercase mb-2 tracking-[0.3em] font-bold">Capital Total en 12 Mois</div>
+                                                    <div id="res-12m" class="text-3xl md:text-4xl font-serif text-white italic">648 340 €</div>
+                                                    <p class="text-[8px] text-gray-500 mt-2 uppercase tracking-widest italic">Si 100% des gains sont réinvestis (Intérêts composés purs).</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="glass-card p-10 rounded-3xl border-white/10 flex flex-col justify-between">
+
+                                <!-- SIMULATEUR PROP FIRM -->
+                                <div class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl border-white/10 flex flex-col justify-between">
                                     <div>
-                                        <h3 class="text-xl font-bold uppercase tracking-widest mb-10">Prop Firm Account</h3>
+                                        <h3 class="text-lg md:text-xl font-bold uppercase tracking-widest mb-6">Compte Prop Firm</h3>
+                                        <p class="text-xs text-gray-500 mb-8 uppercase tracking-widest leading-relaxed">Stratégie ultra-sécurisée visant 5% mensuel pour passer et conserver les challenges (Max DD ~4.5%).</p>
+                                        
                                         <div class="space-y-10">
                                             <div>
-                                                <div class="flex justify-between text-xs font-bold mb-4 uppercase tracking-tighter">
-                                                    <span>Capital sous gestion</span>
-                                                    <span id="label-prop" class="text-white">100 000 €</span>
+                                                <div class="flex justify-between text-[10px] md:text-xs font-bold mb-4 uppercase tracking-tighter">
+                                                    <span>Capital financé</span>
+                                                    <span id="label-prop" class="text-white text-sm md:text-base">100 000 €</span>
                                                 </div>
-                                                <input type="range" id="cap-prop" min="10000" max="400000" step="10000" value="100000" class="w-full h-1 bg-zinc-800 accent-white appearance-none cursor-pointer" oninput="updatePropSim()">
+                                                <input type="range" id="cap-prop" min="10000" max="400000" step="10000" value="100000" class="w-full" oninput="updatePropSim()">
                                             </div>
-                                            <div class="pt-10 border-t border-white/5 text-center">
-                                                <p class="text-[9px] uppercase tracking-[0.4em] text-gray-500 mb-3">Retrait mensuel (4.5%)</p>
-                                                <div id="res-prop" class="text-6xl font-serif text-white italic">4 500 €</div>
+                                            
+                                            <div class="pt-8 border-t border-white/5 text-center">
+                                                <p class="text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">Retrait estimé (Cible 5%)</p>
+                                                <div class="text-[10px] text-gray-400 uppercase mb-1 tracking-widest">Gain Mensuel Validé</div>
+                                                <div id="res-prop" class="text-5xl md:text-6xl font-serif text-white italic">5 000 €</div>
                                             </div>
                                         </div>
                                     </div>
@@ -358,153 +439,264 @@
                             </div>
                         </div>
                     </section>
+                </div>
+            `,
+            about: `
+                <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-5xl mx-auto">
+                    <div class="gsap-reveal text-center mb-20">
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Notre Identité</span>
+                        <h2 class="text-4xl md:text-6xl font-serif text-white mb-8 italic">La Philosophie du <span class="text-theme">Laboratoire</span></h2>
+                    </div>
+
+                    <div class="gsap-reveal glass-card p-8 md:p-14 rounded-3xl border-theme/20 relative overflow-hidden mb-12">
+                        <div class="absolute -right-20 -top-20 opacity-5 pointer-events-none">
+                            <svg class="w-64 h-64 text-theme" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.8L18.2 19H5.8L12 5.8z"/></svg>
+                        </div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-serif text-theme mb-6 italic">Fondation & Expertise</h3>
+                            <p class="text-gray-300 leading-relaxed mb-8 text-sm md:text-base">
+                                Je m'appelle <strong>Yassine</strong>, développeur et trader actif sur les marchés financiers depuis plus de 6 ans.<br><br>
+                                Au fil des années, j'ai construit une équipe dédiée exclusivement à la recherche quantitative et à l'optimisation de presets pour nos algorithmes. Notre objectif est clair : proposer des systèmes <strong>fiables, testés, et réellement exploitables</strong> sur le long terme.
+                            </p>
+                            
+                            <div class="p-6 bg-black/40 rounded-xl border border-white/5 mb-8">
+                                <h4 class="text-white font-bold text-[10px] uppercase tracking-widest mb-4">Notre Engament Anti-Scam</h4>
+                                <ul class="text-xs md:text-sm text-gray-400 space-y-4">
+                                    <li class="flex items-center gap-4"><div class="w-2 h-2 bg-theme rounded-full shrink-0"></div> Transparence totale sur les backtests et résultats.</li>
+                                    <li class="flex items-center gap-4"><div class="w-2 h-2 bg-theme rounded-full shrink-0"></div> Systèmes torturés sur des historiques de marché complexes.</li>
+                                    <li class="flex items-center gap-4"><div class="w-2 h-2 bg-theme rounded-full shrink-0"></div> Aucun mensonge : le trading comporte des risques que nous encadrons.</li>
+                                </ul>
+                            </div>
+
+                            <h3 class="text-xl font-serif text-theme mb-4 italic mt-10">L'Art du Preset Sur-Mesure</h3>
+                            <p class="text-gray-400 text-xs leading-relaxed uppercase tracking-[0.1em] mb-6">
+                                Un bon algorithme avec un mauvais réglage est un compte brûlé. C'est pourquoi nous adaptons nos configurations (.set) pour <strong>chaque</strong> utilisateur : selon son capital, sa psychologie du risque, et s'il trade sur un compte personnel ou Prop Firm.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             `,
             catalog: `
-                <div class="page-transition px-8 py-32 max-w-7xl mx-auto">
-                    <div class="text-center mb-24">
-                        <h2 class="text-6xl font-serif text-white mb-6 italic text-gold-gradient tracking-tight">Le Catalogue</h2>
-                        <p class="text-gray-500 uppercase tracking-[0.4em] text-[10px]">Découvrez nos solutions. Cliquez sur un bot pour les détails.</p>
+                <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-7xl mx-auto">
+                    <div class="gsap-reveal text-center mb-24">
+                        <h2 class="text-5xl md:text-7xl font-serif text-white mb-6 italic text-theme-gradient tracking-tight">Le Catalogue</h2>
+                        <p class="text-gray-500 uppercase tracking-[0.4em] text-[9px] md:text-[10px]">Choisissez votre vecteur de rentabilité.</p>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        <div onclick="openBotModal('mitsuyoshi')" class="glass-card p-10 rounded-2xl cursor-pointer hover:border-gold-main transition-all group">
-                            <h3 class="text-2xl font-serif mb-4 italic group-hover:text-gold-main text-white">Mitsuyoshi EA</h3>
-                            <p class="text-gray-500 text-[10px] uppercase tracking-widest font-bold">L'Excellence & L'Équilibre</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                        
+                        <!-- MITSUYOSHI -->
+                        <div onclick="navigateTo('mitsuyoshi')" class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl cursor-pointer hover:border-[#D4AF37] transition-all group border-[#D4AF37]/20 relative overflow-hidden h-full flex flex-col">
+                            <div class="absolute inset-0 bg-[#D4AF37]/5 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
+                            <div class="relative z-10 flex-grow flex flex-col">
+                                <div class="flex justify-between items-start mb-6">
+                                    <h3 class="text-3xl md:text-4xl font-serif italic text-[#D4AF37]">Mitsuyoshi Bot</h3>
+                                    <span class="text-[9px] border border-[#D4AF37] text-[#D4AF37] px-3 py-1 rounded-full uppercase shrink-0">MT5</span>
+                                </div>
+                                <p class="text-gray-400 text-xs md:text-sm mb-8 leading-relaxed flex-grow">L'algorithme légendaire. Conçu pour la performance long terme. Trend follower avec gestion de grid strictement contrôlée.</p>
+                                <div class="flex justify-between items-center mt-auto pt-6 border-t border-white/10">
+                                    <p class="text-gray-500 text-[9px] uppercase tracking-widest font-bold">Prop Firm & Perso</p>
+                                    <span class="text-[#D4AF37] text-xl">&rarr;</span>
+                                </div>
+                            </div>
                         </div>
-                        <div onclick="openBotModal('algo')" class="glass-card p-10 rounded-2xl cursor-pointer hover:border-blue-500 transition-all group">
-                            <h3 class="text-2xl font-serif mb-4 italic group-hover:text-blue-400 text-white">Algo BOT</h3>
-                            <p class="text-gray-500 text-[10px] uppercase tracking-widest font-bold">Scalping Intensif (Londres/NY)</p>
+
+                        <!-- PHOENIX -->
+                        <div onclick="navigateTo('phoenix')" class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl cursor-pointer hover:border-[#06b6d4] transition-all group border-[#06b6d4]/20 bg-[#06b6d4]/5 relative overflow-hidden h-full flex flex-col">
+                            <div class="absolute inset-0 bg-[#06b6d4]/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
+                            <div class="relative z-10 flex-grow flex flex-col">
+                                <div class="flex justify-between items-start mb-6">
+                                    <h3 class="text-3xl md:text-4xl font-serif italic text-[#06b6d4]">Phoenix Bot</h3>
+                                    <span class="text-[9px] bg-[#06b6d4] text-black font-bold px-3 py-1 rounded-full uppercase animate-pulse shrink-0">Nouveau</span>
+                                </div>
+                                <p class="text-gray-300 text-xs md:text-sm mb-8 leading-relaxed flex-grow">Bot exceptionnel en développement. Analyse de marché 100% technique sans indicateur. Orienté Smart Money Concepts (ICT).</p>
+                                <div class="flex justify-between items-center mt-auto pt-6 border-t border-white/10">
+                                    <p class="text-[#06b6d4] text-[9px] uppercase tracking-widest font-bold">Révolution Technique</p>
+                                    <span class="text-[#06b6d4] text-xl">&rarr;</span>
+                                </div>
+                            </div>
                         </div>
-                        <div onclick="openBotModal('xtrem')" class="glass-card p-10 rounded-2xl cursor-pointer hover:border-red-500 transition-all group">
-                            <h3 class="text-2xl font-serif mb-4 italic group-hover:text-red-500 text-white">Bot XTREM</h3>
-                            <p class="text-gray-500 text-[10px] uppercase tracking-widest font-bold">Compound Agressif</p>
+
+                        <!-- GOLDEXPERT -->
+                        <div onclick="navigateTo('goldexpert')" class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl cursor-pointer hover:border-[#fbbf24] transition-all group h-full flex flex-col">
+                            <div class="relative z-10 flex-grow flex flex-col">
+                                <div class="flex justify-between items-start mb-6">
+                                    <h3 class="text-2xl md:text-3xl font-serif italic group-hover:text-[#fbbf24] text-white transition-colors">IA GOLDSTUFF</h3>
+                                    <span class="text-[9px] border border-[#fbbf24] text-[#fbbf24] px-3 py-1 rounded-full uppercase shrink-0">MT5</span>
+                                </div>
+                                <p class="text-gray-400 text-xs md:text-sm mb-8 leading-relaxed flex-grow">Trend follower basé sur l'IA, inspiré d'un système russe. Spécialisé XAUUSD. Approche agressive avec risque lié au lot.</p>
+                                <div class="flex justify-between items-center mt-auto pt-6 border-t border-white/10">
+                                    <p class="text-gray-500 text-[9px] uppercase tracking-widest font-bold">Revenus Rapides</p>
+                                    <span class="text-white group-hover:text-[#fbbf24] transition-colors text-xl">&rarr;</span>
+                                </div>
+                            </div>
                         </div>
-                        <div onclick="openBotModal('gold')" class="glass-card p-10 rounded-2xl cursor-pointer hover:border-yellow-500 transition-all group">
-                            <h3 class="text-2xl font-serif mb-4 italic group-hover:text-yellow-400 text-white">IA GOLDSTUFF</h3>
-                            <p class="text-gray-500 text-[10px] uppercase tracking-widest font-bold">Spécialiste XAUUSD</p>
+
+                        <!-- XTREM -->
+                        <div onclick="navigateTo('xtrem')" class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl cursor-pointer hover:border-[#f97316] transition-all group shadow-[0_0_20px_rgba(249,115,22,0.05)] h-full flex flex-col">
+                            <div class="relative z-10 flex-grow flex flex-col">
+                                <div class="flex justify-between items-start mb-6">
+                                    <h3 class="text-2xl md:text-3xl font-serif italic group-hover:text-[#f97316] text-white transition-colors">XTREM Bot</h3>
+                                    <span class="text-[9px] border border-[#f97316] text-[#f97316] px-3 py-1 rounded-full uppercase shrink-0">MT4</span>
+                                </div>
+                                <p class="text-gray-400 text-xs md:text-sm mb-8 leading-relaxed flex-grow">Le destructeur de graphiques. Conçu pour multiplier très rapidement un capital. Jusqu'à x3 par semaine.</p>
+                                <div class="flex justify-between items-center mt-auto pt-6 border-t border-white/10">
+                                    <p class="text-[#f97316]/70 text-[9px] uppercase tracking-widest font-bold">Risque Extrême</p>
+                                    <span class="text-white group-hover:text-[#f97316] transition-colors text-xl">&rarr;</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `,
+            mitsuyoshi: `
+                <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-5xl mx-auto">
+                    <div class="gsap-reveal text-center mb-16 md:mb-24">
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">L'Algorithme Maître</span>
+                        <h2 class="text-5xl md:text-7xl font-serif text-white mb-8 italic">Mitsuyoshi <span class="text-theme">Bot</span></h2>
+                    </div>
+
+                    <!-- Intro Text -->
+                    <div class="gsap-reveal glass-card p-8 md:p-14 rounded-3xl mb-12 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-8 opacity-5">
+                            <svg class="w-32 md:w-48 h-32 md:h-48 text-theme" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.8L18.2 19H5.8L12 5.8z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-serif text-theme mb-6 italic">Adaptation & Volatilité</h3>
+                        <p class="text-gray-300 leading-relaxed text-sm md:text-base">
+                            Mitsuyoshi Bot est un algorithme de trading avancé conçu pour exploiter les dynamiques de marché avec précision et discipline. Il repose sur une approche de trend following intelligent, capable de s’adapter en temps réel aux variations de volatilité grâce à une combinaison de filtres techniques robustes et de paramètres dynamiques.<br><br>
+                            Contrairement aux systèmes classiques, Mitsuyoshi Bot ne se contente pas de suivre le marché : il analyse en profondeur la structure des tendances à l’aide d’indicateurs comme l’<strong>ATR</strong> et l’<strong>ADX</strong>, lui permettant d’identifier les phases favorables tout en évitant les zones de bruit ou d’incertitude.
+                        </p>
+                    </div>
+
+                    <!-- Core Features Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                        <div class="gsap-reveal glass-card p-8 rounded-2xl hover:border-theme/50 transition-colors">
+                            <h3 class="text-xl font-serif text-white mb-4 italic">Gestion de Grid Contrôlée</h3>
+                            <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
+                                L’un des piliers fondamentaux est sa gestion de grid strictement contrôlée. Chaque position est intégrée dans un panier avec une séquence de lots optimisée, limitant l'exposition. Il impose des règles strictes de scaling, de cooldown et de limitation d'ordres pour une montée en position maîtrisée.
+                            </p>
+                        </div>
+                        <div class="gsap-reveal glass-card p-8 rounded-2xl hover:border-theme/50 transition-colors">
+                            <h3 class="text-xl font-serif text-white mb-4 italic">Sécurité du Capital</h3>
+                            <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
+                                Le bot intègre un système complet de contrôle du drawdown avec des limites précises en pourcentage et en capital. Des mécanismes complémentaires comme le trailing stop adaptatif ATR et des filtres anti contre-tendance (Bollinger Bands) renforcent cette sécurité.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="gsap-reveal text-center glass-card p-8 rounded-2xl border-theme/20">
+                        <p class="text-gray-300 mb-6 text-sm">Validé par des backtests massifs de longue durée, démontrant une performance stable. Un PDF détaillé des performances est disponible sur notre canal.</p>
+                        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="inline-block px-8 py-4 bg-theme text-black font-bold text-[10px] uppercase tracking-widest rounded shadow-[0_0_15px_var(--theme-glow)] hover:scale-105 transition-transform">Voir l'analyse Telegram</a>
+                    </div>
+                </div>
+            `,
+            phoenix: `
+                <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-5xl mx-auto">
+                    <div class="gsap-reveal text-center mb-16 md:mb-24">
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">L'Avenir de l'Analyse</span>
+                        <h2 class="text-5xl md:text-7xl font-serif text-white mb-8 italic">Phoenix <span class="text-theme">Bot</span></h2>
+                    </div>
+
+                    <div class="gsap-reveal glass-card p-8 md:p-14 rounded-3xl mb-12 relative overflow-hidden border-theme/30 bg-theme/5">
+                        <h3 class="text-2xl md:text-3xl font-serif text-theme mb-6 italic">Révolution Technique</h3>
+                        <p class="text-gray-300 leading-relaxed mb-6 text-sm md:text-base">
+                            Phoenix Bot représente une nouvelle génération de trading algorithmique en pleine évolution. Contrairement à 99% des Expert Advisors du marché, il ne repose sur <strong>aucun indicateur technique classique</strong> tel que le RSI, le MACD ou autres outils dérivés.<br><br>
+                            Son approche est basée sur une analyse de marché 100% technique, centrée exclusivement sur le comportement du prix et la structure du marché. Cette méthode permet d’éliminer les signaux retardés et d’obtenir une lecture plus précise et directe des mouvements.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                        <div class="gsap-reveal glass-card p-8 rounded-2xl">
+                            <h3 class="text-xl font-serif text-white mb-4 italic">Smart Money Concepts</h3>
+                            <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
+                                Phoenix Bot s’appuie sur des concepts avancés inspirés des méthodologies ICT (Inner Circle Trader), en intégrant des notions clés comme la liquidité, les déséquilibres de marché et les zones institutionnelles. Il comprend la logique des mouvements.
+                            </p>
+                        </div>
+                        <div class="gsap-reveal glass-card p-8 rounded-2xl flex flex-col justify-center items-center text-center bg-black/50 border-theme/20 shadow-[0_0_30px_var(--theme-glow)]">
+                            <div class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4">Statut Actuel</div>
+                            <div class="text-2xl font-serif text-white mb-4 italic">Nouveau</div>
+                            <p class="text-xs text-gray-500 mb-6">Résultats très prometteurs en backtest et live test.</p>
+                            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="px-6 py-3 bg-theme text-black text-[10px] uppercase font-bold tracking-widest rounded hover:scale-105 transition-transform">Accéder</a>
                         </div>
                     </div>
                 </div>
             `,
-            tech: `
-                <div class="page-transition px-8 py-32 max-w-6xl mx-auto">
-                    <h2 class="text-4xl font-serif text-white mb-16 italic border-b border-gold-main pb-8">Paramétrage & <span class="text-gold-main">Technique</span></h2>
-
-                    <!-- Presets Intro -->
-                    <div class="glass-card p-10 rounded-xl mb-12">
-                        <h4 class="text-gold-main font-bold text-[11px] uppercase tracking-[0.4em] mb-6">L'Art du Preset Sur-Mesure</h4>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-8 font-light">
-                            L'algorithme Mitsuyoshi n'est pas une boîte noire. Chaque paramètre est accessible et ajustable. Nous vous fournissons des configurations (.set) prêtes à l'emploi, mais vous gardez le contrôle total sur la machine.
-                        </p>
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <div class="p-4 bg-white/5 rounded border border-white/5 text-[9px] uppercase font-bold tracking-widest text-center">Conservateur (2-5% DD)</div>
-                            <div class="p-4 bg-white/5 rounded border border-white/5 text-[9px] uppercase font-bold tracking-widest text-center">Standard (10-20% DD)</div>
-                            <div class="p-4 bg-white/5 rounded border border-white/5 text-[9px] uppercase font-bold tracking-widest text-center">Agressif (Scalping)</div>
-                            <div class="p-4 bg-gold-main/20 border border-gold-main/50 text-gold-main text-[9px] uppercase font-bold tracking-widest text-center">Prop Challenge</div>
-                        </div>
+            goldexpert: `
+                <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-4xl mx-auto">
+                    <div class="gsap-reveal text-center mb-16">
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">IA & Volatilité</span>
+                        <h2 class="text-5xl md:text-7xl font-serif text-white mb-8 italic">IA <span class="text-theme">GOLDSTUFF</span></h2>
                     </div>
-
-                    <!-- Detailed Params Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Risk Management -->
-                        <div class="glass-card p-8 rounded-xl hover:border-gold-main/50 transition-colors">
-                            <h4 class="text-white font-serif text-xl italic mb-6 border-b border-white/10 pb-4">Gestion du Risque Maximale</h4>
-                            <ul class="space-y-6">
-                                <li>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">MaxDrawdown_Percentage</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Coupe d'urgence absolue. Si l'équité atteint ce pourcentage de perte (ex: 4.5%), le bot clôture tout. Indispensable pour les Prop Firms.</p>
-                                </li>
-                                <li>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">DailyProfitTarget</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Arrêt automatique de l'EA une fois l'objectif de gain journalier atteint. Protège contre l'over-trading et la fatigue des marchés.</p>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Filters -->
-                        <div class="glass-card p-8 rounded-xl hover:border-gold-main/50 transition-colors">
-                            <h4 class="text-white font-serif text-xl italic mb-6 border-b border-white/10 pb-4">Filtres de Tendance & Volatilité</h4>
-                            <ul class="space-y-6">
-                                <li>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">Hard Trend Filter (HTF_MA)</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Analyse la moyenne mobile sur un timeframe supérieur (ex: H1) et vérifie sa pente. Rejette toute entrée en contre-tendance lourde.</p>
-                                </li>
-                                <li>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">Volatility Filter (VF_ATR & ADX)</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Fenêtre de tir dynamique. Le bot refuse d'entrer si le marché est trop "choppy" (plat) ou en panique extrême (spreads élargis).</p>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Grid & Execution -->
-                        <div class="glass-card p-8 rounded-xl hover:border-gold-main/50 transition-colors">
-                            <h4 class="text-white font-serif text-xl italic mb-6 border-b border-white/10 pb-4">Exécution & Basket Scaling</h4>
-                            <ul class="space-y-6">
-                                <li>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">Basket_LotsSequence</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Séquence de lots intelligente (ex: 0.10, 0.36, 0.59...) lissant le prix moyen. Zéro martingale aveugle, uniquement une pondération mathématique d'entrée.</p>
-                                </li>
-                                <li>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">Counter-Trend Rejection (CTB)</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Rejette les trades touchant les extrêmes des Bandes de Bollinger (Deviation > 2.0). Empêche formellement de rentrer sur un sommet absolu.</p>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Exits -->
-                        <div class="glass-card p-8 rounded-xl hover:border-gold-main/50 transition-colors">
-                            <h4 class="text-white font-serif text-xl italic mb-6 border-b border-white/10 pb-4">Sécurisation des Sorties</h4>
-                            <ul class="space-y-6">
-                                <li>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">TrailingStop_ATR Dynamique</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Le stop loss de protection ne suit pas le prix avec des pips fixes, mais s'adapte à la respiration réelle (ATR) du marché pour éviter les faux breakouts.</p>
-                                </li>
-                                <li>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">PartialClose_Multi-Paliers</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Encaissement automatique (Take Profit partiel) à des points clés du mouvement (ex: 35% clôturé après 250 points de gain).</p>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Time & Calendar -->
-                        <div class="glass-card p-8 rounded-xl md:col-span-2 hover:border-gold-main/50 transition-colors flex flex-col md:flex-row gap-8 items-center">
-                            <div class="md:w-1/3 text-center">
-                                <svg class="w-16 h-16 mx-auto text-gold-main mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <h4 class="text-white font-serif text-xl italic">Time & News Filter</h4>
-                            </div>
-                            <div class="md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">Trading Windows</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Limitation stricte de Lundi à Jeudi (ex: 00:00 - 13:59). Le vendredi est bloqué pour se prémunir des manipulations de clôture hebdomadaire bancaire.</p>
-                                </div>
-                                <div>
-                                    <span class="text-gold-main font-mono text-[10px] font-bold uppercase tracking-widest block mb-1">Auto News Guard</span>
-                                    <p class="text-xs text-gray-400 leading-relaxed">Désactivation forcée X minutes avant et après les annonces High-Impact du calendrier économique, protégeant le compte de l'extrême volatilité.</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="gsap-reveal glass-card p-10 rounded-3xl text-center border-theme/30 bg-theme/5">
+                        <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-10">
+                            Un trend follower simple et redoutablement efficace, inspiré de l'ingénierie algorithmique russe. Orienté exclusivement sur la paire XAUUSD (Or). Il déploie une approche agressive où le risque est directement lié au dimensionnement du lot. Idéal pour ceux qui cherchent des revenus rapides en acceptant de plus forts tirages.
+                        </p>
+                        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="inline-block px-10 py-4 bg-theme text-black font-bold text-[10px] uppercase tracking-widest rounded shadow-[0_0_20px_var(--theme-glow)]">Explorer sur Telegram</a>
+                    </div>
+                </div>
+            `,
+            xtrem: `
+                <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-4xl mx-auto">
+                    <div class="gsap-reveal text-center mb-16">
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Croissance Exponentielle</span>
+                        <h2 class="text-5xl md:text-7xl font-serif text-white mb-8 italic"><span class="text-theme">XTREM</span> Bot</h2>
+                    </div>
+                    <div class="gsap-reveal glass-card p-10 rounded-3xl text-center border-theme/30 bg-theme/5 shadow-[0_0_40px_var(--theme-glow)]">
+                        <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-10">
+                            Le système conçu pour la multiplication ultra-rapide du capital. Des gains très élevés et fréquents portés par une stratégie court-terme agressive. Il vise jusqu'à <strong class="text-theme">x3 par semaine</strong>. Attention, ce robot s'accompagne d'un risque très élevé de pertes importantes et est réservé aux profils cherchant à scale rapidement sur de petits comptes personnels.
+                        </p>
+                        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="inline-block px-10 py-4 bg-theme text-black font-bold text-[10px] uppercase tracking-widest rounded">Activer le Scaler</a>
                     </div>
                 </div>
             `
         };
 
+        // --- NAVIGATION & ANIMATION SYSTEM ---
         function navigateTo(pageId) {
             const container = document.getElementById('page-content');
-            container.innerHTML = pages[pageId];
-            if (pageId === 'home') {
-                updatePersonalSim();
-                updatePropSim();
-                setSimMode('neutre');
-            }
-            window.scrollTo(0, 0);
-            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('nav-link-active'));
-            const activeBtn = document.getElementById(`link-${pageId}`);
-            if (activeBtn) activeBtn.classList.add('nav-link-active');
-            gsap.fromTo('.page-transition', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5 });
+            
+            // Fade out current content
+            gsap.to(container, { opacity: 0, y: -20, duration: 0.3, onComplete: () => {
+                container.innerHTML = pages[pageId];
+                
+                // Set logic for specific pages
+                if (pageId === 'home') {
+                    updatePersonalSim();
+                    updatePropSim();
+                    setSimMode('neutre');
+                }
+
+                // Theme Routing
+                if (pageId === 'mitsuyoshi') setCSSTheme('japan');
+                else if (pageId === 'phoenix') setCSSTheme('bluefire');
+                else if (pageId === 'xtrem') setCSSTheme('orange');
+                else if (pageId === 'goldexpert') setCSSTheme('gold');
+                else setCSSTheme('default'); // Home, Catalog, About
+
+                window.scrollTo(0, 0);
+                
+                // Update Nav Highlighting
+                document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('nav-link-active'));
+                const activeBtn = document.getElementById(`link-${pageId}`);
+                if (activeBtn) activeBtn.classList.add('nav-link-active');
+                
+                // Fade in new content with staggered reveals
+                gsap.fromTo(container, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+                
+                // Trigger scroll animations if elements exist
+                const reveals = document.querySelectorAll('.gsap-reveal');
+                if(reveals.length > 0) {
+                    gsap.fromTo(reveals, 
+                        { opacity: 0, y: 30 }, 
+                        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }
+                    );
+                }
+            }});
         }
 
         window.onload = () => {
-            initBackground();
+            gsap.registerPlugin(ScrollTrigger);
             navigateTo('home');
         };
     </script>
