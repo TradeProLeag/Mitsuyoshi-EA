@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth dark">
+<html lang="fr" class="scroll-smooth dark" id="html-tag">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -66,7 +66,7 @@
         .candle-body { position: absolute; width: 6px; left: -2px; border-radius: 1px; }
 
         /* Sakura (Japan) */
-        .sakura { position: absolute; width: 10px; height: 10px; background: #fdfbf7; border-radius: 50% 0 50% 50%; opacity: 0.6; box-shadow: 0 0 10px #D4AF37; }
+        .sakura { position: absolute; width: 10px; height: 10px; background: #fdfbf7; border-radius: 50% 0 50% 50%; opacity: 0.6; box-shadow: 0 0 10px #ffb7c5; }
         
         /* Gold Dust (GoldExpert) */
         .gold-dust { position: absolute; border-radius: 50%; background: #fbbf24; box-shadow: 0 0 15px #f59e0b; opacity: 0.8; }
@@ -91,9 +91,152 @@
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--theme-color); cursor: pointer; box-shadow: 0 0 15px var(--theme-color); margin-top: -6px; }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.1); border-radius: 2px; }
 
+        /* Language Dropdown Custom Scrollbar */
+        #lang-dropdown::-webkit-scrollbar { width: 4px; }
+        #lang-dropdown::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        #lang-dropdown::-webkit-scrollbar-thumb { background: var(--theme-color); border-radius: 10px; }
+
+        .lang-option {
+            padding: 10px 16px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #9ca3af;
+        }
+        .lang-option:hover { background: rgba(255,255,255,0.05); color: var(--theme-color); }
+        .lang-option.active { color: var(--theme-color); font-weight: bold; background: rgba(212,175,55,0.05); }
+
+        /* 3D LOADER */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #030305;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px;
+            overflow: hidden;
+        }
+
+        .loader-grid {
+            position: absolute;
+            inset: -100%;
+            background-image: 
+                linear-gradient(to right, rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(60deg) translateZ(-200px);
+            opacity: 0.3;
+        }
+
+        .loader-logo {
+            font-size: 12rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--theme-color);
+            text-shadow: 0 0 50px var(--theme-glow);
+            transform-style: preserve-3d;
+            opacity: 0;
+            z-index: 2;
+        }
+
+        .loader-bar-container {
+            width: 300px;
+            height: 1px;
+            background: rgba(255,255,255,0.05);
+            margin-top: 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .loader-bar {
+            position: absolute;
+            height: 100%;
+            width: 0%;
+            background: var(--theme-color);
+            box-shadow: 0 0 20px var(--theme-color);
+        }
+
+        .loader-text {
+            margin-top: 30px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1em;
+            color: #555;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .loader-particle {
+            position: absolute;
+            background: var(--theme-color);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* BLUE FIRE ANIMATION (Phoenix) */
+        .phoenix-fire-wrap {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(10px) contrast(15);
+            mix-blend-mode: screen;
+        }
+
+        .fire-core {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: #06b6d4;
+            border-radius: 50% 50% 20% 20%;
+            filter: blur(10px);
+        }
+
+        .fire-particle {
+            position: absolute;
+            bottom: 0;
+            width: 30px;
+            height: 30px;
+            background: #3b82f6;
+            border-radius: 50%;
+            filter: blur(15px);
+        }
+
+        /* LEGAL MODAL */
+        #legal-modal {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .modal-active { opacity: 1 !important; visibility: visible !important; }
+        .modal-active .modal-content { transform: scale(1) !important; opacity: 1 !important; }
+
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased overflow-hidden">
+
+    <!-- Cinematic Loader -->
+    <div id="loader">
+        <div class="loader-grid" id="loader-grid"></div>
+        <div class="loader-logo" id="loader-logo">M</div>
+        <div class="loader-bar-container">
+            <div class="loader-bar" id="loader-bar"></div>
+        </div>
+        <div class="loader-text" id="loader-text">Mitsuyoshi Systems</div>
+    </div>
 
     <!-- Canvas Arrière-plan Dynamique -->
     <div id="trading-bg"></div>
@@ -119,7 +262,18 @@
             </div>
 
             <div class="hidden lg:flex items-center gap-6">
-                <a href="https://t.me/MitsuyoshiEA" target="_blank" class="px-6 py-2.5 border border-theme text-theme text-[9px] uppercase font-bold tracking-widest hover:bg-theme hover:text-black transition-all shadow-[0_0_15px_var(--theme-glow)] rounded">
+                <!-- Language Switcher Desktop -->
+                <div class="relative group">
+                    <button class="flex items-center gap-2 px-3 py-2 border border-theme/30 rounded bg-white/5 hover:bg-theme/10 transition-all">
+                        <svg class="w-4 h-4 text-theme" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9h18"></path></svg>
+                        <span id="current-lang-label" class="text-[9px] font-bold uppercase tracking-widest text-white">FR</span>
+                    </button>
+                    <div id="lang-dropdown-desktop" class="absolute right-0 mt-2 w-48 bg-dark-panel border border-theme/20 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 overflow-hidden backdrop-blur-xl">
+                        <div class="max-h-64 overflow-y-auto" id="lang-list-desktop"></div>
+                    </div>
+                </div>
+
+                <a href="https://t.me/MitsuyoshiEA" target="_blank" id="nav-tg-btn" class="px-6 py-2.5 border border-theme text-theme text-[9px] uppercase font-bold tracking-widest hover:bg-theme hover:text-black transition-all shadow-[0_0_15px_var(--theme-glow)] rounded">
                     Rejoindre Telegram
                 </a>
             </div>
@@ -132,11 +286,15 @@
     </nav>
 
     <!-- Menu Mobile Plein Écran -->
-    <div id="mobile-menu" class="fixed inset-0 z-40 bg-dark-bg/95 invisible opacity-0 flex flex-col items-center justify-center gap-8 pt-20">
-        <button onclick="navigateTo('home'); toggleMobileMenu()" class="text-xl font-serif italic text-white hover:text-theme uppercase tracking-widest">Accueil</button>
-        <button onclick="navigateTo('catalog'); toggleMobileMenu()" class="text-xl font-serif italic text-white hover:text-theme uppercase tracking-widest">Le Catalogue</button>
-        <button onclick="navigateTo('about'); toggleMobileMenu()" class="text-xl font-serif italic text-white hover:text-theme uppercase tracking-widest">À Propos</button>
-        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="mt-8 px-10 py-4 bg-theme text-black font-bold text-xs uppercase tracking-widest rounded-full">Rejoindre Telegram</a>
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-dark-bg/95 invisible opacity-0 flex flex-col items-center justify-center gap-6 pt-20">
+        <button onclick="navigateTo('home'); toggleMobileMenu()" id="m-nav-home" class="text-xl font-serif italic text-white hover:text-theme uppercase tracking-widest">Accueil</button>
+        <button onclick="navigateTo('catalog'); toggleMobileMenu()" id="m-nav-catalog" class="text-xl font-serif italic text-white hover:text-theme uppercase tracking-widest">Le Catalogue</button>
+        <button onclick="navigateTo('about'); toggleMobileMenu()" id="m-nav-about" class="text-xl font-serif italic text-white hover:text-theme uppercase tracking-widest">À Propos</button>
+        
+        <!-- Lang Selector Mobile -->
+        <div class="flex flex-wrap justify-center gap-2 px-10 mt-4" id="lang-list-mobile"></div>
+
+        <a href="https://t.me/MitsuyoshiEA" target="_blank" id="m-nav-tg" class="mt-4 px-10 py-4 bg-theme text-black font-bold text-xs uppercase tracking-widest rounded-full">Rejoindre Telegram</a>
     </div>
 
     <!-- Conteneur Principal -->
@@ -148,46 +306,348 @@
     <footer class="py-16 md:py-20 px-6 md:px-10 border-t border-theme/20 bg-dark-panel/80 relative z-10 transition-colors duration-700">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
             <div>
-                <div class="text-theme font-serif text-2xl md:text-3xl mb-6 italic transition-colors">Mitsuyoshi Ecosystem</div>
-                <p class="text-xs text-gray-400 leading-relaxed uppercase tracking-[0.1em]">
+                <div class="text-theme font-serif text-2xl md:text-3xl mb-6 italic transition-colors" id="f-title">Mitsuyoshi Ecosystem</div>
+                <p class="text-xs text-gray-400 leading-relaxed uppercase tracking-[0.1em]" id="f-desc">
                     Outils cohérents, maîtrisés et durables, loin des promesses irréalistes. Transparence totale.
                 </p>
             </div>
             <div>
-                <h4 class="text-white text-[10px] font-bold uppercase tracking-widest mb-6">Navigation</h4>
+                <h4 class="text-white text-[10px] font-bold uppercase tracking-widest mb-6" id="f-nav-title">Navigation</h4>
                 <div class="flex flex-col gap-4 text-xs uppercase tracking-wider text-gray-500">
-                    <button onclick="navigateTo('home')" class="text-left hover:text-theme transition-colors">Accueil</button>
-                    <button onclick="navigateTo('catalog')" class="text-left hover:text-theme transition-colors">Catalogue EAs</button>
-                    <button onclick="navigateTo('about')" class="text-left hover:text-theme transition-colors">La Philosophie</button>
+                    <button onclick="navigateTo('home')" class="text-left hover:text-theme transition-colors" id="f-nav-home">Accueil</button>
+                    <button onclick="navigateTo('catalog')" class="text-left hover:text-theme transition-colors" id="f-nav-catalog">Catalogue EAs</button>
+                    <button onclick="navigateTo('about')" class="text-left hover:text-theme transition-colors" id="f-nav-about">La Philosophie</button>
                 </div>
             </div>
             <div>
-                <h4 class="text-white text-[10px] font-bold uppercase tracking-widest mb-6">Contact</h4>
+                <h4 class="text-white text-[10px] font-bold uppercase tracking-widest mb-6" id="f-contact-title">Contact</h4>
                 <div class="flex flex-col gap-4 text-xs text-gray-500">
-                    <a href="https://t.me/MitsuyoshiEA" target="_blank" class="hover:text-theme transition-colors border border-gray-700 px-4 py-2 inline-block w-max rounded">Telegram : @MITSUYOSHIHAMATO</a>
-                    <p class="italic text-[10px] mt-2 text-gray-600">Résultats détaillés et backtests affichés publiquement.</p>
+                    <a href="https://t.me/MitsuyoshiEA" target="_blank" class="hover:text-theme transition-colors border border-gray-700 px-4 py-2 inline-block w-max rounded" id="f-tg-link">Telegram : @MITSUYOSHIHAMATO</a>
+                    <p class="italic text-[10px] mt-2 text-gray-600" id="f-results">Résultats détaillés et backtests affichés publiquement.</p>
                 </div>
             </div>
         </div>
-        <div class="mt-16 pt-8 border-t border-white/5 text-center text-[8px] uppercase tracking-[0.6em] text-gray-600">
-            &copy; 2026 Mitsuyoshi Group by Yassine. Trading comporte des risques.
+        <div class="mt-16 pt-8 border-t border-white/5 text-center flex flex-col items-center gap-6">
+            <div class="text-[8px] uppercase tracking-[0.6em] text-gray-600" id="f-copy">
+                &copy; 2026 Mitsuyoshi Group by Yassine. Trading comporte des risques.
+            </div>
+            <button onclick="toggleModal('legal-modal')" class="text-[8px] uppercase tracking-[0.2em] text-theme/50 hover:text-theme transition-colors underline underline-offset-4">Mentions Légales & Avertissement</button>
         </div>
     </footer>
 
+    <!-- Legal Modal -->
+    <div id="legal-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-2xl invisible opacity-0 flex items-center justify-center p-6">
+        <div class="modal-content w-full max-w-2xl bg-dark-panel border border-theme/20 rounded-3xl p-8 md:p-12 max-h-[80vh] overflow-y-auto transform scale-95 opacity-0 transition-all duration-500">
+            <div class="flex justify-between items-center mb-10 border-b border-theme/20 pb-6">
+                <h2 class="text-2xl font-serif italic text-theme" id="l-title">Mentions Légales</h2>
+                <button onclick="toggleModal('legal-modal')" class="text-white hover:text-theme transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="space-y-8 text-xs md:text-sm text-gray-400 leading-relaxed uppercase tracking-widest">
+                <section>
+                    <h3 class="text-white font-bold mb-4" id="l-risk-t">AVERTISSEMENT SUR LES RISQUES</h3>
+                    <p id="l-risk-d">Le trading sur devises (Forex) et sur CFD comporte un niveau de risque élevé et peut ne pas convenir à tous les investisseurs.</p>
+                </section>
+                <section>
+                    <h3 class="text-white font-bold mb-4" id="l-prop-t">PROPRIÉTÉ INTELLECTUELLE</h3>
+                    <p id="l-prop-d">Tout le contenu de ce site est la propriété exclusive du Groupe Mitsuyoshi.</p>
+                </section>
+                <section>
+                    <h3 class="text-white font-bold mb-4" id="l-advice-t">NON-CONSEIL FINANCIER</h3>
+                    <p id="l-advice-d">Les informations fournies ne constituent pas un conseil en investissement.</p>
+                </section>
+            </div>
+            <div class="mt-12 pt-8 border-t border-theme/10 text-center">
+                <button onclick="toggleModal('legal-modal')" class="px-8 py-4 border border-theme text-theme text-[10px] font-bold uppercase tracking-widest rounded hover:bg-theme hover:text-black transition-all">Fermer</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- GLOBAL SETTINGS ---
+        // --- THEMES CONFIG ---
         const THEMES = {
             default: { color: '#D4AF37', bgParams: 'candles' },
-            japan:   { color: '#F3E5AB', bgParams: 'sakura' },
-            gold:    { color: '#fbbf24', bgParams: 'dust' },
-            orange:  { color: '#f97316', bgParams: 'streaks' },
-            bluefire:{ color: '#06b6d4', bgParams: 'embers' }
+            japan: { color: '#ffb7c5', bgParams: 'sakura' },
+            gold: { color: '#fbbf24', bgParams: 'dust' },
+            orange: { color: '#f97316', bgParams: 'streaks' },
+            bluefire: { color: '#06b6d4', bgParams: 'embers' }
         };
+
+        // --- I18N SYSTEM ---
+        let currentLang = localStorage.getItem('mitsuyoshi_lang') || 'fr';
+        const LANGUAGES = {
+            fr: { name: 'Français', dir: 'ltr' },
+            en: { name: 'English', dir: 'ltr' },
+            es: { name: 'Español', dir: 'ltr' },
+            ar: { name: 'العربية', dir: 'rtl' },
+            pt: { name: 'Português', dir: 'ltr' },
+            zh: { name: '中文', dir: 'ltr' },
+            ru: { name: 'Русский', dir: 'ltr' },
+            de: { name: 'Deutsch', dir: 'ltr' },
+            hi: { name: 'हिन्दी', dir: 'ltr' },
+            it: { name: 'Italiano', dir: 'ltr' }
+        };
+
+        const TRANSLATIONS = {
+            fr: {
+                nav_home: "Accueil", nav_catalog: "Catalogue", nav_about: "À Propos", nav_tg: "Rejoindre Telegram",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "Outils cohérents, maîtrisés et durables, loin des promesses irréalistes. Transparence totale.",
+                f_nav: "Navigation", f_cat: "Catalogue EAs", f_phil: "La Philosophie", f_contact: "Contact", f_res: "Résultats détaillés et backtests affichés publiquement.", f_copy: "© 2026 Mitsuyoshi Group by Yassine. Trading comporte des risques.",
+                hero_tag: "L'Intelligence Artificielle au Service du Capital", hero_t1: "La Révolution est", hero_t2: "Personnalisée.", hero_d1: '"La majorité des EA sont vendus comme des solutions miracles. Résultat : des comptes brûlés du jour au lendemain."', hero_d2: "Nous sommes à l'opposé de cette logique. Presets sur-mesure. Backtests transparents. Transparence totale.",
+                btn_cat: "Voir le Catalogue", btn_sim: "Simuler mes Gains", sim_t: "Calculateur de Profits", sim_p_t: "Compte Personnel (50%/mois)", sim_m_n: "Mode Neutre", sim_m_s: "Mode Scalable", sim_cap: "Capital de départ", sim_g_e: "Gain estimé (1 Mois)", sim_t_12: "Capital Total en 12 Mois", sim_c_d: "Si 100% des gains sont réinvestis (Intérêts composés purs).",
+                sim_prop_t: "Compte Prop Firm", sim_prop_d: "Stratégie ultra-sécurisée visant 5% mensuel pour passer et conserver les challenges (Max DD ~4.5%).", sim_cap_f: "Capital financé", sim_ret_e: "Retrait estimé (Cible 5%)", sim_g_v: "Gain Mensuel Validé",
+                about_tag: "Notre Identité", about_t: "La Philosophie du Laboratoire", about_f_t: "Fondation & Expertise", about_f_d: "Je m'appelle Yassine, développeur et trader actif sur les marchés financiers depuis plus de 6 ans. Au fil des années, j'ai construit une équipe dédiée exclusivement à la recherche quantitative et à l'optimisation de presets pour nos algorithmes.",
+                about_scam: "Notre Engament Anti-Scam", about_s1: "Transparence totale sur les backtests et résultats.", about_s2: "Systèmes torturés sur des historiques de marché complexes.", about_s3: "Aucun mensonge : le trading comporte des risques que nous encadrons.", about_p_t: "L'Art du Preset Sur-Mesure", about_p_d: "Un bon algorithme avec un mauvais réglage est un compte brûlé. C'est pourquoi nous adaptons nos configurations (.set) pour chaque utilisateur.",
+                cat_t: "Le Catalogue", cat_d: "Choisissez votre vecteur de rentabilité.", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "L'algorithme légendaire. Conçu pour la performance long terme. Trend follower avec gestion de grid strictement contrôlée.", bot_p_n: "Phoenix Bot", bot_p_s: "Nouveau", bot_p_d: "Bot exceptionnel en développement. Analyse de marché 100% technique sans indicateur. Orienté Smart Money Concepts (ICT).", bot_g_n: "IA GOLDSTUFF", bot_g_d: "Trend follower basé sur l'IA, inspiré d'un système russe. Spécialisé XAUUSD.", bot_x_n: "XTREM Bot", bot_x_d: "Le destructeur de graphiques. Conçu pour multiplier très rapidement un capital. Jusqu'à x3 par semaine.",
+                mit_tag: "L'Algorithme Maître", mit_i_t: "Adaptation & Volatilité", mit_i_d: "Mitsuyoshi Bot est un algorithme de trading avancé conçu pour exploiter les dynamiques de marché avec précision et discipline. Il repose sur une approche de trend following intelligent.", mit_g_t: "Gestion de Grid Contrôlée", mit_g_d: "L’un des piliers fondamentaux est sa gestion de grid strictement contrôlée. Chaque position est intégrée dans un panier avec une séquence de lots optimisée.", mit_s_t: "Sécurité du Capital", mit_s_d: "Le bot intègre un système complet de contrôle du drawdown avec des limites précises en pourcentage et en capital.", mit_v: "Validé par des backtests massifs de longue durée.", mit_btn: "Voir l'analyse Telegram",
+                cat_tag_p: "Prop Firm & Perso", cat_tag_r: "Revenus Rapides", cat_tag_x: "Risque Extreme", cat_tag_t: "Révolution Technique",
+                pho_tag: "L'Avenir de l'Analyse", pho_i_t: "Révolution Technique", pho_i_d: "Phoenix Bot représente une nouvelle génération de trading algorithmique. Il ne repose sur aucun indicateur technique classique.", pho_smc_t: "Smart Money Concepts", pho_smc_d: "Phoenix Bot s’appuie sur des concepts avancés inspirés des méthodologies ICT (Inner Circle Trader).", pho_stat_t: "Statut Actuel", pho_stat_d: "Résultats très prometteurs en backtest et live test.",
+                gol_tag: "IA & Volatilité", gol_d: "Un trend follower simple et redoutablement efficace, inspiré de l'ingénierie algorithmique russe. Orienté exclusivement sur la paire XAUUSD (Or).",
+                xtr_tag: "Croissance Exponentielle", xtr_d: "Le système conçu pour la multiplication ultra-rapide du capital. Jusqu'à x3 par semaine.", xtr_btn: "Activer le Scaler",
+                btn_acc: "Accéder", btn_exp: "Explorer sur Telegram", sim_inf_n: "(+50% de gains / mois, retirés)", sim_inf_s: "(Croissance exponentielle avec réinvestissement)",
+                legal_title: "Mentions Légales", legal_risk: "AVERTISSEMENT SUR LES RISQUES", legal_risk_d: "Le trading sur devises (Forex) et sur CFD comporte un niveau de risque élevé et peut ne pas convenir à tous les investisseurs. L'utilisation d'algorithmes de trading automatisés n'élimine pas ces risques. Vous pouvez perdre la totalité de votre capital investi.",
+                legal_prop: "PROPRIÉTÉ INTELLECTUELLE", legal_prop_d: "Tout le contenu de ce site, y compris les textes, logos et algorithmes, est la propriété exclusive du Groupe Mitsuyoshi. Toute reproduction est strictement interdite sans accord écrit.",
+                legal_advice: "NON-CONSEIL FINANCIER", legal_advice_d: "Les informations fournies sur ce site ne constituent pas un conseil en investissement. Mitsuyoshi fournit des outils technologiques, et non des services financiers ou de gestion de portefeuille."
+            },
+            en: {
+                nav_home: "Home", nav_catalog: "Catalog", nav_about: "About", nav_tg: "Join Telegram",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "Consistent, mastered and sustainable tools, far from unrealistic promises. Total transparency.",
+                f_nav: "Navigation", f_cat: "EAs Catalog", f_phil: "Philosophy", f_contact: "Contact", f_res: "Detailed results and backtests publicly displayed.", f_copy: "© 2026 Mitsuyoshi Group by Yassine. Trading involves risks.",
+                hero_tag: "Artificial Intelligence at the Service of Capital", hero_t1: "The Revolution is", hero_t2: "Personalized.", hero_d1: '"Most EAs are sold as miracle solutions. Result: accounts burned overnight."', hero_d2: "We are the opposite of this logic. Tailor-made presets. Transparent backtests. Total transparency.",
+                btn_cat: "View Catalog", btn_sim: "Simulate My Gains", sim_t: "Profit Calculator", sim_p_t: "Personal Account (50%/month)", sim_m_n: "Neutral Mode", sim_m_s: "Scalable Mode", sim_cap: "Starting Capital", sim_g_e: "Estimated Gain (1 Month)", sim_t_12: "Total Capital in 12 Months", sim_c_d: "If 100% of gains are reinvested (Pure compound interest).",
+                sim_prop_t: "Prop Firm Account", sim_prop_d: "Ultra-secure strategy aiming for 5% monthly to pass and keep challenges (Max DD ~4.5%).", sim_cap_f: "Funded Capital", sim_ret_e: "Estimated Withdrawal (5% Target)", sim_g_v: "Validated Monthly Gain",
+                about_tag: "Our Identity", about_t: "The Laboratory Philosophy", about_f_t: "Foundation & Expertise", about_f_d: "My name is Yassine, a developer and trader active in financial markets for over 6 years. Over the years, I have built a team dedicated exclusively to quantitative research.",
+                about_scam: "Our Anti-Scam Commitment", about_s1: "Total transparency on backtests and results.", about_s2: "Systems stress-tested on complex market histories.", about_s3: "No lies: trading involves risks that we manage.", about_p_t: "The Art of Custom Presets", about_p_d: "A good algorithm with bad settings is a burned account. That's why we adapt our configurations (.set) for each user.",
+                cat_t: "The Catalog", cat_d: "Choose your profitability vector.", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "The legendary algorithm. Designed for long-term performance. Trend follower with strictly controlled grid management.", bot_p_n: "Phoenix Bot", bot_p_s: "New", bot_p_d: "Exceptional bot in development. 100% technical market analysis without indicators. ICT oriented.", bot_g_n: "IA GOLDSTUFF", bot_g_d: "AI-based trend follower, inspired by a Russian system. Specialized in XAUUSD.", bot_x_n: "XTREM Bot", bot_x_d: "The chart destroyer. Designed to multiply capital very quickly. Up to x3 per week.",
+                mit_tag: "The Master Algorithm", mit_i_t: "Adaptation & Volatility", mit_i_d: "Mitsuyoshi Bot is an advanced trading algorithm designed to exploit market dynamics with precision and discipline.", mit_g_t: "Controlled Grid Management", mit_g_d: "One of the fundamental pillars is its strictly controlled grid management. Each position is integrated into a basket.", mit_s_t: "Capital Security", mit_s_d: "The bot integrates a complete drawdown control system with precise percentage and capital limits.", mit_v: "Validated by massive long-term backtests.", mit_btn: "View Telegram Analysis",
+                cat_tag_p: "Prop Firm & Personal", cat_tag_r: "Fast Income", cat_tag_x: "Extreme Risk", cat_tag_t: "Technical Revolution",
+                pho_tag: "The Future of Analysis", pho_i_t: "Technical Revolution", pho_i_d: "Phoenix Bot represents a new generation of algorithmic trading. It does not rely on any classic technical indicator.", pho_smc_t: "Smart Money Concepts", pho_smc_d: "Phoenix Bot relies on advanced concepts inspired by ICT (Inner Circle Trader) methodologies.", pho_stat_t: "Current Status", pho_stat_d: "Very promising results in backtest and live test.",
+                gol_tag: "AI & Volatility", gol_d: "A simple and remarkably effective trend follower, inspired by Russian algorithmic engineering. Specialized in XAUUSD (Gold).",
+                xtr_tag: "Exponential Growth", xtr_d: "System designed for ultra-fast capital multiplication. Up to x3 per week.", xtr_btn: "Activate Scaler",
+                btn_acc: "Access", btn_exp: "Explore on Telegram", sim_inf_n: "(+50% gains / month, withdrawn)", sim_inf_s: "(Exponential growth with reinvestment)",
+                legal_title: "Legal Mentions", legal_risk: "RISK DISCLOSURE", legal_risk_d: "Trading foreign exchange (Forex) and CFDs carries a high level of risk and may not be suitable for all investors. Using automated trading algorithms does not eliminate these risks. You may lose all of your invested capital.",
+                legal_prop: "INTELLECTUAL PROPERTY", legal_prop_d: "All content on this site, including text, logos, and algorithms, is the exclusive property of Mitsuyoshi Group. Any reproduction is strictly prohibited without written agreement.",
+                legal_advice: "NO FINANCIAL ADVICE", legal_advice_d: "The information provided on this site does not constitute investment advice. Mitsuyoshi provides technological tools, not financial or portfolio management services."
+            },
+            es: {
+                nav_home: "Inicio", nav_catalog: "Catálogo", nav_about: "Acerca de", nav_tg: "Unirse a Telegram",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "Herramientas coherentes, dominadas y sostenibles, lejos de promesas poco realistas. Transparencia total.",
+                f_nav: "Navegación", f_cat: "Catálogo EAs", f_phil: "La Filosofía", f_contact: "Contacto", f_res: "Resultados detallados y backtests mostrados públicamente.", f_copy: "© 2026 Mitsuyoshi Group por Yassine. El trading conlleva riesgos.",
+                hero_tag: "Inteligencia Artificial al Servicio del Capital", hero_t1: "La Revolución es", hero_t2: "Personalizada.", hero_d1: '"La mayoría de los EA se venden como soluciones milagrosas. Resultado: cuentas quemadas de la noche a la mañana."', hero_d2: "Somos lo opuesto a esta lógica. Ajustes a medida. Backtests transparentes. Transparencia total.",
+                btn_cat: "Ver Catálogo", btn_sim: "Simular mis Ganancias", sim_t: "Calculadora de Beneficios", sim_p_t: "Cuenta Personal (50%/mes)", sim_m_n: "Modo Neutro", sim_m_s: "Modo Escalable", sim_cap: "Capital inicial", sim_g_e: "Ganancia estimada (1 Mes)", sim_t_12: "Capital Total en 12 Meses", sim_c_d: "Si el 100% de las ganancias se reinvierten (Interés compuesto puro).",
+                sim_prop_t: "Cuenta Prop Firm", sim_prop_d: "Estrategia ultra segura con objetivo del 5% mensual para pasar y mantener retos (Max DD ~4.5%).", sim_cap_f: "Capital financiado", sim_ret_e: "Retiro estimado (Objetivo 5%)", sim_g_v: "Ganancia Mensual Validada",
+                about_tag: "Nuestra Identidad", about_t: "La Filosofía del Laboratorio", about_f_t: "Fundación y Experiencia", about_f_d: "Mi nombre es Yassine, desarrollador y trader activo en los mercados financieros desde hace más de 6 años.",
+                about_scam: "Nuestro Compromiso Anti-Estafa", about_s1: "Transparencia total en backtests y resultados.", about_s2: "Sistemas probados en historias de mercado complejas.", about_s3: "Sin mentiras: el trading implica riesgos que gestionamos.", about_p_t: "El Arte del Ajuste a Medida", about_p_d: "Un buen algoritmo con ajustes incorrectos es una cuenta quemada. Por eso adaptamos nuestras configuraciones (.set) para cada usuario.",
+                cat_t: "El Catálogo", cat_d: "Elija su vector de rentabilidad.", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "El algoritmo legendario. Diseñado para el rendimiento a largo plazo.", bot_p_n: "Phoenix Bot", bot_p_s: "Nuevo", bot_p_d: "Bot excepcional en desarrollo. Análisis de mercado 100% técnico sin indicadores.", bot_g_n: "IA GOLDSTUFF", bot_g_d: "Seguidor de tendencias basado en IA, inspirado en un sistema ruso.", bot_x_n: "XTREM Bot", bot_x_d: "El destructor de gráficos. Diseñado para multiplicar el capital muy rápidamente.",
+                mit_tag: "El Algoritmo Maestro", mit_i_t: "Adaptación y Volatilidad", mit_i_d: "Mitsuyoshi Bot es un algoritmo de trading avanzado diseñado para explotar la dinámica del mercado.", mit_g_t: "Gestión de Grid Controlada", mit_g_d: "Uno de los pilares fundamentales es su gestión de grid estrictamente controlada.", mit_s_t: "Seguridad del Capital", mit_s_d: "El bot integra un sistema completo de control de drawdown.", mit_v: "Validado por backtests masivos a largo plazo.", mit_btn: "Ver Análisis en Telegram",
+                cat_tag_p: "Prop Firm y Personal", cat_tag_r: "Ingresos Rápidos", cat_tag_x: "Riesgo Extremo", cat_tag_t: "Revolución Técnica",
+                pho_tag: "El Futuro del Análisis", pho_i_t: "Revolución Técnica", pho_i_d: "Phoenix Bot representa una nueva generación de trading algorítmico.", pho_smc_t: "Smart Money Concepts", pho_smc_d: "Phoenix Bot se basa en conceptos avanzados inspirados en ICT.", pho_stat_t: "Estado Actual", pho_stat_d: "Resultados muy prometedores en backtest y prueba real.",
+                gol_tag: "IA y Volatilidad", gol_d: "Un seguidor de tendencias simple y eficaz, inspirado en la ingeniería rusa.",
+                xtr_tag: "Crecimiento Exponencial", xtr_d: "Sistema diseñado para la multiplicación ultra rápida del capital.", xtr_btn: "Activar el Scaler",
+                btn_acc: "Acceder", btn_exp: "Explorar en Telegram", sim_inf_n: "(+50% ganancias / mes, retiradas)", sim_inf_s: "(Crecimiento exponencial con reinversión)"
+            },
+            ar: {
+                nav_home: "الرئيسية", nav_catalog: "الكتالوج", nav_about: "حول", nav_tg: "انضم إلى تيليجرام",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "أدوات متسقة ومتقنة ومستدامة، بعيدة عن الوعود غير الواقعية. شفافية كاملة.",
+                f_nav: "التنقل", f_cat: "كتالوج الخبراء", f_phil: "الفلسفة", f_contact: "اتصل بنا", f_res: "نتائج مفصلة واختبارات معروضة علنًا.", f_copy: "© 2026 Mitsuyoshi Group بواسطة Yassine. التداول ينطوي على مخاطر.",
+                hero_tag: "الذكاء الاصطناعي في خدمة رأس المال", hero_t1: "الثورة هي", hero_t2: "مخصصة.", hero_d1: '"يتم بيع معظم الخبراء كحلول سحرية. النتيجة: حسابات محترقة بين عشية وضحاها."', hero_d2: "نحن عكس هذا المنطق. إعدادات مخصصة. اختبارات شفافة. شفافية كاملة.",
+                btn_cat: "عرض الكتالوج", btn_sim: "محاكاة أرباحي", sim_t: "حاسبة الأرباح", sim_p_t: "حساب شخصي (50٪ / شهر)", sim_m_n: "الوضع المحايد", sim_m_s: "الوضع القابل للتوسع", sim_cap: "رأس المال المبدئي", sim_g_e: "الربح المقدر (شهر واحد)", sim_t_12: "إجمالي رأس المال في 12 شهرًا", sim_c_d: "إذا تم إعادة استثمار 100٪ من الأرباح (فائدة مركبة نقية).",
+                sim_prop_t: "حساب شركة تمويل", sim_prop_d: "استراتيجية آمنة للغاية تهدف إلى 5٪ شهريًا لاجتياز التحديات والحفاظ عليها (أقصى تراجع ~4.5٪).", sim_cap_f: "رأس المال الممول", sim_ret_e: "السحب المقدر (هدف 5٪)", sim_g_v: "الربح الشهري المعتمد",
+                about_tag: "هويتنا", about_t: "فلسفة المختبر", about_f_t: "التأسيس والخبرة", about_f_d: "اسمي ياسين، مطور ومتداول نشط في الأسواق المالية لأكثر من 6 سنوات.",
+                about_scam: "التزامنا بمكافحة الاحتيال", about_s1: "شفافية كاملة في الاختبارات والنتائج.", about_s2: "أنظمة تم اختبارها في تواريخ سوق معقدة.", about_s3: "لا أكاذيب: التداول ينطوي على مخاطر نديرها.", about_p_t: "فن الإعداد المخصص", about_p_d: "خوارزمية جيدة بإعدادات سيئة تعني حسابًا محترقًا. لهذا السبب نقوم بتخصيص إعداداتنا لكل متداول.",
+                cat_t: "الكتالوج", cat_d: "اختر وسيلة الربحية الخاصة بك.", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "الخوارزمية الأسطورية. مصممة للأداء طويل الأمد.", bot_p_n: "Phoenix Bot", bot_p_s: "جديد", bot_p_d: "بوت استثنائي قيد التطوير. تحليل سوق فني 100٪ بدون مؤشرات.", bot_g_n: "IA GOLDSTUFF", bot_g_d: "تابع اتجاه يعتمد على الذكاء الاصطناعي، مستوحى من نظام روسي.", bot_x_n: "XTREM Bot", bot_x_d: "مدمر الرسوم البيانية. مصمم لمضاعفة رأس المال بسرعة كبيرة.",
+                mit_tag: "الخوارزمية الرئيسية", mit_i_t: "التكيف والتقلب", mit_i_d: "Mitsuyoshi Bot هي خوارزمية تداول متقدمة مصممة لاستغلال ديناميكيات السوق بدقة وانضباط.", mit_g_t: "إدارة الشبكة المتحكم بها", mit_g_d: "أحد الركائز الأساسية هو إدارة الشبكة الخاضعة لرقابة صارمة.", mit_s_t: "أمن رأس المال", mit_s_d: "يتضمن البوت نظامًا كاملاً للتحكم في التراجع.", mit_v: "تم التحقق منه من خلال اختبارات خلفية ضخمة طويلة الأمد.", mit_btn: "عرض تحليل تيليجرام",
+                cat_tag_p: "شركة تمويل وشخصي", cat_tag_r: "دخل سريع", cat_tag_x: "مخاطرة عالية", cat_tag_t: "ثورة تقنية",
+                pho_tag: "مستقبل التحليل", pho_i_t: "ثورة تقنية", pho_i_d: "يمثل Phoenix Bot جيلاً جديدًا من التداول الخوارزمي.", pho_smc_t: "مفاهيم المال الذكي", pho_smc_d: "يعتمد Phoenix Bot على مفاهيم متقدمة مستوحاة من منهجيات ICT.", pho_stat_t: "الوضع الحالي", pho_stat_d: "نتائج واعدة للغاية في الاختبارات.",
+                gol_tag: "الذكاء الاصطناعي والتقلب", gol_d: "تابع اتجاه بسيط وفعال للغاية، مستوحى من الهندسة الخوارزمية الروسية.",
+                xtr_tag: "نمو أسي", xtr_d: "نظام مصمم لمضاعفة رأس المال بسرعة فائقة.", xtr_btn: "تفعيل المسرع",
+                btn_acc: "دخول", btn_exp: "استكشف على تيليجرام", sim_inf_n: "(+50٪ أرباح / شهر، مسحوبة)", sim_inf_s: "(نمو أسي مع إعادة الاستثمار)"
+            },
+            pt: {
+                nav_home: "Início", nav_catalog: "Catálogo", nav_about: "Sobre", nav_tg: "Entrar no Telegram",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "Ferramentas coerentes, dominadas e sustentáveis, longe de promessas irrealistas. Transparência total.",
+                f_nav: "Navegação", f_cat: "Catálogo EAs", f_phil: "A Filosofia", f_contact: "Contato", f_res: "Resultados detalhados e backtests exibidos publicamente.", f_copy: "© 2026 Mitsuyoshi Group por Yassine. Trading envolve riscos.",
+                hero_tag: "Inteligência Artificial a Serviço do Capital", hero_t1: "A Revolução é", hero_t2: "Personalizada.", hero_d1: '"A maioria dos EAs são vendidos como soluções milagrosas. Resultado: contas queimadas da noite para o dia."', hero_d2: "Somos o oposto dessa lógica. Presets sob medida. Backtests transparentes. Transparência total.",
+                btn_cat: "Ver Catálogo", btn_sim: "Simular Meus Ganhos", sim_t: "Calculadora de Lucros", sim_p_t: "Conta Pessoal (50%/mês)", sim_m_n: "Modo Neutro", sim_m_s: "Modo Escalável", sim_cap: "Capital inicial", sim_g_e: "Ganho estimado (1 Mês)", sim_t_12: "Capital Total en 12 Meses", sim_c_d: "Se 100% dos ganhos forem reinvestidos (Juros compostos puros).",
+                sim_prop_t: "Conta Prop Firm", sim_prop_d: "Estratégia ultra-segura visando 5% mensal para passar e manter desafios (Max DD ~4.5%).", sim_cap_f: "Capital financiado", sim_ret_e: "Retirada estimada (Alvo 5%)", sim_g_v: "Ganho Mensal Validado",
+                about_tag: "Nossa Identidade", about_t: "A Filosofia do Laboratório", about_f_t: "Fundação e Experiência", about_f_d: "Meu nome é Yassine, desenvolvedor e trader ativo nos mercados financeiros há mais de 6 anos.",
+                about_scam: "Nosso Compromisso Anti-Scam", about_s1: "Transparência total nos backtests e resultados.", about_s2: "Sistemas testados em históricos de mercado complexos.", about_s3: "Sem mentiras: o trading envolve riscos que gerenciamos.", about_p_t: "A Arte do Preset Sob Medida", about_p_d: "Um bom algoritmo com configurações erradas é uma conta queimada. Por isso adaptamos nossas configurações para cada usuário.",
+                cat_t: "O Catálogo", cat_d: "Escolha seu vetor de rentabilidade.", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "O algoritmo lendário. Projetado para desempenho de longo prazo.", bot_p_n: "Phoenix Bot", bot_p_s: "Novo", bot_p_d: "Bot excepcional em desenvolvimento. Análise de mercado 100% técnica sem indicadores.", bot_g_n: "IA GOLDSTUFF", bot_g_d: "Seguidor de tendência baseado em IA, inspirado em um sistema russo.", bot_x_n: "XTREM Bot", bot_x_d: "O destruidor de gráficos. Projetado para multiplicar o capital muito rapidamente.",
+                mit_tag: "O Algoritmo Mestre", mit_i_t: "Adaptação e Volatilidade", mit_i_d: "Mitsuyoshi Bot é um algoritmo de trading avançado projetado para explorar as dinâmicas do mercado.", mit_g_t: "Gestão de Grid Controlada", mit_g_d: "Um dos pilares fundamentais é sua gestão de grid estritamente controlada.", mit_s_t: "Segurança do Capital", mit_s_d: "O bot integra un sistema completo de controle de drawdown.", mit_v: "Validado por backtests massivos de longa duração.", mit_btn: "Ver análise no Telegram",
+                cat_tag_p: "Prop Firm e Pessoal", cat_tag_r: "Renda Rápida", cat_tag_x: "Risco Extremo", cat_tag_t: "Revolução Técnica",
+                pho_tag: "O Futuro da Análise", pho_i_t: "Revolução Técnica", pho_i_d: "Phoenix Bot representa uma nova geração de trading algorítmico.", pho_smc_t: "Smart Money Concepts", pho_smc_d: "Phoenix Bot baseia-se em conceitos avançados inspirados em ICT.", pho_stat_t: "Status Atual", pho_stat_d: "Resultados muito promissores em backtest e teste real.",
+                gol_tag: "IA e Volatilidade", gol_d: "Um seguidor de tendência simples e eficaz, inspirado na engenharia russa.",
+                xtr_tag: "Crescimento Exponencial", xtr_d: "Sistema projetado para multiplicação ultra-rápida do capital.", xtr_btn: "Ativar o Scaler",
+                btn_acc: "Aceder", btn_exp: "Explorar no Telegram", sim_inf_n: "(+50% ganhos / mês, retirados)", sim_inf_s: "(Crescimento exponencial com reinvestimento)"
+            },
+            zh: {
+                nav_home: "首页", nav_catalog: "产品目录", nav_about: "关于我们", nav_tg: "加入 Telegram",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "一贯、精湛且可持续的工具，远离不切实际的承诺。完全透明。",
+                f_nav: "导航", f_cat: "EA 目录", f_phil: "哲学", f_contact: "联系我们", f_res: "详细结果和回测公开显示。", f_copy: "© 2026 Mitsuyoshi Group 由 Yassine 提供。交易涉及风险。",
+                hero_tag: "人工智能服务于资本", hero_t1: "这场革命是", hero_t2: "个性化的。", hero_d1: '"大多数 EA 被当作灵丹妙药出售。结果：账户一夜之间烧毁。"', hero_d2: "我们与这种逻辑相反。量身定制的预设。透明的回测。完全透明。",
+                btn_cat: "查看目录", btn_sim: "模拟我的收益", sim_t: "利润计算器", sim_p_t: "个人账户 (50%/月)", sim_m_n: "中性模式", sim_m_s: "可扩展模式", sim_cap: "起始资金", sim_g_e: "预计收益 (1 个月)", sim_t_12: "12 个月总资金", sim_c_d: "如果收益 100% 重新投资（纯复利）。",
+                sim_prop_t: "道具公司账户", sim_prop_d: "超安全策略，目标每月 5%，以通过并保持挑战（最大回撤约 4.5%）。", sim_cap_f: "资助资金", sim_ret_e: "预计提款（5% 目标）", sim_g_v: "确认每月收益",
+                about_tag: "我们的身份", about_t: "实验室哲学", about_f_t: "基金会与专业知识", about_f_d: "我叫 Yassine，是一名活跃在金融市场超过 6 年的开发人员和交易员。",
+                about_scam: "我们的反诈骗承诺", about_s1: "回测和结果完全透明。", about_s2: "在复杂的市场历史中测试过的系统。", about_s3: "没有谎言：交易涉及我们管理的风险。", about_p_t: "量身定制预设的艺术", about_p_d: "设置错误的优秀算法就是烧毁的账户。这就是为什么我们为每个用户调整配置。",
+                cat_t: "产品目录", cat_d: "选择您的盈利矢量。", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "传奇算法。为长期性能而设计。", bot_p_n: "Phoenix Bot", bot_p_s: "新品", bot_p_d: "开发中的卓越机器人。100% 技术市场分析，不含指标。", bot_g_n: "IA GOLDSTUFF", bot_g_d: "基于人工智能的趋势跟随者，灵感来自俄罗斯系统。", bot_x_n: "XTREM Bot", bot_x_d: "图表破坏者。旨在极快地增加资金。",
+                mit_tag: "大师算法", mit_i_t: "适应与波动", mit_i_d: "Mitsuyoshi Bot 是一款先进的交易算法，旨在精确地利用市场动态。", mit_g_t: "受控网格管理", mit_g_d: "基本支柱之一是其严格控制的网格管理。", mit_s_t: "资本安全", mit_s_d: "该机器人集成了完整的提款控制系统。", mit_v: "通过大规模长期回测验证。", mit_btn: "查看 Telegram 分析",
+                cat_tag_p: "道具公司与个人", cat_tag_r: "快速收入", cat_tag_x: "极端风险", cat_tag_t: "技术革命",
+                pho_tag: "分析的未来", pho_i_t: "技术革命", pho_i_d: "Phoenix Bot 代表了新一代算法交易。", pho_smc_t: "聪明钱概念", pho_smc_d: "Phoenix Bot 依靠受 ICT 启发的先进概念。", pho_stat_t: "当前状态", pho_stat_d: "回测和实测结果非常有希望。",
+                gol_tag: "人工智能与波动", gol_d: "简单且非常有效的趋势跟随者，灵感来自俄罗斯算法工程。",
+                xtr_tag: "指数级增长", xtr_d: "专为超快资金翻倍而设计的系统。", xtr_btn: "激活扩展器",
+                btn_acc: "进入", btn_exp: "在 Telegram 上探索", sim_inf_n: "(+50% 收益/月，已提取)", sim_inf_s: "(带再投资的指数增长)"
+            },
+            ru: {
+                nav_home: "Главная", nav_catalog: "Каталог", nav_about: "О нас", nav_tg: "Вступить в Telegram",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "Согласованные и устойчивые инструменты, вдали от нереалистичных обещаний. Полная прозрачность.",
+                f_nav: "Навигация", f_cat: "Каталог советников", f_phil: "Философия", f_contact: "Контакты", f_res: "Детальные результаты и бэктесты в открытом доступе.", f_copy: "© 2026 Mitsuyoshi Group от Yassine. Трейдинг сопряжен с рисками.",
+                hero_tag: "Искусственный интеллект на службе капитала", hero_t1: "Революция стала", hero_t2: "Персонализированной.", hero_d1: '"Большинство советников продаются как чудо-решения. Результат: слитые счета за одну ночь."', hero_d2: "Мы — полная противоположность. Индивидуальные настройки. Прозрачные бэктесты. Полная прозрачность.",
+                btn_cat: "Посмотреть каталог", btn_sim: "Рассчитать прибыль", sim_t: "Калькулятор прибыли", sim_p_t: "Личный счет (50%/мес)", sim_m_n: "Нейтральный режим", sim_m_s: "Масштабируемый режим", sim_cap: "Начальный капитал", sim_g_e: "Ожидаемая прибыль (1 месяц)", sim_t_12: "Итоговый капитал через 12 месяцев", sim_c_d: "При реинвестировании 100% прибыли (сложный процент).",
+                sim_prop_t: "Счет Prop Firm", sim_prop_d: "Ультра-безопасная стратегия, нацеленная на 5% в месяц для прохождения челленджей (Max DD ~4.5%).", sim_cap_f: "Финансируемый капитал", sim_ret_e: "Ожидаемый вывод (цель 5%)", sim_g_v: "Подтвержденная ежемесячная прибыль",
+                about_tag: "Наша идентичность", about_t: "Философия Лаборатории", about_f_t: "Основание и экспертиза", about_f_d: "Меня зовут Ясин, я разработчик и трейдер, работающий на рынках более 6 лет.",
+                about_scam: "Наше обязательство против скама", about_s1: "Полная прозрачность бэктестов и результатов.", about_s2: "Системы протестированы на сложных рыночных данных.", about_s3: "Никакой лжи: трейдинг — это риски, которыми мы управляем.", about_p_t: "Искусство индивидуальных настроек", about_p_d: "Хороший алгоритм с плохими настройками — это слитый счет. Поэтому мы адаптируем конфигурации под каждого пользователя.",
+                cat_t: "Каталог", cat_d: "Выберите ваш вектор доходности.", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "Легендарный алгоритм. Создан для долгосрочной работы.", bot_p_n: "Phoenix Bot", bot_p_s: "Новинка", bot_p_d: "Исключительный бот в разработке. 100% технический анализ без индикаторов.", bot_g_n: "IA GOLDSTUFF", bot_g_d: "Трендовый робот на базе ИИ, вдохновленный российскими системами.", bot_x_n: "XTREM Bot", bot_x_d: "Разрушитель графиков. Создан для сверхбыстрого умножения капитала.",
+                mit_tag: "Главный алгоритм", mit_i_t: "Адаптация и волатильность", mit_i_d: "Mitsuyoshi Bot — это продвинутый торговый алгоритм для точной работы с динамикой рынка.", mit_g_t: "Контролируемая сетка", mit_g_d: "Один из фундаментальных столпов — строго контролируемая сеточная торговля.", mit_s_t: "Безопасность капитала", mit_s_d: "Бот включает полную систему контроля просадки.", mit_v: "Подтверждено масштабными долгосрочными бэктестами.", mit_btn: "Смотреть анализ в Telegram",
+                cat_tag_p: "Prop Firm и Личный", cat_tag_r: "Быстрый доход", cat_tag_x: "Экстремальный риск", cat_tag_t: "Техническая революция",
+                pho_tag: "Будущее анализа", pho_i_t: "Техническая революция", pho_i_d: "Phoenix Bot представляет новое поколение алгоритмической торговли.", pho_smc_t: "Smart Money Concepts", pho_smc_d: "Phoenix Bot опирается на продвинутые концепции ICT.", pho_stat_t: "Текущий статус", pho_stat_d: "Многообещающие результаты в тестах.",
+                gol_tag: "ИИ и волатильность", gol_d: "Простой и эффективный трендовый робот, вдохновленный российской школой.",
+                xtr_tag: "Экспоненциальный рост", xtr_d: "Система для сверхбыстрого умножения капитала.", xtr_btn: "Активировать скалер",
+                btn_acc: "Войти", btn_exp: "Изучить в Telegram", sim_inf_n: "(+50% прибыли в месяц, вывод)", sim_inf_s: "(Экспоненциальный рост с реинвестированием)"
+            },
+            de: {
+                nav_home: "Startseite", nav_catalog: "Katalog", nav_about: "Über uns", nav_tg: "Telegram beitreten",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "Konsistente, meisterhafte und nachhaltige Werkzeuge, fernab von unrealistischen Versprechen. Volle Transparenz.",
+                f_nav: "Navigation", f_cat: "EA-Katalog", f_phil: "Die Philosophie", f_contact: "Kontakt", f_res: "Detaillierte Ergebnisse und Backtests öffentlich einsehbar.", f_copy: "© 2026 Mitsuyoshi Group von Yassine. Trading ist mit Risiken verbunden.",
+                hero_tag: "Künstliche Intelligenz im Dienste des Kapitals", hero_t1: "Die Revolution ist", hero_t2: "Personalisiert.", hero_d1: '"Die meisten EAs werden als Wunderlösungen verkauft. Ergebnis: Konten werden über Nacht verbrannt."', hero_d2: "Wir sind das Gegenteil dieser Logik. Maßgeschneiderte Presets. Transparente Backtests. Volle Transparenz.",
+                btn_cat: "Katalog ansehen", btn_sim: "Gewinne simulieren", sim_t: "Profit-Rechner", sim_p_t: "Privates Konto (50%/Monat)", sim_m_n: "Neutraler Modus", sim_m_s: "Skalierbarer Modus", sim_cap: "Startkapital", sim_g_e: "Geschätzter Gewinn (1 Monat)", sim_t_12: "Gesamtkapital in 12 Monaten", sim_c_d: "Wenn 100% der Gewinne reinvestiert werden (Reiner Zinseszins).",
+                sim_prop_t: "Prop-Firm-Konto", sim_prop_d: "Ultrasichere Strategie mit 5% monatlichem Ziel, um Challenges zu bestehen und zu halten (Max DD ~4.5%).", sim_cap_f: "Finanziertes Kapital", sim_ret_e: "Geschätzte Auszahlung (5% Ziel)", sim_g_v: "Validierter monatlicher Gewinn",
+                about_tag: "Unsere Identität", about_t: "Die Labor-Philosophie", about_f_t: "Gründung & Expertise", about_f_d: "Mein name ist Yassine, Entwickler und aktiver Trader an den Finanzmärkten seit über 6 Jahren.",
+                about_scam: "Unser Anti-Scam-Versprechen", about_s1: "Volle Transparenz bei Backtests and Ergebnissen.", about_s2: "Systeme an komplexen Markthistorien getestet.", about_s3: "Keine Lügen: Trading beinhaltet Risiken, die wir managen.", about_p_t: "Die Kunst der maßgeschneiderten Presets", about_p_d: "Ein guter Algorithmus mit falschen Einstellungen ist ein verbranntes Konto. Deshalb passen wir unsere Konfigurationen für jeden Nutzer an.",
+                cat_t: "Der Katalog", cat_d: "Wählen Sie Ihren Rentabilitätsvektor.", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "Der legendäre Algorithmus. Entwickelt für langfristige Performance.", bot_p_n: "Phoenix Bot", bot_p_s: "Neu", bot_p_d: "Außergewöhnlicher Bot in Entwicklung. 100% technische Marktanalyse ohne Indikatoren.", bot_g_n: "IA GOLDSTUFF", bot_g_d: "KI-basierter Trendfolger, inspiriert von einem russischen System.", bot_x_n: "XTREM Bot", bot_x_n: "XTREM Bot", bot_x_d: "Der Chart-Zerstörer. Entwickelt für extrem schnelle Kapitalvervielfachung.",
+                mit_tag: "Der Master-Algorithmus", mit_i_t: "Anpassung & Volatilität", mit_i_d: "Mitsuyoshi Bot ist ein fortschrittlicher Trading-Algorithmus zur präzisen Nutzung der Marktdynamik.", mit_g_t: "Kontrolliertes Grid-Management", mit_g_d: "Einer der Grundpfeiler ist das streng kontrollierte Grid-Management.", mit_s_t: "Kapitalsicherheit", mit_s_d: "Der Bot integriert ein vollständiges Drawdown-Kontrollsystem.", mit_v: "Validiert durch massive Langzeit-Backtests.", mit_btn: "Telegram-Analyse ansehen",
+                cat_tag_p: "Prop Firm & Privat", cat_tag_r: "Schnelles Einkommen", cat_tag_x: "Extremes Risiko", cat_tag_t: "Technische Revolution",
+                pho_tag: "Die Zukunft der Analyse", pho_i_t: "Technische Revolution", pho_i_d: "Phoenix Bot repräsentiert eine neue Generation des algorithmischen Tradings.", pho_smc_t: "Smart Money Concepts", pho_smc_d: "Phoenix Bot basiert auf fortgeschrittenen ICT-Konzepten.", pho_stat_t: "Aktueller Status", pho_stat_d: "Sehr vielversprechende Ergebnisse in Tests.",
+                gol_tag: "KI & Volatilität", gol_d: "Ein einfacher und bemerkenswert effektiver Trendfolger, inspiriert von russischer Algorithmus-Technik.",
+                xtr_tag: "Exponentielles Wachstum", xtr_d: "System zur ultraschnellen Kapitalvervielfachung.", xtr_btn: "Scaler aktivieren",
+                btn_acc: "Zugreifen", btn_exp: "Auf Telegram erkunden", sim_inf_n: "(+50% Gewinn / Monat, ausgezahlt)", sim_inf_s: "(Exponentielles Wachstum mit Reinvestition)"
+            },
+            hi: {
+                nav_home: "होम", nav_catalog: "कैटलॉग", nav_about: "बारे में", nav_tg: "टेलीग्राम से जुड़ें",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "अवास्तविक वादों से दूर, सुसंगत और टिकाऊ उपकरण। पूर्ण पारदर्शिता।",
+                f_nav: "नेविगेशन", f_cat: "EA कैटलॉग", f_phil: "दर्शन", f_contact: "संपर्क", f_res: "विस्तृत परिणाम और बैकटेस्ट सार्वजनिक रूप से प्रदर्शित।", f_copy: "© 2026 Mitsuyoshi Group द्वारा Yassine। ट्रेडिंग में जोखिम शामिल है।",
+                hero_tag: "पूंजी की सेवा में आर्टिफिशियल इंटेलिजेंस", hero_t1: "क्रांति है", hero_t2: "व्यक्तिगत।", hero_d1: '"अधिकांश EA चमत्कार समाधान के रूप में बेचे जाते हैं। परिणाम: रातों-रात खाते जल गए।"', hero_d2: "हम इस तर्क के विपरीत हैं। दर्जी द्वारा बनाए गए प्रीसेट। पारदर्शी बैकटेस्ट। पूर्ण पारदर्शिता।",
+                btn_cat: "कैटलॉग देखें", btn_sim: "मेरे लाभ का अनुकरण करें", sim_t: "लाभ कैलकुलेटर", sim_p_t: "व्यक्तिगत खाता (50%/महीना)", sim_m_n: "तटस्थ मोड", sim_m_s: "स्केलेबल मोड", sim_cap: "प्रारंभिक पूंजी", sim_g_e: "अनुमानित लाभ (1 महीना)", sim_t_12: "12 महीनों में कुल पूंजी", sim_c_d: "यदि 100% लाभ का पुनर्निवेश किया जाता है (शुद्ध चक्रवृद्धि ब्याज)।",
+                sim_prop_t: "प्रॉप फर्म खाता", sim_prop_d: "चुनौतियों को पार करने और बनाए रखने के लिए 5% मासिक लक्ष्य वाली अति-सुरक्षित रणनीति (अधिकतम DD ~4.5%)।", sim_cap_f: "वित्त पोषित पूंजी", sim_ret_e: "अनुमानित निकासी (5% लक्ष्य)", sim_g_v: "मान्य मासिक लाभ",
+                about_tag: "हमारी पहचान", about_t: "प्रयोगशाला दर्शन", about_f_t: "नींव और विशेषज्ञता", about_f_d: "मेरा नाम यासीन है, जो 6 वर्षों से अधिक समय से वित्तीय बाजारों में सक्रिय एक डेवलपर और ट्रेडर हूँ।",
+                about_scam: "हमारी एंटी-स्कैम प्रतिबद्धता", about_s1: "बैकटेस्ट और परिणामों पर पूर्ण पारदर्शिता।", about_s2: "जटिल बाजार इतिहास पर परीक्षण किए गए सिस्टम।", about_s3: "कोई झूठ नहीं: ट्रेडिंग में वे जोखिम शामिल हैं जिन्हें हम प्रबंधित करते हैं।", about_p_t: "कस्टम प्रीसेट की कला", about_p_d: "गलत सेटिंग्स वाला एक अच्छा एल्गोरिथ्म एक जला हुआ खाता है। इसलिए हम प्रत्येक उपयोगकर्ता के लिए अपने कॉन्फ़िगरेशन को अनुकूलित करते हैं।",
+                cat_t: "कैटलॉग", cat_d: "अपना लाभप्रदता वेक्टर चुनें।", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "दिग्गज एल्गोरिथ्म। दीर्घकालिक प्रदर्शन के लिए डिज़ाइन किया गया।", bot_p_n: "Phoenix Bot", bot_p_s: "नया", bot_p_d: "विकास के अधीन असाधारण बॉट। संकेतकों के बिना 100% तकनीकी बाजार विश्लेषण।", bot_g_n: "IA GOLDSTUFF", bot_g_d: "AI-आधारित ट्रेंड फॉलोअर, रूसी प्रणाली से प्रेरित।", bot_x_n: "XTREM Bot", bot_x_d: "चार्ट विध्वंसक। पूंजी को बहुत तेज़ी से गुणा करने के लिए डिज़ाइन किया गया।",
+                mit_tag: "मास्टर एल्गोरिथ्म", mit_i_t: "अनुकूलन और अस्थिरता", mit_i_d: "Mitsuyoshi Bot एक उन्नत ट्रेडिंग एल्गोरिथ्म है जो बाजार की गतिशीलता का सटीक लाभ उठाने के लिए डिज़ाइन किया गया है।", mit_g_t: "नियंत्रित ग्रिड प्रबंधन", mit_g_d: "मौलिक स्तंभों में से एक इसका कड़ाई से नियंत्रित ग्रिड प्रबंधन है।", mit_s_t: "पूंजी सुरक्षा", mit_s_d: "बॉट एक पूर्ण ड्रॉडाउन नियंत्रण प्रणाली को एकीकृत करता है।", mit_v: "बड़े पैमाने पर दीर्घकालिक बैकटेस्ट द्वारा मान्य।", mit_btn: "टेलीग्राम विश्लेषण देखें",
+                pho_tag: "विश्लेषण का भविष्य", pho_i_t: "तकनीकी क्रांति", pho_i_d: "Phoenix Bot एल्गोरिथम ट्रेडिंग की एक नई पीढ़ी का प्रतिनिधित्व करता।", pho_smc_t: "स्मार्ट मनी कॉन्सेप्ट्स", pho_smc_d: "Phoenix Bot ICT प्रेरित उन्नत अवधारणाओं पर निर्भर करता है।", pho_stat_t: "वर्तमान स्थिति", pho_stat_d: "बैकटेस्ट और लाइव टेस्ट में बहुत ही आशाजनक परिणाम।",
+                gol_tag: "AI और अस्थिरता", gol_d: "रूसी एल्गोरिदम इंजीनियरिंग से प्रेरित एक सरल और उल्लेखनीय रूप से प्रभावी ट्रेंड फॉलोअर।",
+                xtr_tag: "घातीय वृद्धि", xtr_d: "अति-तेज़ पूंजी गुणन के लिए डिज़ाइन किया गया सिस्टम।", xtr_btn: "स्केलर सक्रिय करें",
+                btn_acc: "पहुंच", btn_exp: "टेलीग्राम पर एक्सप्लोर करें", sim_inf_n: "(+50% लाभ / माह, निकाला गया)", sim_inf_s: "(पुनर्निवेश के साथ घातीय वृद्धि)"
+            },
+            it: {
+                nav_home: "Home", nav_catalog: "Catalogo", nav_about: "Chi Siamo", nav_tg: "Unisciti a Telegram",
+                f_title: "Mitsuyoshi Ecosystem", f_desc: "Strumenti coerenti, padroneggiati e sostenibili, lontani da promesse irrealistiche. Trasparenza totale.",
+                f_nav: "Navigazione", f_cat: "Catalogo EAs", f_phil: "La Filosofia", f_contact: "Contatti", f_res: "Risultati dettagliati e backtest mostrati pubblicamente.", f_copy: "© 2026 Mitsuyoshi Group di Yassine. Il trading comporta rischi.",
+                hero_tag: "Intelligenza Artificiale al Servizio del Capitale", hero_t1: "La Rivoluzione è", hero_t2: "Personalizzata.", hero_d1: '"La maggior parte degli EA sono venduti come soluzioni miracolose. Risultato: conti bruciati dall\'oggi al domani."', hero_d2: "Siamo l'opposto di questa logica. Preset su misura. Backtest trasparenti. Trasparenza totale.",
+                btn_cat: "Vedi il Catalogo", btn_sim: "Simula i miei Guadagni", sim_t: "Calcolatore di Profitti", sim_p_t: "Conto Personale (50%/mese)", sim_m_n: "Modo Neutro", sim_m_s: "Modo Scalabile", sim_cap: "Capitale iniziale", sim_g_e: "Guadagno stimato (1 Mese)", sim_t_12: "Capitale Totale in 12 Meses", sim_c_d: "Se il 100% dei guadagni viene reinvestito (Interesse composto puro).",
+                sim_prop_t: "Conto Prop Firm", sim_prop_d: "Strategia ultra-sicura mirata al 5% mensile per superare e mantenere le sfide (Max DD ~4.5%).", sim_cap_f: "Capitale finanziato", sim_ret_e: "Ritiro stimato (Target 5%)", sim_g_v: "Guadagno Mensile Validato",
+                about_tag: "La Nostra Identità", about_t: "La Filosofia del Laboratorio", about_f_t: "Fondazione ed Esperienza", about_f_d: "Mi chiamo Yassine, sviluppatore e trader attivo sui mercati finanziari da oltre 6 ans.",
+                about_scam: "Il Nostro Impegno Anti-Scam", about_s1: "Trasparenza totale su backtest e risultati.", about_s2: "Sistemi testati su storici di mercato complessi.", about_s3: "Nessuna bugia: il trading comporta rischi che gestiamo.", about_p_t: "L'Arte del Preset su Misura", about_p_d: "Un buon algoritmo con impostazioni errate è un conto bruciato. Per questo adattiamo le nostre configurazioni per ogni utente.",
+                cat_t: "Il Catalogo", cat_d: "Scegli il tuo vettore di redditività.", bot_m_n: "Mitsuyoshi Bot", bot_m_d: "L'algoritmo legendario. Progettato per performance a lungo termine.", bot_p_n: "Phoenix Bot", bot_p_s: "Nuovo", bot_p_d: "Bot eccezionale in sviluppo. Analisi di mercato 100% tecnica senza indicatori.", bot_g_n: "IA GOLDSTUFF", bot_g_d: "Trend follower basato su IA, ispirato a un sistema russo.", bot_x_n: "XTREM Bot", bot_x_d: "Il distruttore di grafici. Progettato per moltiplicare il capitale molto velocemente.",
+                mit_tag: "L'Algoritmo Maestro", mit_i_t: "Adattamento e Volatilità", mit_i_d: "Mitsuyoshi Bot è un algoritmo di trading avanzato progettato per sfruttare le dinamiche di mercato.", mit_g_t: "Gestione della Grid Controllata", mit_g_d: "Uno dei pilari fondamentali è la sua gestione della grid strettamente controllata.", mit_s_t: "Sicurezza del Capitale", mit_s_d: "Il bot integra un sistema completo di controllo del drawdown.", mit_v: "Validato da massicci backtest a lungo termine.", mit_btn: "Vedi analisi su Telegram",
+                cat_tag_p: "Prop Firm e Personale", cat_tag_r: "Guadagni Rapidi", cat_tag_x: "Rischio Estremo", cat_tag_t: "Rivoluzione Tecnica",
+                pho_tag: "Il Futuro dell'Analisi", pho_i_t: "Rivoluzione Tecnica", pho_i_d: "Phoenix Bot rappresenta una nuova generazione di trading algoritmico.", pho_smc_t: "Smart Money Concepts", pho_smc_d: "Phoenix Bot si basa su concetti avanzati ispirati alle metodologie ICT.", pho_stat_t: "Stato Attuale", pho_stat_d: "Risultati molto promettenti in backtest e test reale.",
+                gol_tag: "IA e Volatilità", gol_d: "Un trend follower semplice e incredibilmente efficace, ispirato all'ingegneria russa.",
+                xtr_tag: "Crescita Esponenziale", xtr_d: "Sistema progettato per la moltiplicazione ultra-rapida del capitale.", xtr_btn: "Attiva lo Scaler",
+                btn_acc: "Accedere", btn_exp: "Esplora su Telegram", sim_inf_n: "(+50% guadagni / mese, ritirati)", sim_inf_s: "(Crescita esponenziale con reinvestimento)"
+            }
+        };
+
+        function t(key) {
+            return TRANSLATIONS[currentLang][key] || TRANSLATIONS['fr'][key] || key;
+        }
+
+        function updateStaticUI() {
+            // Update Nav
+            document.getElementById('link-home').innerText = t('nav_home');
+            document.getElementById('link-catalog').innerText = t('nav_catalog');
+            document.getElementById('link-about').innerText = t('nav_about');
+            document.getElementById('nav-tg-btn').innerText = t('nav_tg');
+            
+            // Mobile Nav
+            document.getElementById('m-nav-home').innerText = t('nav_home');
+            document.getElementById('m-nav-catalog').innerText = t('nav_catalog');
+            document.getElementById('m-nav-about').innerText = t('nav_about');
+            document.getElementById('m-nav-tg').innerText = t('nav_tg');
+
+            // Footer
+            document.getElementById('f-title').innerText = t('f_title');
+            document.getElementById('f-desc').innerText = t('f_desc');
+            document.getElementById('f-nav-title').innerText = t('f_nav');
+            document.getElementById('f-nav-home').innerText = t('nav_home');
+            document.getElementById('f-nav-catalog').innerText = t('f_cat');
+            document.getElementById('f-nav-about').innerText = t('f_phil');
+            document.getElementById('f-contact-title').innerText = t('f_contact');
+            document.getElementById('f-tg-link').innerText = "Telegram : @MITSUYOSHIHAMATO";
+            document.getElementById('f-results').innerText = t('f_res');
+            document.getElementById('f-copy').innerText = t('f_copy');
+
+            // Update direction
+            document.getElementById('html-tag').dir = LANGUAGES[currentLang].dir;
+            document.getElementById('current-lang-label').innerText = currentLang.toUpperCase();
+
+            // Legal Modal
+            document.getElementById('l-title').innerText = t('legal_title');
+            document.getElementById('l-risk-t').innerText = t('legal_risk');
+            document.getElementById('l-risk-d').innerText = t('legal_risk_d');
+            document.getElementById('l-prop-t').innerText = t('legal_prop');
+            document.getElementById('l-prop-d').innerText = t('legal_prop_d');
+            document.getElementById('l-advice-t').innerText = t('legal_advice');
+            document.getElementById('l-advice-d').innerText = t('legal_advice_d');
+        }
+
+        function initLangSwitcher() {
+            const listDesktop = document.getElementById('lang-list-desktop');
+            const listMobile = document.getElementById('lang-list-mobile');
+            
+            listDesktop.innerHTML = '';
+            listMobile.innerHTML = '';
+
+            Object.keys(LANGUAGES).forEach(code => {
+                // Desktop
+                const divD = document.createElement('div');
+                divD.className = `lang-option ${currentLang === code ? 'active' : ''}`;
+                divD.innerHTML = `<span>${LANGUAGES[code].name}</span>`;
+                divD.onclick = () => setLanguage(code);
+                listDesktop.appendChild(divD);
+
+                // Mobile
+                const btnM = document.createElement('button');
+                btnM.className = `px-3 py-1 text-[10px] uppercase font-bold border rounded ${currentLang === code ? 'bg-theme text-black border-theme' : 'border-white/20 text-white'}`;
+                btnM.innerText = code;
+                btnM.onclick = () => setLanguage(code);
+                listMobile.appendChild(btnM);
+            });
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('mitsuyoshi_lang', lang);
+            updateStaticUI();
+            initLangSwitcher();
+            navigateTo(activePageId);
+        }
+
+        let activePageId = 'home';
 
         function setCSSTheme(themeKey) {
             const theme = THEMES[themeKey] || THEMES.default;
             document.documentElement.style.setProperty('--theme-color', theme.color);
-            document.documentElement.style.setProperty('--theme-glow', theme.color + '44'); // Add transparency
+            document.documentElement.style.setProperty('--theme-glow', theme.color + '44'); 
             initBackground(theme.bgParams, theme.color);
         }
 
@@ -338,7 +798,7 @@
                 res12m.innerText = Math.round(finalCap).toLocaleString() + " €";
             }
             
-            document.getElementById('sim-info-text').innerText = simMode === 'neutre' ? "(+50% de gains / mois, retirés)" : "(Croissance exponentielle avec réinvestissement)";
+            document.getElementById('sim-info-text').innerText = simMode === 'neutre' ? t('sim_inf_n') : t('sim_inf_s');
         }
 
         function updatePropSim() {
@@ -346,51 +806,51 @@
             if(!input) return;
             const cap = input.value;
             document.getElementById('label-prop').innerText = parseInt(cap).toLocaleString() + " €";
-            document.getElementById('res-prop').innerText = Math.round(cap * 0.05).toLocaleString() + " €"; // 5% Prop
+            document.getElementById('res-prop').innerText = Math.round(cap * 0.05).toLocaleString() + " €";
         }
 
         // --- PAGE ROUTING & CONTENT ---
         const pages = {
-            home: `
+            home: () => `
                 <div id="page-wrapper">
                     <section class="min-h-screen flex flex-col items-center justify-center text-center px-6 relative">
-                        <div class="gsap-reveal inline-block px-6 py-2 border border-theme/30 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.4em] uppercase text-theme mb-8 md:mb-12 shadow-[0_0_20px_var(--theme-glow)] bg-theme/5">L'Intelligence Artificielle au Service du Capital</div>
+                        <div class="gsap-reveal inline-block px-6 py-2 border border-theme/30 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.4em] uppercase text-theme mb-8 md:mb-12 shadow-[0_0_20px_var(--theme-glow)] bg-theme/5">${t('hero_tag')}</div>
                         
                         <h1 class="gsap-reveal text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-6 md:mb-8 tracking-tighter leading-tight drop-shadow-2xl">
-                            La Révolution est<br><span class="text-theme-gradient italic">Personnalisée.</span>
+                            ${t('hero_t1')}<br><span class="text-theme-gradient italic">${t('hero_t2')}</span>
                         </h1>
                         
                         <p class="gsap-reveal max-w-2xl text-gray-400 text-xs md:text-sm font-light leading-relaxed mb-12 md:mb-16 uppercase tracking-[0.2em] px-4">
-                            "La majorité des EA sont vendus comme des solutions miracles. Résultat : des comptes brûlés du jour au lendemain."<br><br>
-                            <span class="text-white font-bold text-theme">Nous sommes à l'opposé de cette logique. Presets sur-mesure. Backtests transparents. Transparence totale.</span>
+                            ${t('hero_d1')}<br><br>
+                            <span class="text-white font-bold text-theme">${t('hero_d2')}</span>
                         </p>
                         
                         <div class="gsap-reveal flex flex-col sm:flex-row justify-center gap-6 w-full px-4">
-                            <button onclick="navigateTo('catalog')" class="w-full sm:w-auto px-10 py-5 bg-theme text-black font-bold text-[11px] uppercase tracking-[0.3em] rounded hover:scale-105 transition-transform shadow-[0_0_30px_var(--theme-glow)]">Voir le Catalogue</button>
-                            <a href="#simulators" class="w-full sm:w-auto px-10 py-5 border border-white/20 text-white text-[11px] uppercase font-bold tracking-[0.3em] rounded hover:border-theme transition-colors">Simuler mes Gains</a>
+                            <button onclick="navigateTo('catalog')" class="w-full sm:w-auto px-10 py-5 bg-theme text-black font-bold text-[11px] uppercase tracking-[0.3em] rounded hover:scale-105 transition-transform shadow-[0_0_30px_var(--theme-glow)]">${t('btn_cat')}</button>
+                            <a href="#simulators" class="w-full sm:w-auto px-10 py-5 border border-white/20 text-white text-[11px] uppercase font-bold tracking-[0.3em] rounded hover:border-theme transition-colors">${t('btn_sim')}</a>
                         </div>
                     </section>
 
                     <section id="simulators" class="py-24 md:py-32 px-6 md:px-10 bg-[#030305]/80 backdrop-blur-md">
                         <div class="max-w-6xl mx-auto">
-                            <h2 class="gsap-reveal text-3xl md:text-5xl font-serif text-center mb-16 md:mb-24 italic text-white">Calculateur de <span class="text-theme">Profits</span></h2>
+                            <h2 class="gsap-reveal text-3xl md:text-5xl font-serif text-center mb-16 md:mb-24 italic text-white">${t('sim_t')}</h2>
                             
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
                                 <!-- SIMULATEUR PERSO -->
                                 <div class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl border-theme/30 relative flex flex-col justify-between overflow-hidden">
                                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-theme/10 rounded-full blur-3xl"></div>
                                     <div class="relative z-10">
-                                        <h3 class="text-lg md:text-xl font-bold uppercase tracking-widest mb-6">Compte Personnel (50%/mois)</h3>
+                                        <h3 class="text-lg md:text-xl font-bold uppercase tracking-widest mb-6">${t('sim_p_t')}</h3>
                                         
                                         <div class="flex flex-wrap gap-2 mb-8">
-                                            <button id="btn-neutre" onclick="setSimMode('neutre')" class="px-4 py-2 bg-theme text-black text-[10px] font-bold uppercase rounded">Mode Neutre</button>
-                                            <button id="btn-scalable" onclick="setSimMode('scalable')" class="px-4 py-2 bg-white/5 text-white text-[10px] font-bold uppercase hover:bg-white/10 rounded">Mode Scalable</button>
+                                            <button id="btn-neutre" onclick="setSimMode('neutre')" class="px-4 py-2 bg-theme text-black text-[10px] font-bold uppercase rounded">${t('sim_m_n')}</button>
+                                            <button id="btn-scalable" onclick="setSimMode('scalable')" class="px-4 py-2 bg-white/5 text-white text-[10px] font-bold uppercase hover:bg-white/10 rounded">${t('sim_m_s')}</button>
                                         </div>
                                         
                                         <div class="space-y-10">
                                             <div>
                                                 <div class="flex justify-between text-[10px] md:text-xs font-bold mb-4 uppercase tracking-tighter">
-                                                    <span>Capital de départ</span>
+                                                    <span>${t('sim_cap')}</span>
                                                     <span id="label-perso" class="text-theme text-sm md:text-base">5 000 €</span>
                                                 </div>
                                                 <input type="range" id="cap-perso" min="300" max="50000" step="100" value="5000" class="w-full" oninput="updatePersonalSim()">
@@ -398,15 +858,15 @@
                                             
                                             <div class="pt-8 border-t border-white/5">
                                                 <div class="flex flex-col items-center">
-                                                    <p id="sim-info-text" class="text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">(+50% de gains / mois, retirés)</p>
-                                                    <div class="text-[10px] text-gray-400 uppercase mb-1 tracking-widest">Gain estimé (1 Mois)</div>
+                                                    <p id="sim-info-text" class="text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">${t('sim_inf_n')}</p>
+                                                    <div class="text-[10px] text-gray-400 uppercase mb-1 tracking-widest">${t('sim_g_e')}</div>
                                                     <div id="res-perso" class="text-5xl md:text-6xl font-serif text-theme italic mb-4">2 500 €</div>
                                                 </div>
                                                 
                                                 <div id="projection-12m-block" class="hidden mt-6 p-6 bg-theme/5 border border-theme/20 rounded-2xl text-center">
-                                                    <div class="text-[9px] md:text-[10px] text-theme uppercase mb-2 tracking-[0.3em] font-bold">Capital Total en 12 Mois</div>
+                                                    <div class="text-[9px] md:text-[10px] text-theme uppercase mb-2 tracking-[0.3em] font-bold">${t('sim_t_12')}</div>
                                                     <div id="res-12m" class="text-3xl md:text-4xl font-serif text-white italic">648 340 €</div>
-                                                    <p class="text-[8px] text-gray-500 mt-2 uppercase tracking-widest italic">Si 100% des gains sont réinvestis (Intérêts composés purs).</p>
+                                                    <p class="text-[8px] text-gray-500 mt-2 uppercase tracking-widest italic">${t('sim_c_d')}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -416,21 +876,21 @@
                                 <!-- SIMULATEUR PROP FIRM -->
                                 <div class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl border-white/10 flex flex-col justify-between">
                                     <div>
-                                        <h3 class="text-lg md:text-xl font-bold uppercase tracking-widest mb-6">Compte Prop Firm</h3>
-                                        <p class="text-xs text-gray-500 mb-8 uppercase tracking-widest leading-relaxed">Stratégie ultra-sécurisée visant 5% mensuel pour passer et conserver les challenges (Max DD ~4.5%).</p>
+                                        <h3 class="text-lg md:text-xl font-bold uppercase tracking-widest mb-6">${t('sim_prop_t')}</h3>
+                                        <p class="text-xs text-gray-500 mb-8 uppercase tracking-widest leading-relaxed">${t('sim_prop_d')}</p>
                                         
                                         <div class="space-y-10">
                                             <div>
                                                 <div class="flex justify-between text-[10px] md:text-xs font-bold mb-4 uppercase tracking-tighter">
-                                                    <span>Capital financé</span>
+                                                    <span>${t('sim_cap_f')}</span>
                                                     <span id="label-prop" class="text-white text-sm md:text-base">100 000 €</span>
                                                 </div>
                                                 <input type="range" id="cap-prop" min="10000" max="400000" step="10000" value="100000" class="w-full" oninput="updatePropSim()">
                                             </div>
                                             
                                             <div class="pt-8 border-t border-white/5 text-center">
-                                                <p class="text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">Retrait estimé (Cible 5%)</p>
-                                                <div class="text-[10px] text-gray-400 uppercase mb-1 tracking-widest">Gain Mensuel Validé</div>
+                                                <p class="text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">${t('sim_ret_e')}</p>
+                                                <div class="text-[10px] text-gray-400 uppercase mb-1 tracking-widest">${t('sim_g_v')}</div>
                                                 <div id="res-prop" class="text-5xl md:text-6xl font-serif text-white italic">5 000 €</div>
                                             </div>
                                         </div>
@@ -441,11 +901,11 @@
                     </section>
                 </div>
             `,
-            about: `
+            about: () => `
                 <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-5xl mx-auto">
                     <div class="gsap-reveal text-center mb-20">
-                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Notre Identité</span>
-                        <h2 class="text-4xl md:text-6xl font-serif text-white mb-8 italic">La Philosophie du <span class="text-theme">Laboratoire</span></h2>
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">${t('about_tag')}</span>
+                        <h2 class="text-4xl md:text-6xl font-serif text-white mb-8 italic">${t('about_t')}</h2>
                     </div>
 
                     <div class="gsap-reveal glass-card p-8 md:p-14 rounded-3xl border-theme/20 relative overflow-hidden mb-12">
@@ -453,50 +913,49 @@
                             <svg class="w-64 h-64 text-theme" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.8L18.2 19H5.8L12 5.8z"/></svg>
                         </div>
                         <div class="relative z-10">
-                            <h3 class="text-2xl font-serif text-theme mb-6 italic">Fondation & Expertise</h3>
+                            <h3 class="text-2xl font-serif text-theme mb-6 italic">${t('about_f_t')}</h3>
                             <p class="text-gray-300 leading-relaxed mb-8 text-sm md:text-base">
-                                Je m'appelle <strong>Yassine</strong>, développeur et trader actif sur les marchés financiers depuis plus de 6 ans.<br><br>
-                                Au fil des années, j'ai construit une équipe dédiée exclusivement à la recherche quantitative et à l'optimisation de presets pour nos algorithmes. Notre objectif est clair : proposer des systèmes <strong>fiables, testés, et réellement exploitables</strong> sur le long terme.
+                                ${t('about_f_d')}
                             </p>
                             
                             <div class="p-6 bg-black/40 rounded-xl border border-white/5 mb-8">
-                                <h4 class="text-white font-bold text-[10px] uppercase tracking-widest mb-4">Notre Engament Anti-Scam</h4>
+                                <h4 class="text-white font-bold text-[10px] uppercase tracking-widest mb-4">${t('about_scam')}</h4>
                                 <ul class="text-xs md:text-sm text-gray-400 space-y-4">
-                                    <li class="flex items-center gap-4"><div class="w-2 h-2 bg-theme rounded-full shrink-0"></div> Transparence totale sur les backtests et résultats.</li>
-                                    <li class="flex items-center gap-4"><div class="w-2 h-2 bg-theme rounded-full shrink-0"></div> Systèmes torturés sur des historiques de marché complexes.</li>
-                                    <li class="flex items-center gap-4"><div class="w-2 h-2 bg-theme rounded-full shrink-0"></div> Aucun mensonge : le trading comporte des risques que nous encadrons.</li>
+                                    <li class="flex items-center gap-4"><div class="w-2 h-2 bg-theme rounded-full shrink-0"></div> ${t('about_s1')}</li>
+                                    <li class="flex items-center gap-4"><div class="w-2 h-2 bg-theme rounded-full shrink-0"></div> ${t('about_s2')}</li>
+                                    <li class="flex items-center gap-4"><div class="w-2 h-2 bg-theme rounded-full shrink-0"></div> ${t('about_s3')}</li>
                                 </ul>
                             </div>
 
-                            <h3 class="text-xl font-serif text-theme mb-4 italic mt-10">L'Art du Preset Sur-Mesure</h3>
+                            <h3 class="text-xl font-serif text-theme mb-4 italic mt-10">${t('about_p_t')}</h3>
                             <p class="text-gray-400 text-xs leading-relaxed uppercase tracking-[0.1em] mb-6">
-                                Un bon algorithme avec un mauvais réglage est un compte brûlé. C'est pourquoi nous adaptons nos configurations (.set) pour <strong>chaque</strong> utilisateur : selon son capital, sa psychologie du risque, et s'il trade sur un compte personnel ou Prop Firm.
+                                ${t('about_p_d')}
                             </p>
                         </div>
                     </div>
                 </div>
             `,
-            catalog: `
+            catalog: () => `
                 <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-7xl mx-auto">
                     <div class="gsap-reveal text-center mb-24">
-                        <h2 class="text-5xl md:text-7xl font-serif text-white mb-6 italic text-theme-gradient tracking-tight">Le Catalogue</h2>
-                        <p class="text-gray-500 uppercase tracking-[0.4em] text-[9px] md:text-[10px]">Choisissez votre vecteur de rentabilité.</p>
+                        <h2 class="text-5xl md:text-7xl font-serif text-white mb-6 italic text-theme-gradient tracking-tight">${t('cat_t')}</h2>
+                        <p class="text-gray-500 uppercase tracking-[0.4em] text-[9px] md:text-[10px]">${t('cat_d')}</p>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                         
                         <!-- MITSUYOSHI -->
-                        <div onclick="navigateTo('mitsuyoshi')" class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl cursor-pointer hover:border-[#D4AF37] transition-all group border-[#D4AF37]/20 relative overflow-hidden h-full flex flex-col">
-                            <div class="absolute inset-0 bg-[#D4AF37]/5 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
+                        <div onclick="navigateTo('mitsuyoshi')" class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl cursor-pointer hover:border-[#ffb7c5] transition-all group border-[#ffb7c5]/20 relative overflow-hidden h-full flex flex-col">
+                            <div class="absolute inset-0 bg-[#ffb7c5]/5 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                             <div class="relative z-10 flex-grow flex flex-col">
                                 <div class="flex justify-between items-start mb-6">
-                                    <h3 class="text-3xl md:text-4xl font-serif italic text-[#D4AF37]">Mitsuyoshi Bot</h3>
-                                    <span class="text-[9px] border border-[#D4AF37] text-[#D4AF37] px-3 py-1 rounded-full uppercase shrink-0">MT5</span>
+                                    <h3 class="text-3xl md:text-4xl font-serif italic text-[#ffb7c5]">${t('bot_m_n')}</h3>
+                                    <span class="text-[9px] border border-[#ffb7c5] text-[#ffb7c5] px-3 py-1 rounded-full uppercase shrink-0">MT5</span>
                                 </div>
-                                <p class="text-gray-400 text-xs md:text-sm mb-8 leading-relaxed flex-grow">L'algorithme légendaire. Conçu pour la performance long terme. Trend follower avec gestion de grid strictement contrôlée.</p>
+                                <p class="text-gray-400 text-xs md:text-sm mb-8 leading-relaxed flex-grow">${t('bot_m_d')}</p>
                                 <div class="flex justify-between items-center mt-auto pt-6 border-t border-white/10">
-                                    <p class="text-gray-500 text-[9px] uppercase tracking-widest font-bold">Prop Firm & Perso</p>
-                                    <span class="text-[#D4AF37] text-xl">&rarr;</span>
+                                    <p class="text-gray-500 text-[9px] uppercase tracking-widest font-bold">${t('cat_tag_p')}</p>
+                                    <span class="text-[#ffb7c5] text-xl">&rarr;</span>
                                 </div>
                             </div>
                         </div>
@@ -506,12 +965,12 @@
                             <div class="absolute inset-0 bg-[#06b6d4]/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                             <div class="relative z-10 flex-grow flex flex-col">
                                 <div class="flex justify-between items-start mb-6">
-                                    <h3 class="text-3xl md:text-4xl font-serif italic text-[#06b6d4]">Phoenix Bot</h3>
-                                    <span class="text-[9px] bg-[#06b6d4] text-black font-bold px-3 py-1 rounded-full uppercase animate-pulse shrink-0">Nouveau</span>
+                                    <h3 class="text-3xl md:text-4xl font-serif italic text-[#06b6d4]">${t('bot_p_n')}</h3>
+                                    <span class="text-[9px] bg-[#06b6d4] text-black font-bold px-3 py-1 rounded-full uppercase animate-pulse shrink-0">${t('bot_p_s')}</span>
                                 </div>
-                                <p class="text-gray-300 text-xs md:text-sm mb-8 leading-relaxed flex-grow">Bot exceptionnel en développement. Analyse de marché 100% technique sans indicateur. Orienté Smart Money Concepts (ICT).</p>
+                                <p class="text-gray-300 text-xs md:text-sm mb-8 leading-relaxed flex-grow">${t('bot_p_d')}</p>
                                 <div class="flex justify-between items-center mt-auto pt-6 border-t border-white/10">
-                                    <p class="text-[#06b6d4] text-[9px] uppercase tracking-widest font-bold">Révolution Technique</p>
+                                    <p class="text-[#06b6d4] text-[9px] uppercase tracking-widest font-bold">${t('cat_tag_t')}</p>
                                     <span class="text-[#06b6d4] text-xl">&rarr;</span>
                                 </div>
                             </div>
@@ -521,12 +980,12 @@
                         <div onclick="navigateTo('goldexpert')" class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl cursor-pointer hover:border-[#fbbf24] transition-all group h-full flex flex-col">
                             <div class="relative z-10 flex-grow flex flex-col">
                                 <div class="flex justify-between items-start mb-6">
-                                    <h3 class="text-2xl md:text-3xl font-serif italic group-hover:text-[#fbbf24] text-white transition-colors">IA GOLDSTUFF</h3>
+                                    <h3 class="text-2xl md:text-3xl font-serif italic group-hover:text-[#fbbf24] text-white transition-colors">${t('bot_g_n')}</h3>
                                     <span class="text-[9px] border border-[#fbbf24] text-[#fbbf24] px-3 py-1 rounded-full uppercase shrink-0">MT5</span>
                                 </div>
-                                <p class="text-gray-400 text-xs md:text-sm mb-8 leading-relaxed flex-grow">Trend follower basé sur l'IA, inspiré d'un système russe. Spécialisé XAUUSD. Approche agressive avec risque lié au lot.</p>
+                                <p class="text-gray-400 text-xs md:text-sm mb-8 leading-relaxed flex-grow">${t('bot_g_d')}</p>
                                 <div class="flex justify-between items-center mt-auto pt-6 border-t border-white/10">
-                                    <p class="text-gray-500 text-[9px] uppercase tracking-widest font-bold">Revenus Rapides</p>
+                                    <p class="text-gray-500 text-[9px] uppercase tracking-widest font-bold">${t('cat_tag_r')}</p>
                                     <span class="text-white group-hover:text-[#fbbf24] transition-colors text-xl">&rarr;</span>
                                 </div>
                             </div>
@@ -536,12 +995,12 @@
                         <div onclick="navigateTo('xtrem')" class="gsap-reveal glass-card p-8 md:p-10 rounded-3xl cursor-pointer hover:border-[#f97316] transition-all group shadow-[0_0_20px_rgba(249,115,22,0.05)] h-full flex flex-col">
                             <div class="relative z-10 flex-grow flex flex-col">
                                 <div class="flex justify-between items-start mb-6">
-                                    <h3 class="text-2xl md:text-3xl font-serif italic group-hover:text-[#f97316] text-white transition-colors">XTREM Bot</h3>
+                                    <h3 class="text-2xl md:text-3xl font-serif italic group-hover:text-[#f97316] text-white transition-colors">${t('bot_x_n')}</h3>
                                     <span class="text-[9px] border border-[#f97316] text-[#f97316] px-3 py-1 rounded-full uppercase shrink-0">MT4</span>
                                 </div>
-                                <p class="text-gray-400 text-xs md:text-sm mb-8 leading-relaxed flex-grow">Le destructeur de graphiques. Conçu pour multiplier très rapidement un capital. Jusqu'à x3 par semaine.</p>
+                                <p class="text-gray-400 text-xs md:text-sm mb-8 leading-relaxed flex-grow">${t('bot_x_d')}</p>
                                 <div class="flex justify-between items-center mt-auto pt-6 border-t border-white/10">
-                                    <p class="text-[#f97316]/70 text-[9px] uppercase tracking-widest font-bold">Risque Extrême</p>
+                                    <p class="text-[#f97316]/70 text-[9px] uppercase tracking-widest font-bold">${t('cat_tag_x')}</p>
                                     <span class="text-white group-hover:text-[#f97316] transition-colors text-xl">&rarr;</span>
                                 </div>
                             </div>
@@ -550,10 +1009,10 @@
                     </div>
                 </div>
             `,
-            mitsuyoshi: `
+            mitsuyoshi: () => `
                 <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-5xl mx-auto">
                     <div class="gsap-reveal text-center mb-16 md:mb-24">
-                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">L'Algorithme Maître</span>
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">${t('mit_tag')}</span>
                         <h2 class="text-5xl md:text-7xl font-serif text-white mb-8 italic">Mitsuyoshi <span class="text-theme">Bot</span></h2>
                     </div>
 
@@ -562,91 +1021,90 @@
                         <div class="absolute top-0 right-0 p-8 opacity-5">
                             <svg class="w-32 md:w-48 h-32 md:h-48 text-theme" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.8L18.2 19H5.8L12 5.8z"/></svg>
                         </div>
-                        <h3 class="text-2xl font-serif text-theme mb-6 italic">Adaptation & Volatilité</h3>
+                        <h3 class="text-2xl font-serif text-theme mb-6 italic">${t('mit_i_t')}</h3>
                         <p class="text-gray-300 leading-relaxed text-sm md:text-base">
-                            Mitsuyoshi Bot est un algorithme de trading avancé conçu pour exploiter les dynamiques de marché avec précision et discipline. Il repose sur une approche de trend following intelligent, capable de s’adapter en temps réel aux variations de volatilité grâce à une combinaison de filtres techniques robustes et de paramètres dynamiques.<br><br>
-                            Contrairement aux systèmes classiques, Mitsuyoshi Bot ne se contente pas de suivre le marché : il analyse en profondeur la structure des tendances à l’aide d’indicateurs comme l’<strong>ATR</strong> et l’<strong>ADX</strong>, lui permettant d’identifier les phases favorables tout en évitant les zones de bruit ou d’incertitude.
+                            ${t('mit_i_d')}
                         </p>
                     </div>
 
                     <!-- Core Features Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                         <div class="gsap-reveal glass-card p-8 rounded-2xl hover:border-theme/50 transition-colors">
-                            <h3 class="text-xl font-serif text-white mb-4 italic">Gestion de Grid Contrôlée</h3>
+                            <h3 class="text-xl font-serif text-white mb-4 italic">${t('mit_g_t')}</h3>
                             <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
-                                L’un des piliers fondamentaux est sa gestion de grid strictement contrôlée. Chaque position est intégrée dans un panier avec une séquence de lots optimisée, limitant l'exposition. Il impose des règles strictes de scaling, de cooldown et de limitation d'ordres pour une montée en position maîtrisée.
+                                ${t('mit_g_d')}
                             </p>
                         </div>
                         <div class="gsap-reveal glass-card p-8 rounded-2xl hover:border-theme/50 transition-colors">
-                            <h3 class="text-xl font-serif text-white mb-4 italic">Sécurité du Capital</h3>
+                            <h3 class="text-xl font-serif text-white mb-4 italic">${t('mit_s_t')}</h3>
                             <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
-                                Le bot intègre un système complet de contrôle du drawdown avec des limites précises en pourcentage et en capital. Des mécanismes complémentaires comme le trailing stop adaptatif ATR et des filtres anti contre-tendance (Bollinger Bands) renforcent cette sécurité.
+                                ${t('mit_s_d')}
                             </p>
                         </div>
                     </div>
 
                     <div class="gsap-reveal text-center glass-card p-8 rounded-2xl border-theme/20">
-                        <p class="text-gray-300 mb-6 text-sm">Validé par des backtests massifs de longue durée, démontrant une performance stable. Un PDF détaillé des performances est disponible sur notre canal.</p>
-                        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="inline-block px-8 py-4 bg-theme text-black font-bold text-[10px] uppercase tracking-widest rounded shadow-[0_0_15px_var(--theme-glow)] hover:scale-105 transition-transform">Voir l'analyse Telegram</a>
+                        <p class="text-gray-300 mb-6 text-sm">${t('mit_v')}</p>
+                        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="inline-block px-8 py-4 bg-theme text-black font-bold text-[10px] uppercase tracking-widest rounded shadow-[0_0_15px_var(--theme-glow)] hover:scale-105 transition-transform">${t('mit_btn')}</a>
                     </div>
                 </div>
             `,
-            phoenix: `
+            phoenix: () => `
                 <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-5xl mx-auto">
-                    <div class="gsap-reveal text-center mb-16 md:mb-24">
-                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">L'Avenir de l'Analyse</span>
-                        <h2 class="text-5xl md:text-7xl font-serif text-white mb-8 italic">Phoenix <span class="text-theme">Bot</span></h2>
+                    <div class="gsap-reveal text-center mb-16 md:mb-24 relative">
+                        <div id="phoenix-fire" class="phoenix-fire-wrap"></div>
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block relative z-10">${t('pho_tag')}</span>
+                        <h2 class="text-5xl md:text-7xl font-serif text-white mb-8 italic relative z-10">Phoenix <span class="text-theme">Bot</span></h2>
                     </div>
 
                     <div class="gsap-reveal glass-card p-8 md:p-14 rounded-3xl mb-12 relative overflow-hidden border-theme/30 bg-theme/5">
-                        <h3 class="text-2xl md:text-3xl font-serif text-theme mb-6 italic">Révolution Technique</h3>
+                        <h3 class="text-2xl md:text-3xl font-serif text-theme mb-6 italic">${t('pho_i_t')}</h3>
                         <p class="text-gray-300 leading-relaxed mb-6 text-sm md:text-base">
-                            Phoenix Bot représente une nouvelle génération de trading algorithmique en pleine évolution. Contrairement à 99% des Expert Advisors du marché, il ne repose sur <strong>aucun indicateur technique classique</strong> tel que le RSI, le MACD ou autres outils dérivés.<br><br>
-                            Son approche est basée sur une analyse de marché 100% technique, centrée exclusivement sur le comportement du prix et la structure du marché. Cette méthode permet d’éliminer les signaux retardés et d’obtenir une lecture plus précise et directe des mouvements.
+                            ${t('pho_i_d')}
                         </p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
                         <div class="gsap-reveal glass-card p-8 rounded-2xl">
-                            <h3 class="text-xl font-serif text-white mb-4 italic">Smart Money Concepts</h3>
+                            <h3 class="text-xl font-serif text-white mb-4 italic">${t('pho_smc_t')}</h3>
                             <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
-                                Phoenix Bot s’appuie sur des concepts avancés inspirés des méthodologies ICT (Inner Circle Trader), en intégrant des notions clés comme la liquidité, les déséquilibres de marché et les zones institutionnelles. Il comprend la logique des mouvements.
+                                ${t('pho_smc_d')}
                             </p>
                         </div>
                         <div class="gsap-reveal glass-card p-8 rounded-2xl flex flex-col justify-center items-center text-center bg-black/50 border-theme/20 shadow-[0_0_30px_var(--theme-glow)]">
-                            <div class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4">Statut Actuel</div>
-                            <div class="text-2xl font-serif text-white mb-4 italic">Nouveau</div>
-                            <p class="text-xs text-gray-500 mb-6">Résultats très prometteurs en backtest et live test.</p>
-                            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="px-6 py-3 bg-theme text-black text-[10px] uppercase font-bold tracking-widest rounded hover:scale-105 transition-transform">Accéder</a>
+                            <div class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4">${t('pho_stat_t')}</div>
+                            <div class="text-2xl font-serif text-white mb-4 italic">${t('bot_p_s')}</div>
+                            <p class="text-xs text-gray-500 mb-6">${t('pho_stat_d')}</p>
+                            <a href="https://t.me/MitsuyoshiEA" target="_blank" class="px-6 py-3 bg-theme text-black text-[10px] uppercase font-bold tracking-widest rounded hover:scale-105 transition-transform">${t('btn_acc')}</a>
                         </div>
                     </div>
                 </div>
             `,
-            goldexpert: `
+            goldexpert: () => `
                 <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-4xl mx-auto">
                     <div class="gsap-reveal text-center mb-16">
-                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">IA & Volatilité</span>
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">${t('gol_tag')}</span>
                         <h2 class="text-5xl md:text-7xl font-serif text-white mb-8 italic">IA <span class="text-theme">GOLDSTUFF</span></h2>
                     </div>
                     <div class="gsap-reveal glass-card p-10 rounded-3xl text-center border-theme/30 bg-theme/5">
                         <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-10">
-                            Un trend follower simple et redoutablement efficace, inspiré de l'ingénierie algorithmique russe. Orienté exclusivement sur la paire XAUUSD (Or). Il déploie une approche agressive où le risque est directement lié au dimensionnement du lot. Idéal pour ceux qui cherchent des revenus rapides en acceptant de plus forts tirages.
+                            ${t('gol_d')}
                         </p>
-                        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="inline-block px-10 py-4 bg-theme text-black font-bold text-[10px] uppercase tracking-widest rounded shadow-[0_0_20px_var(--theme-glow)]">Explorer sur Telegram</a>
+                        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="inline-block px-10 py-4 bg-theme text-black font-bold text-[10px] uppercase tracking-widest rounded shadow-[0_0_20px_var(--theme-glow)]">${t('btn_exp')}</a>
                     </div>
                 </div>
             `,
-            xtrem: `
+            xtrem: () => `
                 <div id="page-wrapper" class="px-6 md:px-10 py-32 max-w-4xl mx-auto">
                     <div class="gsap-reveal text-center mb-16">
-                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Croissance Exponentielle</span>
+                        <span class="text-theme font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">${t('xtr_tag')}</span>
                         <h2 class="text-5xl md:text-7xl font-serif text-white mb-8 italic"><span class="text-theme">XTREM</span> Bot</h2>
                     </div>
                     <div class="gsap-reveal glass-card p-10 rounded-3xl text-center border-theme/30 bg-theme/5 shadow-[0_0_40px_var(--theme-glow)]">
                         <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-10">
-                            Le système conçu pour la multiplication ultra-rapide du capital. Des gains très élevés et fréquents portés par une stratégie court-terme agressive. Il vise jusqu'à <strong class="text-theme">x3 par semaine</strong>. Attention, ce robot s'accompagne d'un risque très élevé de pertes importantes et est réservé aux profils cherchant à scale rapidement sur de petits comptes personnels.
+                            ${t('xtr_d')}
                         </p>
-                        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="inline-block px-10 py-4 bg-theme text-black font-bold text-[10px] uppercase tracking-widest rounded">Activer le Scaler</a>
+                        <a href="https://t.me/MitsuyoshiEA" target="_blank" class="inline-block px-10 py-4 bg-theme text-black font-bold text-[10px] uppercase tracking-widest rounded">${t('xtr_btn')}</a>
                     </div>
                 </div>
             `
@@ -654,11 +1112,12 @@
 
         // --- NAVIGATION & ANIMATION SYSTEM ---
         function navigateTo(pageId) {
+            activePageId = pageId;
             const container = document.getElementById('page-content');
             
             // Fade out current content
             gsap.to(container, { opacity: 0, y: -20, duration: 0.3, onComplete: () => {
-                container.innerHTML = pages[pageId];
+                container.innerHTML = pages[pageId](); 
                 
                 // Set logic for specific pages
                 if (pageId === 'home') {
@@ -672,7 +1131,7 @@
                 else if (pageId === 'phoenix') setCSSTheme('bluefire');
                 else if (pageId === 'xtrem') setCSSTheme('orange');
                 else if (pageId === 'goldexpert') setCSSTheme('gold');
-                else setCSSTheme('default'); // Home, Catalog, About
+                else setCSSTheme('default'); 
 
                 window.scrollTo(0, 0);
                 
@@ -681,10 +1140,10 @@
                 const activeBtn = document.getElementById(`link-${pageId}`);
                 if (activeBtn) activeBtn.classList.add('nav-link-active');
                 
-                // Fade in new content with staggered reveals
+                // Fade in new content
                 gsap.fromTo(container, { opacity: 0 }, { opacity: 1, duration: 0.2 });
                 
-                // Trigger scroll animations if elements exist
+                // Trigger scroll animations
                 const reveals = document.querySelectorAll('.gsap-reveal');
                 if(reveals.length > 0) {
                     gsap.fromTo(reveals, 
@@ -692,12 +1151,93 @@
                         { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }
                     );
                 }
+
+                if(pageId === 'phoenix') {
+                    initFire();
+                }
             }});
+        }
+
+        // --- LOADER LOGIC ---
+        function runLoader() {
+            const loader = document.getElementById('loader');
+            
+            // Create particles
+            for(let i=0; i<50; i++) {
+                const p = document.createElement('div');
+                p.className = 'loader-particle';
+                const size = Math.random() * 3 + 1;
+                gsap.set(p, {
+                    width: size, height: size,
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    opacity: Math.random() * 0.5
+                });
+                loader.appendChild(p);
+                
+                gsap.to(p, {
+                    y: "-=100",
+                    opacity: 0,
+                    duration: 2 + Math.random() * 2,
+                    repeat: -1,
+                    ease: "none",
+                    delay: Math.random() * 2
+                });
+            }
+
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    gsap.to('#loader', { 
+                        opacity: 0,
+                        duration: 1.5, 
+                        ease: 'power4.inOut',
+                        onComplete: () => {
+                            document.getElementById('loader').remove();
+                            document.body.classList.remove('overflow-hidden');
+                        }
+                    });
+                }
+            });
+
+            // Init 3D State
+            gsap.set('.loader-logo', { rotationY: 90, opacity: 0 });
+            gsap.set('.loader-grid', { rotationX: 75, y: 200 });
+
+            tl.to('.loader-logo', { rotationY: 0, opacity: 1, duration: 2, ease: 'expo.out' })
+              .to('.loader-grid', { y: 0, opacity: 0.1, duration: 3, ease: 'power2.out' }, 0)
+              .to('#loader-bar', { 
+                  width: '100%', 
+                  duration: 4, 
+                  ease: 'power2.inOut' 
+              }, 0.5)
+              .to('.loader-logo', { 
+                  z: 100,
+                  textShadow: '0 0 100px #D4AF37',
+                  duration: 2,
+                  ease: 'power2.inOut'
+              }, 1)
+              .to('.loader-logo', { 
+                  scale: 0.8, 
+                  opacity: 0, 
+                  duration: 1, 
+                  ease: 'power4.in' 
+              }, '-=1');
+            
+            // Grid movement
+            gsap.to('.loader-grid', {
+                backgroundPosition: '0 50px',
+                duration: 2,
+                repeat: -1,
+                ease: 'none'
+            });
         }
 
         window.onload = () => {
             gsap.registerPlugin(ScrollTrigger);
-            navigateTo('home');
+            updateStaticUI();
+            initLangSwitcher();
+            navigateTo(activePageId);
+            runLoader();
         };
     </script>
 </body>
