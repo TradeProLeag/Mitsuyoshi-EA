@@ -25,31 +25,39 @@ app.use(express.static(__dirname));
 // --- AUTH ENDPOINTS ---
 
 app.post('/api/signup', async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    const { data, error } = await supabase.from('users').insert([{
-        email,
-        first_name: firstName,
-        last_name: lastName,
-        full_name: `${firstName} ${lastName}`,
-        password: hashedPassword
-    }]);
+    try {
+        const { firstName, lastName, email, password } = req.body;
+        
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const { data, error } = await supabase.from('users').insert([{
+            email,
+            first_name: firstName,
+            last_name: lastName,
+            full_name: `${firstName} ${lastName}`,
+            password: hashedPassword
+        }]);
 
-    if (error) return res.status(400).json({ status: 'error', message: error.message });
-    res.json({ status: 'success', message: 'Account created' });
+        if (error) return res.status(400).json({ status: 'error', message: error.message });
+        res.json({ status: 'success', message: 'Account created' });
+    } catch (e) {
+        res.status(500).json({ status: 'error', message: e.message });
+    }
 });
 
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
-    
-    const { data, error } = await supabase.from('users').select('*').eq('email', email).single();
+    try {
+        const { email, password } = req.body;
+        
+        const { data, error } = await supabase.from('users').select('*').eq('email', email).single();
 
-    if (data && await bcrypt.compare(password, data.password)) {
-        res.json({ status: 'success', user: { email: data.email, fullName: data.full_name } });
-    } else {
-        res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+        if (data && await bcrypt.compare(password, data.password)) {
+            res.json({ status: 'success', user: { email: data.email, fullName: data.full_name } });
+        } else {
+            res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+        }
+    } catch (e) {
+        res.status(500).json({ status: 'error', message: e.message });
     }
 });
 
