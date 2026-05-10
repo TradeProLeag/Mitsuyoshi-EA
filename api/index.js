@@ -190,6 +190,20 @@ app.post('/api/admin/toggle-account', async (req, res) => {
     }
 });
 
+app.post('/api/admin/delete-user', async (req, res) => {
+    const { password, email } = req.body;
+    if (password !== ADMIN_PASSWORD) return res.status(403).send('Forbidden');
+    
+    try {
+        await supabase.from('accounts').delete().eq('email', email);
+        const { error } = await supabase.from('users').delete().eq('email', email);
+        if (error) res.status(500).json({ status: 'error', message: error.message });
+        else res.json({ status: 'success' });
+    } catch (e) {
+        res.status(500).json({ status: 'error', message: e.message });
+    }
+});
+
 // --- DASHBOARD DATA ---
 
 app.get('/api/dashboard', async (req, res) => {

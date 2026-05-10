@@ -195,9 +195,12 @@
                         <b>${item.user.fullName}</b><br>
                         <span>${item.user.email}</span>
                     </div>
-                    <div style="text-align: right;">
-                        <div style="font-weight: 700; color: var(--theme);">$${item.accounts.reduce((a,b)=>a+(parseFloat(b.balance)||0),0).toLocaleString()}</div>
-                        <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase;">${item.accounts.length} Accounts</div>
+                    <div style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 20px;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--theme);">$${item.accounts.reduce((a,b)=>a+(parseFloat(b.balance)||0),0).toLocaleString()}</div>
+                            <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase;">${item.accounts.length} Accounts</div>
+                        </div>
+                        <button onclick="deleteUser(event, '${item.user.email}')" style="background: none; border: none; color: #ff4444; font-size: 24px; cursor: pointer; padding: 5px; transition: 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Delete User">×</button>
                     </div>
                 </div>
             `).join('');
@@ -255,6 +258,21 @@
                     body: JSON.stringify({ password: adminPass, email: activeEmail, account_id: activeAccId, enabled: newState })
                 });
                 if(res.ok) fetchData();
+            } catch (e) { console.error(e); }
+        }
+
+        async function deleteUser(event, email) {
+            event.stopPropagation();
+            if (!confirm(`Are you sure you want to PERMANENTLY delete user ${email} and all their accounts?`)) return;
+            
+            try {
+                const res = await fetch('/api/admin/delete-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: adminPass, email: email })
+                });
+                if(res.ok) fetchData();
+                else alert("Failed to delete user");
             } catch (e) { console.error(e); }
         }
 
