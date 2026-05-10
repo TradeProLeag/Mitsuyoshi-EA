@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITSUYOSHI | Presets Sur-Mesure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-color: #D4AF37;
+            --theme-glow: rgba(212, 175, 55, 0.3);
+        }
+        body {
+            background-color: #030305;
+            color: #e4e4e7;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .text-theme { color: var(--theme-color); }
+        .border-theme { border-color: var(--theme-color); }
+        .bg-theme { background-color: var(--theme-color); }
+        
+        .glass-card {
+            background: rgba(20, 20, 25, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .animate-in { opacity: 0; transform: translateX(-30px); }
+
+        .line-decoration {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--theme-color), transparent);
+            width: 100%;
+            opacity: 0.2;
+        }
+        .shadow-glow { box-shadow: 0 0 20px var(--theme-glow); }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Flyer Container -->
+    <div id="flyer"
+        class="relative w-full max-w-[400px] aspect-[9/16] glass-card rounded-[40px] overflow-hidden flex flex-col p-10 border-theme/30 shadow-2xl">
+
+        <div class="line-decoration" style="top: 15%"></div>
+        <div class="line-decoration" style="top: 85%"></div>
+
+        <!-- Header -->
+        <div class="animate-in mb-10 flex flex-col items-center">
+            <img src="icon.png" alt="Logo" class="w-12 h-12 object-contain shadow-glow mb-4">
+            <h2 class="text-[10px] font-black tracking-[0.5em] uppercase text-theme mb-2">L'Art du Calibrage</h2>
+            <h1 class="text-3xl font-serif italic text-white leading-tight">Presets <span class="text-theme">Tailor-Made</span></h1>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-grow flex flex-col justify-center">
+            <div class="animate-in mb-10">
+                <p class="text-[11px] uppercase tracking-[0.2em] text-gray-300 leading-relaxed mb-6">
+                    Un algorithme est un moteur ; le <span class="text-theme font-bold">Preset</span> est le carburant.
+                </p>
+                <p class="text-[9px] uppercase tracking-widest text-gray-500 leading-relaxed">
+                    Nous créons une configuration unique pour chaque client, adaptée à son capital et son appétit pour le risque.
+                </p>
+            </div>
+
+            <div class="animate-in space-y-4">
+                <div class="p-4 rounded-xl border border-white/5 bg-white/5 flex items-center gap-4">
+                    <div class="text-theme font-black text-lg">01</div>
+                    <div class="text-[9px] uppercase tracking-widest text-white font-bold">Analyse du Profil Risque</div>
+                </div>
+                <div class="p-4 rounded-xl border border-white/5 bg-white/5 flex items-center gap-4">
+                    <div class="text-theme font-black text-lg">02</div>
+                    <div class="text-[9px] uppercase tracking-widest text-white font-bold">Optimisation (.set) Dédiée</div>
+                </div>
+                <div class="p-4 rounded-xl border border-white/5 bg-white/5 flex items-center gap-4">
+                    <div class="text-theme font-black text-lg">03</div>
+                    <div class="text-[9px] uppercase tracking-widest text-white font-bold">Suivi & Ajustement Live</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / Contact -->
+        <div class="animate-in mt-auto text-center">
+            <div class="flex flex-col items-center">
+                <p class="text-[10px] text-white font-bold uppercase tracking-[0.2em] mb-6">Votre Stratégie, Votre Réussite.</p>
+                <div class="w-full py-4 bg-theme rounded-xl text-black font-black text-xs uppercase tracking-[0.2em] shadow-glow flex items-center justify-center gap-2">
+                    DEMANDER MON PRESET
+                </div>
+                <p class="mt-4 text-[9px] text-gray-500 font-bold uppercase tracking-widest">@ysestp</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            gsap.to(".animate-in", {
+                opacity: 1,
+                x: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power4.out"
+            });
+        };
+    </script>
+</body>
+</html>

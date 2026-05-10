@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITSUYOSHI | Transparence Totale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --theme-color: #D4AF37;
+            --theme-glow: rgba(212, 175, 55, 0.3);
+        }
+
+        body {
+            background-color: #030305;
+            color: #e4e4e7;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-theme {
+            color: var(--theme-color);
+        }
+
+        .border-theme {
+            border-color: var(--theme-color);
+        }
+
+        .bg-theme {
+            background-color: var(--theme-color);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .stat-line {
+            height: 2px;
+            background: linear-gradient(90deg, var(--theme-color), transparent);
+            width: 0;
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Flyer Container -->
+    <div id="flyer"
+        class="relative w-full max-w-[400px] aspect-[9/16] glass-card rounded-[40px] overflow-hidden flex flex-col p-8 border-white/10 shadow-2xl">
+
+        <div class="animate-in flex justify-between items-center mb-10">
+            <div class="flex items-center gap-3">
+                <img src="icon.png" alt="Logo" class="w-10 h-10 object-contain shadow-glow">
+                <div class="flex flex-col">
+                    <span class="text-[8px] font-bold tracking-[0.5em] uppercase text-theme">Transparence</span>
+                    <span class="text-[14px] font-serif italic text-white">Mitsuyoshi Lab</span>
+                </div>
+            </div>
+            <div class="w-8 h-8 rounded-full border border-theme/30 flex items-center justify-center">
+                <div class="w-1.5 h-1.5 bg-theme rounded-full shadow-[0_0_10px_var(--theme-color)]"></div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-grow flex flex-col justify-center">
+            <h1 class="animate-in text-4xl font-serif italic text-white mb-8 leading-tight">
+                Loin des <span class="text-theme">Miracles</span>,<br>Proche des <span class="text-theme">Maths</span>.
+            </h1>
+
+            <div class="animate-in space-y-8 mb-12">
+                <div class="group">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Myfxbook Live</span>
+                        <span class="text-theme text-[10px] font-bold">VÉRIFIÉ</span>
+                    </div>
+                    <div class="stat-line group-hover:w-full transition-all duration-1000"></div>
+                    <p class="mt-2 text-[9px] text-gray-500 uppercase tracking-widest leading-relaxed">Tous nos
+                        résultats sont publics et auditables en temps réel.</p>
+                </div>
+
+                <div class="group">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Backtests
+                            Massifs</span>
+                        <span class="text-theme text-[10px] font-bold">10+ ANS</span>
+                    </div>
+                    <div class="stat-line group-hover:w-full transition-all duration-1000"></div>
+                    <p class="mt-2 text-[9px] text-gray-500 uppercase tracking-widest leading-relaxed">Nos stratégies
+                        sont éprouvées sur les pires crises historiques.</p>
+                </div>
+            </div>
+
+            <div class="animate-in p-6 bg-theme/5 border border-theme/20 rounded-2xl text-center">
+                <p class="text-[10px] text-theme font-bold uppercase tracking-[0.2em] mb-1 italic">"La vérité est dans
+                    les chiffres."</p>
+                <p class="text-[8px] text-gray-500 uppercase tracking-widest">Résultats réels, courbes stables.</p>
+            </div>
+        </div>
+
+        <!-- Footer / Contact -->
+        <div class="animate-in mt-auto">
+            <a href="https://t.me/ysestp" class="flex flex-col items-center group">
+                <p class="text-[8px] uppercase tracking-[0.3em] text-gray-500 mb-4">Consultez nos bilans sur Telegram
+                </p>
+                <div
+                    class="w-full py-4 border border-theme text-theme rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-theme hover:text-black transition-all flex items-center justify-center gap-2">
+                    @ysestp
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            gsap.to(".animate-in", {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                stagger: 0.15,
+                ease: "power3.out"
+            });
+            gsap.to(".stat-line", {
+                width: "100%",
+                duration: 1.5,
+                delay: 0.5,
+                stagger: 0.3,
+                ease: "power2.inOut"
+            });
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitsuyoshi Pro Analytics</title>
+    <link rel="stylesheet" href="dashboard_style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <main class="main-content">
+            
+            <!-- 1. AUTHENTICATION VIEW -->
+            <div id="viewAuth" class="view active">
+                <div class="auth-wrapper">
+                    <div class="glass auth-card">
+                        <div class="logo-icon">🛡️</div>
+                        <h1 style="margin-bottom: 10px;">Portal Access</h1>
+                        <p style="color: var(--text-secondary); margin-bottom: 40px;">Sign in to manage your Pro accounts.</p>
+                        
+                        <form id="loginForm" onsubmit="handleLogin(event)">
+                            <input type="email" id="emailInput" class="input-field" placeholder="Email Address" required>
+                            <input type="password" id="passwordInput" class="input-field" placeholder="Password" required>
+                            <button type="submit" class="btn-primary" id="loginBtn">Secure Login</button>
+                            <div id="loginStatus" style="margin-top: 20px; font-size: 14px; color: var(--accent);"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ACCOUNT SELECTION VIEW -->
+            <div id="viewSelect" class="view">
+                <div class="header-row">
+                    <div>
+                        <h1 style="font-size: 36px; font-weight: 700;">My Accounts</h1>
+                        <p style="color: var(--text-secondary);">Select an active MT5 terminal to monitor performance.</p>
+                    </div>
+                    <button class="btn-primary" style="width: auto; padding: 12px 30px;" onclick="switchView('viewAuth')">Logout</button>
+                </div>
+                
+                <div class="account-grid" id="accountsList">
+                    <!-- Accounts injected here -->
+                </div>
+            </div>
+
+            <!-- 2b. NO ACCOUNT VIEW -->
+            <div id="viewNoAccount" class="view">
+                <div class="auth-wrapper">
+                    <div class="glass auth-card" style="max-width: 600px;">
+                        <div style="font-size: 60px; margin-bottom: 20px;">⚡</div>
+                        <h1 style="color: var(--accent); margin-bottom: 20px;">Account Verified</h1>
+                        <p style="font-size: 18px; line-height: 1.6; margin-bottom: 30px;">
+                            No MT5 terminal is currently broadcasting for this email.<br>
+                            <span style="color: var(--text-secondary);">Please launch the EA on your MetaTrader 5 platform.</span>
+                        </p>
+                        
+                        <div class="glass" style="background: rgba(255,255,255,0.02); text-align: left; padding: 25px; margin-bottom: 30px;">
+                            <h4 style="color: var(--accent); margin-bottom: 15px;">Setup Instructions:</h4>
+                            <ul style="color: var(--text-secondary); padding-left: 20px; line-height: 1.8;">
+                                <li>Launch <b>CopyTrade_Slave_Pro.mq5</b> in MT5</li>
+                                <li>Set email to: <b style="color: white;"><span id="displayEmail"></span></b></li>
+                                <li>Add <b style="color: white;">http://127.0.0.1:3000</b> to Allowed URLs</li>
+                            </ul>
+                        </div>
+                        <button class="btn-primary" onclick="checkAgain()">Check Connection</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. MAIN DASHBOARD VIEW -->
+            <div id="viewDashboard" class="view">
+                <div class="header-row">
+                    <div>
+                        <h1 id="dashAccName" style="font-size: 32px; font-weight: 700;">Account Analytics</h1>
+                        <p id="dashAccServer" style="color: var(--text-secondary);"></p>
+                    </div>
+                    <button class="btn-primary" style="width: auto; padding: 12px 30px; background: transparent; border: 1px solid var(--border); color: white;" onclick="switchView('viewSelect')">Back to List</button>
+                </div>
+
+                <!-- Stats Overview -->
+                <div class="stats-grid">
+                    <div class="glass mini-stat">
+                        <span class="stat-label">Total Balance</span>
+                        <span class="stat-value" id="statBalance">$0</span>
+                    </div>
+                    <div class="glass mini-stat">
+                        <span class="stat-label">Total Profit (All-Time)</span>
+                        <span class="stat-value" id="statTotalResult" style="color: var(--profit);">+$0</span>
+                    </div>
+                    <div class="glass mini-stat">
+                        <span class="stat-label">Win Rate</span>
+                        <span class="stat-value" id="statWinRate" style="color: var(--accent);">0%</span>
+                    </div>
+                    <div class="glass mini-stat">
+                        <span class="stat-label">Profit Factor</span>
+                        <span class="stat-value" id="statProfitFactor">0.00</span>
+                    </div>
+                    <div class="glass mini-stat">
+                        <span class="stat-label">Max Loss (Single Trade)</span>
+                        <span class="stat-value" id="statMaxLoss" style="color: var(--loss);">-$0</span>
+                    </div>
+                </div>
+
+                <div class="main-visuals">
+                    <div class="glass chart-panel">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                            <h3>Equity Evolution</h3>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="btn-timeframe" onclick="updateTimeframe('1D')">1D</button>
+                                <button class="btn-timeframe" onclick="updateTimeframe('1W')">1W</button>
+                                <button class="btn-timeframe active" onclick="updateTimeframe('1M')">1M</button>
+                                <button class="btn-timeframe" onclick="updateTimeframe('3M')">3M</button>
+                            </div>
+                        </div>
+                        <div style="height: calc(100% - 60px);">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass control-panel">
+                        <h3 style="margin-bottom: 25px;">Management Console</h3>
+                        
+                        <div style="flex: 1;">
+                            <label style="color: var(--text-secondary); font-size: 14px; margin-bottom: 10px; display: block;">Lot Multiplier</label>
+                            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                <input type="number" id="inputLotMult" class="input-field" style="margin-bottom: 0; flex: 1;" step="0.1" value="1.0">
+                                <button class="btn-primary" style="width: auto; padding: 0 25px;" onclick="saveCopyConfig()">Save</button>
+                            </div>
+                            <p style="font-size: 13px; color: var(--text-secondary);">This multiplier affects all incoming trades copied from the master account.</p>
+                        </div>
+
+                        <div style="padding-top: 20px; border-top: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span style="color: var(--text-secondary);">Current Floating P/L</span>
+                                <span id="statFloat" style="font-weight: 700;">$0</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Status</span>
+                                <span style="color: var(--profit); font-weight: 700;">ONLINE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass history-panel">
+                    <h3 style="margin-bottom: 25px;">Transaction Ledger</h3>
+                    <div class="table-header table-row" style="grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr 1.2fr;">
+                        <span>ID</span>
+                        <span>Dates</span>
+                        <span>Duration</span>
+                        <span>Type</span>
+                        <span>Symbol</span>
+                        <span>Size</span>
+                        <span style="text-align: right;">Result</span>
+                    </div>
+                    <div id="historyList">
+                        <!-- History rows injected -->
+                    </div>
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button id="btnLoadMore" class="btn-primary" style="width: auto; padding: 10px 40px; background: transparent; border: 1px solid var(--border); color: var(--text-secondary);" onclick="loadMoreHistory()">Load More</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="dashboard_logic.js"></script>
+</body>
+</html>

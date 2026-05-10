@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITSUYOSHI | Phoenix Bot SMC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --theme-color: #06b6d4;
+            /* Blue Phoenix */
+            --theme-glow: rgba(6, 182, 212, 0.3);
+        }
+
+        body {
+            background-color: #030305;
+            color: #e4e4e7;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-theme {
+            color: var(--theme-color);
+        }
+
+        .border-theme {
+            border-color: var(--theme-color);
+        }
+
+        .bg-theme {
+            background-color: var(--theme-color);
+        }
+
+        .shadow-glow {
+            box-shadow: 0 0 25px var(--theme-glow);
+        }
+
+        .glass-card {
+            background: rgba(10, 20, 30, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .animate-in {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .bg-embers {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at bottom, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .fire-particle {
+            position: absolute;
+            background: var(--theme-color);
+            border-radius: 50%;
+            opacity: 0.4;
+            filter: blur(4px);
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-embers" id="embers-container"></div>
+
+    <!-- Flyer Container -->
+    <div id="flyer"
+        class="relative w-full max-w-[400px] aspect-[9/16] glass-card rounded-[40px] overflow-hidden flex flex-col p-8 border-theme/30 shadow-2xl">
+
+        <!-- Header -->
+        <div class="animate-in flex flex-col items-center mb-6">
+            <img src="icon.png" alt="Logo" class="w-12 h-12 object-contain shadow-glow mb-4">
+            <h2 class="text-[12px] font-black tracking-[0.6em] uppercase text-white">PHOENIX <span class="text-theme">SMC</span></h2>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-grow flex flex-col justify-center text-center">
+            <h1 class="animate-in text-5xl font-serif italic text-white mb-6 leading-tight">
+                La Précision <span class="text-theme">Chirurgicale</span>
+            </h1>
+
+            <div class="animate-in glass-card p-5 rounded-2xl mb-8 border-theme/30 bg-black/40">
+                <p class="text-[9px] uppercase tracking-[0.2em] text-gray-400 leading-relaxed">
+                    Basé sur les <span class="text-white font-bold">Smart Money Concepts</span> (ICT). Identifiez les
+                    zones institutionnelles avant l'explosion.
+                </p>
+            </div>
+
+            <div class="animate-in grid grid-cols-2 gap-4 mb-10">
+                <div class="p-4 border border-white/5 rounded-xl bg-white/5">
+                    <p class="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Drawdown</p>
+                    <p class="text-2xl font-black text-theme">~4.5%</p>
+                </div>
+                <div class="p-4 border border-white/5 rounded-xl bg-white/5">
+                    <p class="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Win Rate</p>
+                    <p class="text-2xl font-black text-theme">78%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / Contact -->
+        <div class="animate-in mt-auto">
+            <p class="text-[9px] text-center uppercase tracking-[0.3em] text-gray-500 mb-6 italic">Zéro indicateur.
+                Analyse technique pure.</p>
+            <a href="https://t.me/ysestp" class="flex flex-col items-center group">
+                <div
+                    class="w-full py-4 bg-theme rounded-xl text-black font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:brightness-110 transition-all flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.13 0 .19z" />
+                    </svg>
+                    @ysestp
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            gsap.to(".animate-in", {
+                opacity: 1,
+                scale: 1,
+                duration: 1,
+                stagger: 0.15,
+                ease: "back.out(1.7)"
+            });
+
+            // Particules
+            const container = document.getElementById('embers-container');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'fire-particle';
+                const size = Math.random() * 6 + 2;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.bottom = Math.random() * 50 + '%';
+                container.appendChild(p);
+                gsap.to(p, {
+                    y: -500,
+                    x: (Math.random() - 0.5) * 200,
+                    opacity: 0,
+                    duration: 2 + Math.random() * 3,
+                    repeat: -1,
+                    delay: Math.random() * 5,
+                    ease: "sine.out"
+                });
+            }
+        };
+    </script>
+</body>
+
+</html>

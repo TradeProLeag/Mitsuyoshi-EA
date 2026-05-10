@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITSUYOSHI | XTREM Bot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --theme-color: #f97316;
+            /* Orange Xtrem */
+            --theme-glow: rgba(249, 115, 22, 0.3);
+        }
+
+        body {
+            background-color: #030305;
+            color: #e4e4e7;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-theme {
+            color: var(--theme-color);
+        }
+
+        .border-theme {
+            border-color: var(--theme-color);
+        }
+
+        .bg-theme {
+            background-color: var(--theme-color);
+        }
+
+        .shadow-glow {
+            box-shadow: 0 0 25px var(--theme-glow);
+        }
+
+        .glass-card {
+            background: rgba(25, 15, 10, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+
+        .animate-in {
+            opacity: 0;
+            transform: skewX(-10deg) translateX(50px);
+        }
+
+        .streak {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--theme-color), transparent);
+            opacity: 0.6;
+            transform: rotate(-45deg);
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div id="streaks-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+    <!-- Flyer Container -->
+    <div id="flyer"
+        class="relative w-full max-w-[400px] aspect-[9/16] glass-card rounded-[40px] overflow-hidden flex flex-col p-8 border-theme/30 shadow-2xl">
+
+        <div class="animate-in flex flex-col items-center mb-8">
+            <img src="icon.png" alt="Logo" class="w-12 h-12 object-contain shadow-glow mb-4">
+            <h2 class="text-4xl font-serif italic text-white tracking-tighter">XTREM <span class="text-theme">Bot</span></h2>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-grow flex flex-col justify-center text-center">
+            <h1 class="animate-in text-5xl font-black text-white mb-4 leading-tight italic uppercase tracking-tighter">
+                Multipliez<br>Votre <span class="text-theme">Capital</span>
+            </h1>
+
+            <div class="animate-in mb-8">
+                <p class="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-6 px-6">
+                    Scalping Haute Fréquence conçu pour transformer de petits dépôts en résultats massifs.
+                </p>
+            </div>
+
+            <div class="animate-in glass-card p-6 rounded-3xl border-theme/40 relative group overflow-hidden">
+                <div
+                    class="absolute inset-0 bg-theme/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-700">
+                </div>
+                <p class="text-[9px] uppercase tracking-widest text-gray-400 mb-2">Objectif Performance</p>
+                <div class="text-5xl font-black text-white mb-2">x3 à x5</div>
+                <p class="text-[10px] font-bold text-theme uppercase tracking-[0.2em]">Par Cycle Optimisé</p>
+            </div>
+        </div>
+
+        <!-- Footer / Contact -->
+        <div class="animate-in mt-auto">
+            <div class="flex justify-between items-center px-4 mb-8">
+                <div class="text-left">
+                    <p class="text-[8px] text-gray-500 uppercase tracking-widest">Dépôt Min</p>
+                    <p class="text-lg font-black text-white tracking-widest">300€</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-[8px] text-gray-500 uppercase tracking-widest">Vitesse</p>
+                    <p class="text-lg font-black text-white tracking-widest">ULTRA</p>
+                </div>
+            </div>
+
+            <a href="https://t.me/ysestp" class="flex flex-col items-center group">
+                <div
+                    class="w-full py-4 bg-theme rounded-xl text-black font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.13 0 .19z" />
+                    </svg>
+                    @ysestp
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            gsap.to(".animate-in", {
+                opacity: 1,
+                x: 0,
+                skewX: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power2.out"
+            });
+
+            // Streaks Animation
+            const container = document.getElementById('streaks-container');
+            for (let i = 0; i < 20; i++) {
+                const s = document.createElement('div');
+                s.className = 'streak';
+                s.style.width = (Math.random() * 400 + 100) + 'px';
+                s.style.left = (Math.random() * 100) + '%';
+                s.style.top = (Math.random() * 100) + '%';
+                container.appendChild(s);
+                gsap.to(s, {
+                    x: 1000,
+                    opacity: 0,
+                    duration: 0.5 + Math.random(),
+                    repeat: -1,
+                    delay: Math.random() * 2,
+                    ease: "power2.in"
+                });
+            }
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITSUYOSHI | GoldExpertIA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --theme-color: #fbbf24;
+            /* Amber/Gold */
+            --theme-glow: rgba(251, 191, 36, 0.3);
+        }
+
+        body {
+            background-color: #030305;
+            color: #e4e4e7;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-theme {
+            color: var(--theme-color);
+        }
+
+        .border-theme {
+            border-color: var(--theme-color);
+        }
+
+        .bg-theme {
+            background-color: var(--theme-color);
+        }
+
+        .shadow-glow {
+            box-shadow: 0 0 30px var(--theme-glow);
+        }
+
+        .glass-card {
+            background: rgba(20, 15, 5, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .animate-in {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .gold-dust {
+            position: absolute;
+            background: var(--theme-color);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div id="dust-container" class="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
+
+    <!-- Flyer Container -->
+    <div id="flyer"
+        class="relative z-10 w-full max-w-[400px] aspect-[9/16] glass-card rounded-[40px] overflow-hidden flex flex-col p-8 border-theme/30 shadow-2xl">
+
+        <div class="animate-in flex flex-col items-center mb-8">
+            <img src="icon.png" alt="Logo" class="w-12 h-12 object-contain shadow-glow mb-4">
+            <h2 class="text-3xl font-serif italic text-white">GoldExpert <span class="text-theme">IA</span></h2>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-grow flex flex-col justify-center">
+            <div class="animate-in mb-10 text-center">
+                <p class="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-2">Spécialiste</p>
+                <p class="text-5xl font-black text-white tracking-widest">XAUUSD</p>
+            </div>
+
+            <div class="animate-in space-y-6">
+                <div class="flex items-start gap-4">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-theme/10 flex items-center justify-center shrink-0 border border-theme/20">
+                        <svg class="w-4 h-4 text-theme" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-white mb-1">IA Prédictive</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-widest leading-relaxed">Détecte les pics
+                            de volatilité avant les flash crashes.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-theme/10 flex items-center justify-center shrink-0 border border-theme/20">
+                        <svg class="w-4 h-4 text-theme" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-white mb-1">Protection Avancée</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-widest leading-relaxed">Optimisé sur 18
+                            mois de données réelles (Live).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / Contact -->
+        <div class="animate-in mt-auto text-center">
+            <div
+                class="inline-block px-4 py-2 bg-white/5 border border-white/10 rounded-full text-[8px] uppercase tracking-[0.4em] text-theme mb-8">
+                Dépôt Min: 300€</div>
+            <a href="https://t.me/ysestp" class="flex flex-col items-center group">
+                <div
+                    class="w-full py-4 bg-theme rounded-xl text-black font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:brightness-110 transition-all flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.13 0 .19z" />
+                    </svg>
+                    @ysestp
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            gsap.to(".animate-in", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                stagger: 0.2,
+                ease: "expo.out"
+            });
+
+            // Dust Particles
+            const container = document.getElementById('dust-container');
+            for (let i = 0; i < 60; i++) {
+                const p = document.createElement('div');
+                p.className = 'gold-dust';
+                const size = Math.random() * 3 + 1;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                container.appendChild(p);
+                gsap.to(p, {
+                    y: "-=100",
+                    x: "+=" + (Math.random() * 40 - 20),
+                    opacity: 0,
+                    duration: 3 + Math.random() * 5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    delay: Math.random() * -5
+                });
+            }
+        };
+    </script>
+</body>
+
+</html>
