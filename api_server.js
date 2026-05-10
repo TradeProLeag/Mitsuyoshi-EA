@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { createClient } = require('@supabase/supabase-js');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,12 +23,14 @@ app.use(express.static(__dirname));
 app.post('/api/signup', async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
     const { data, error } = await supabase.from('users').insert([{
         email,
         first_name: firstName,
         last_name: lastName,
         full_name: `${firstName} ${lastName}`,
-        password
+        password: hashedPassword
     }]);
 
     if (error) return res.status(400).json({ status: 'error', message: error.message });
@@ -39,7 +42,7 @@ app.post('/api/login', async (req, res) => {
     
     const { data, error } = await supabase.from('users').select('*').eq('email', email).single();
 
-    if (data && data.password === password) {
+    if (data && await bcrypt.compare(password, data.password)) {
         res.json({ status: 'success', user: { email: data.email, fullName: data.full_name } });
     } else {
         res.status(401).json({ status: 'error', message: 'Invalid credentials' });
@@ -51,8 +54,9 @@ app.post('/api/update-password', async (req, res) => {
     
     const { data: user } = await supabase.from('users').select('*').eq('email', email).single();
     
-    if (user && user.password === oldPassword) {
-        const { error } = await supabase.from('users').update({ password: newPassword }).eq('email', email);
+    if (user && await bcrypt.compare(oldPassword, user.password)) {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const { error } = await supabase.from('users').update({ password: hashedPassword }).eq('email', email);
         if (error) return res.status(500).json({ status: 'error', message: error.message });
         res.json({ status: 'success', message: 'Password updated' });
     } else {
