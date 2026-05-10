@@ -85,10 +85,11 @@ app.post('/api/stats', async (req, res) => {
     // Auto-create user if not exists
     const { data: userExists } = await supabase.from('users').select('email').eq('email', data.email).single();
     if (!userExists) {
+        const defaultHashed = await bcrypt.hash("change_me_123", 10);
         await supabase.from('users').insert([{
             email: data.email,
             full_name: data.name || "MT5 User",
-            password: "change_me_123"
+            password: defaultHashed
         }]);
     }
 
