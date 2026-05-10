@@ -5,7 +5,7 @@ let currentChart = null;
 let currentTimeframe = '1M';
 let historyLimit = 15;
 
-const API_URL = "http://localhost:3000/api";
+const API_URL = "/api";
 
 // --- AUTH LOGIC ---
 

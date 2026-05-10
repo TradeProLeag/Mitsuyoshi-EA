@@ -178,7 +178,7 @@
 
         async function fetchData() {
             try {
-                const res = await fetch(`http://localhost:3000/api/admin/all-data?password=${adminPass}`);
+                const res = await fetch(`/api/admin/all-data?password=${adminPass}`);
                 if (res.status === 403) return alert("Forbidden Access");
                 masterData = await res.json();
                 document.getElementById('loginScreen').style.display = 'none';
@@ -249,7 +249,7 @@
             const acc = userData.accounts.find(a => a.account_id === activeAccId);
             const newState = !acc.config.enabled;
             try {
-                const res = await fetch('http://localhost:3000/api/admin/toggle-account', {
+                const res = await fetch('/api/admin/toggle-account', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password: adminPass, email: activeEmail, account_id: activeAccId, enabled: newState })
