@@ -35,7 +35,10 @@ async function handleSignup() {
         } else {
             alert(data.message);
         }
-    } catch (e) { alert("Server connection failed"); }
+    } catch (e) { 
+        console.error("Signup Error:", e);
+        alert("Server connection failed: " + e.message); 
+    }
 }
 
 async function handleLogin() {
@@ -56,7 +59,10 @@ async function handleLogin() {
         } else {
             alert(data.message);
         }
-    } catch (e) { alert("Login failed"); }
+    } catch (e) { 
+        console.error("Login Error:", e);
+        alert("Login failed: " + e.message); 
+    }
 }
 
 function logout() {
