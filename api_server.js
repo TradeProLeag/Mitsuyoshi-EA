@@ -11,6 +11,10 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "MITSU_ADMIN_2026";
 // Configuration Supabase (Variables à configurer sur Vercel)
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
+// Vérification des variables au démarrage
+if (!supabaseUrl || !supabaseKey) {
+    console.error("CRITICAL ERROR: SUPABASE_URL or SUPABASE_KEY is missing in environment variables!");
+}
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.use(cors());
