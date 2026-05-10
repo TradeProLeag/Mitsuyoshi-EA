@@ -199,4 +199,10 @@ app.post('/api/update-config', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => console.log(`API Server running on port ${PORT}`));
+// Export pour Vercel (Mode Serverless)
+module.exports = app;
+
+// Garder le listen uniquement pour le local (si lancé via node api_server.js)
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => console.log(`API Server running on port ${PORT}`));
+}
