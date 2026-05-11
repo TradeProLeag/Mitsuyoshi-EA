@@ -100,8 +100,17 @@
         /* Responsive */
         @media (max-width: 768px) {
             .header-detail { padding: 20px; flex-direction: column; gap: 20px; text-align: center; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .container { padding: 20px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .stat-card { padding: 15px; }
+            .stat-card .val { font-size: 22px; }
+            .container { padding: 15px; }
+            .user-row { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .user-row > div:last-child { width: 100%; justify-content: space-between; }
+            h1 { font-size: 28px !important; }
+            .login-card { padding: 30px; }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>

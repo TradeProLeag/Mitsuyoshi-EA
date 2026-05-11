@@ -96,14 +96,42 @@
         /* Settings Panel */
         .settings-panel { padding: 30px; }
         
+        .main-grid {
+            display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px;
+        }
+
+        .table-container { overflow-x: auto; padding-bottom: 10px; }
+        
+        .table-row {
+            display: grid; grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1.2fr;
+            padding: 15px 25px; border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 13px; align-items: center; min-width: 700px;
+        }
+
         #hiddenAdmin {
             position: fixed; bottom: 10px; right: 10px; width: 5px; height: 5px;
             opacity: 0.01; cursor: default;
         }
 
-        @media (max-width: 900px) {
-            .table-row { grid-template-columns: 1fr 1fr 1fr 1fr; }
-            .hide-mobile { display: none; }
+        @media (max-width: 1024px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; align-items: flex-start; gap: 20px; margin-bottom: 30px; }
+            .header > div:last-child { text-align: left; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .stat-card { padding: 20px; }
+            .stat-card .val { font-size: 24px; }
+            .container { padding: 20px 15px; }
+            .glass { border-radius: 12px; }
+            h1 { font-size: 28px !important; }
+            .auth-card { padding: 25px; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .settings-panel { padding: 20px; }
         }
     </style>
 </head>
@@ -161,7 +189,7 @@
             <div class="glass stat-card"><label>Profit Factor</label><div class="val" id="statPF">0.00</div></div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px;">
+        <div class="main-grid">
             <div class="glass" style="padding: 30px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
                     <h3 class="serif" style="font-size: 24px;">Equity Growth</h3>
@@ -193,10 +221,12 @@
 
         <div class="glass" style="padding: 30px;">
             <h3 class="serif" style="font-size: 24px; margin-bottom: 30px;">Transaction Ledger</h3>
-            <div class="table-header table-row">
-                <span>Ticket</span><span>Close Date</span><span class="hide-mobile">Duration</span><span>Type</span><span>Symbol</span><span style="text-align: right;">Profit</span>
+            <div class="table-container">
+                <div class="table-header table-row">
+                    <span>Ticket</span><span>Close Date</span><span class="hide-mobile">Duration</span><span>Type</span><span>Symbol</span><span style="text-align: right;">Profit</span>
+                </div>
+                <div id="historyList"></div>
             </div>
-            <div id="historyList"></div>
             <div style="text-align: center; margin-top: 30px;">
                 <button id="btnLoadMore" class="btn-theme" style="width: auto; padding: 10px 40px;" onclick="loadMore()">Load More Data</button>
             </div>
