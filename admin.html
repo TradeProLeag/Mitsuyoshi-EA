@@ -158,6 +158,7 @@
                 <div class="glass stat-card"><label>Total Profit</label><div class="val" id="statProfit">$0</div></div>
                 <div class="glass stat-card"><label>Win Rate</label><div class="val" id="statWin">0%</div></div>
                 <div class="glass stat-card"><label>Profit Factor</label><div class="val" id="statPF">0.00</div></div>
+                <div class="glass stat-card"><label>Last 24h</label><div class="val" id="stat24h">$0</div></div>
             </div>
 
             <div class="glass" style="padding: 30px; margin-bottom: 40px;">
@@ -207,7 +208,10 @@
                     <div style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 20px;">
                         <div>
                             <div style="font-weight: 700; color: var(--theme);">$${item.accounts.reduce((a,b)=>a+(parseFloat(b.balance)||0),0).toLocaleString()}</div>
-                            <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase;">${item.accounts.length} Accounts</div>
+                            <div style="font-size: 10px; color: ${calculate24hProfit(item.accounts.flatMap(a => a.history)) >= 0 ? '#00ff88' : '#ff4444'}; text-transform: uppercase;">
+                                24h: ${calculate24hProfit(item.accounts.flatMap(a => a.history)) >= 0 ? '+' : ''}$${calculate24hProfit(item.accounts.flatMap(a => a.history)).toFixed(2)}
+                            </div>
+                            <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-top: 2px;">${item.accounts.length} Accounts</div>
                         </div>
                         <button onclick="deleteUser(event, '${item.user.email}')" style="background: none; border: none; color: #ff4444; font-size: 24px; cursor: pointer; padding: 5px; transition: 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Delete User">×</button>
                     </div>
@@ -244,6 +248,11 @@
             document.getElementById('statWin').textContent = acc.winRate;
             document.getElementById('statPF').textContent = acc.profitFactor;
 
+            const p24 = calculate24hProfit(acc.history);
+            const el24 = document.getElementById('stat24h');
+            el24.textContent = (p24 >= 0 ? '+' : '') + '$' + p24.toFixed(2);
+            el24.style.color = p24 >= 0 ? '#00ff88' : '#ff4444';
+
             const btn = document.getElementById('btnKill');
             if(acc.config.enabled) {
                 btn.textContent = "Suspend Trading";
@@ -254,6 +263,19 @@
             }
             renderChart(acc.chartData || []);
             renderLedger(acc.history || []);
+        }
+
+        function calculate24hProfit(history) {
+            const now = new Date();
+            const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+            let profit = 0;
+            (history || []).forEach(h => {
+                const tradeDate = new Date(h.date.replace(/\./g, '/'));
+                if (tradeDate >= last24h) {
+                    profit += parseFloat(h.resultStr.replace('$', '').replace('+', '')) || 0;
+                }
+            });
+            return profit;
         }
 
         async function toggleTrading() {

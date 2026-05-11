@@ -153,6 +153,22 @@ function updateUI() {
     document.getElementById('statPF').textContent = acc.profitFactor;
     document.getElementById('inputLotMult').value = acc.config.lot_multiplier;
 
+    // Last 24h Profit
+    const now = new Date();
+    const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    let p24 = 0;
+    (acc.history || []).forEach(h => {
+        const tradeDate = new Date(h.date.replace(/\./g, '/'));
+        if (tradeDate >= last24h) {
+            p24 += parseFloat(h.resultStr.replace('$', '').replace('+', '')) || 0;
+        }
+    });
+    const el24 = document.getElementById('stat24h');
+    if (el24) {
+        el24.textContent = (p24 >= 0 ? '+' : '') + '$' + p24.toFixed(2);
+        el24.style.color = p24 >= 0 ? '#00ff88' : '#ff4444';
+    }
+
     renderHistory(acc.history || []);
     updateTimeframe(currentTimeframe);
 }
